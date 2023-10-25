@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('nl_tipo_zona', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre')->unique();
+            $table->timestamps();
+        });
+
+
+        Schema::create('nl_zonas', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre')->unique();
+            $table->text('descripcion');
+            $table->date('fecha_creacion');
+            $table->date('ultima_actualizacion');
+            $table->unsignedBigInteger('id_tipo_zona');
+            $table->timestamps();
+
+            $table->foreign('id_tipo_zona')
+                    ->references('id')
+                    ->on('nl_tipo_zona')
+                    ->onDelete('restrict');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('nl_zonas');
+    }
+};
