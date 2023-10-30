@@ -112,6 +112,10 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
      * CONTROLADOR CONFIGURACIÓN
      */
     Route::controller(Controlador_configuracion::class)->group(function (){
+
+        //controlador configuracion
+        Route::get('categoria', 'categoria')->name('cat_index');
+
         //para la parte de profesion
         Route::get('profesion','profesion')->name('pro_index');
         Route::get('profesion_listar','profesion_listar')->name('pro_listar');

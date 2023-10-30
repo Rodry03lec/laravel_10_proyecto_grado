@@ -59,7 +59,7 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 <li>
-                                    <a href="{{ route('gestion') }}" class="@if ($menu=='4') {{ 'active' }} @endif">Gestión</a>
+                                    <a href="{{ route('cat_index') }}" class="@if ($menu=='4') {{ 'active' }} @endif">Categorias</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('tzn_index') }}" class="@if ($menu=='5') {{ 'active' }} @endif">Tipo Zona</a>

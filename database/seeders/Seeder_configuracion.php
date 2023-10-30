@@ -50,8 +50,8 @@ class Seeder_configuracion extends Seeder
         foreach ($array_categoria as $val) {
             $categoria              = new Categoria_servicio;
             $categoria->nombre      = $val['nombre'];
-            $categoria->precio_fijo = sin_separador_comas($val['precio_fijo']);
-            $categoria->id_gestion  = 1;
+            //$categoria->precio_fijo = sin_separador_comas($val['precio_fijo']);
+            //$categoria->id_gestion  = 1;
             $categoria->save();
         }
 

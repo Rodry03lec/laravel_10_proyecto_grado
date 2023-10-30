@@ -22,14 +22,22 @@ return new class extends Migration
         Schema::create('nl_categoria', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100);
+            $table->timestamps();
+        });
+
+        Schema::create('nl_sub_categoria', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 100);
             $table->decimal('precio_fijo', 50, 2)->unsigned();
+            $table->text('descripción')->nullable();
+            $table->unsignedBigInteger('id_categoria');
             $table->timestamps();
 
-            $table->unsignedBigInteger('id_gestion');
-            $table->foreign('id_gestion')
+            $table->foreign('id_categoria')
                     ->references('id')
-                    ->on('nl_gestion')
+                    ->on('nl_categoria')
                     ->onDelete('restrict');
+
         });
 
         Schema::create('nl_mes', function (Blueprint $table) {

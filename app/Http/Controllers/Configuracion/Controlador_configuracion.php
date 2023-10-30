@@ -19,6 +19,20 @@ class Controlador_configuracion extends Controller
      * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
      */
 
+
+    /**
+     * PARA LA PARTE DE CONFIGURACIÓN DE CATEGORIAS
+     */
+    public function categoria(){
+        $data['menu'] = 4;
+        return view('administrador.recaudaciones.configuracion.categoria', $data);
+    }
+
+    /**
+     * FIN DE LA PARTE DE LAS CATEGORIAS
+     */
+
+
     /**
      * PARTE DE LA PROFESIÓN
      */
