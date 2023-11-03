@@ -29,7 +29,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
             $table->decimal('precio_fijo', 50, 2)->unsigned();
-            $table->text('descripción')->nullable();
+            $table->text('descripcion')->nullable();
             $table->unsignedBigInteger('id_categoria');
             $table->timestamps();
 

@@ -18,7 +18,7 @@ class Controlador_instalacion extends Controller
      * para la parte de la instalacion de servicios
      */
     public function instalacion(){
-        $data['menu'] = 13;
+        $data['menu'] = 15;
         $data['zonas'] = Zonas::get();
         $data['gestion'] = Gestion::orderBy('gestion','desc')->get();
         $data['propiedad'] = Tipo_propiedad::get();

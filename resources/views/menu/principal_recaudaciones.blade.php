@@ -100,9 +100,27 @@
                             </ul>
                         </li>
 
+                        <li class="">
+                            <a href="javascript:void(0)" class="navItem @if ($menu=='13' || $menu=='14') {{ 'active' }} @endif ">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="mdi:users"></iconify-icon>
+                                    <span>Personal trabajo</span>
+                                </span>
+                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="{{ route('uni_index') }}" class="@if ($menu=='13') {{ 'active' }} @endif">Unidad</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('petr_index') }}" class="@if ($menu=='14') {{ 'active' }} @endif">Personal</a>
+                                </li>
+                            </ul>
+                        </li>
+
 
                         <li class="">
-                            <a href="javascript:void(0)" class="navItem  @if ($menu=='13') {{ 'active' }} @endif">
+                            <a href="javascript:void(0)" class="navItem  @if ($menu=='15') {{ 'active' }} @endif">
                                 <span class="flex items-center">
                                     <iconify-icon class=" nav-icon" icon="mdi:account-wrench-outline"></iconify-icon>
                                     <span>Servicio</span>
@@ -111,7 +129,7 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 <li >
-                                    <a href="{{ route('ins_index') }}" class="@if ($menu=='13') {{ 'active' }} @endif">Instalación</a>
+                                    <a href="{{ route('ins_index') }}" class="@if ($menu=='15') {{ 'active' }} @endif">Instalación</a>
                                 </li>
                             </ul>
                         </li>

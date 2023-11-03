@@ -4,6 +4,7 @@ use App\Http\Controllers\Configuracion\Controlador_configuracion;
 use App\Http\Controllers\Configuracion\Controlador_gestion;
 use App\Http\Controllers\Configuracion\Controlador_zona;
 use App\Http\Controllers\Persona\Controlador_persona;
+use App\Http\Controllers\Personal_trabajo\Controlador_personal;
 use App\Http\Controllers\Servicio\Controlador_instalacion;
 use App\Http\Controllers\Usuario\Admin_login;
 use App\Http\Controllers\Usuario\Admin_usuario;
@@ -115,6 +116,16 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
 
         //controlador configuracion
         Route::get('categoria', 'categoria')->name('cat_index');
+        Route::post('categoria_listar', 'categoria_listar')->name('cat_listar');
+        Route::post('categoria_nuevo', 'categoria_nuevo')->name('cat_nuevo');
+        Route::delete('categoria_eliminar', 'categoria_eliminar')->name('cat_eliminar');
+        Route::post('categoria_editar', 'categoria_editar')->name('cat_editar');
+        Route::post('categoria_editar_guardar', 'categoria_editar_guardar')->name('cat_editar_gud');
+
+        Route::post('sub_categoria_listar', 'sub_categoria_listar')->name('casub_listar');
+        Route::post('sub_categoria_nuevo', 'sub_categoria_nuevo')->name('casub_nuevo');
+        Route::post('sub_categoria_editar', 'sub_categoria_editar')->name('casub_editar');
+
 
         //para la parte de profesion
         Route::get('profesion','profesion')->name('pro_index');
@@ -162,6 +173,34 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
     /**
      * FIN DEL CONTROLADOR PERSONA
      */
+
+
+    /**
+     * CONTROLADOR PERSONAL DE TRABAJO
+    */
+    Route::controller(Controlador_personal::class)->group(function(){
+        //para el unidad
+        Route::get('unidad', 'unidad')->name('uni_index');
+        Route::post('unidad_listar', 'unidad_listar')->name('uni_listar');
+        Route::post('unidad_nuevo', 'unidad_nuevo')->name('uni_nuevo');
+        Route::delete('unidad_eliminar', 'unidad_eliminar')->name('uni_eliminar');
+        Route::post('unidad_editar', 'unidad_editar')->name('uni_editar');
+        Route::post('unidad_edi_guardar', 'unidad_edi_guardar')->name('uni_edi_guardar');
+
+        //para la parte de los cargos
+        Route::post('cargo_listar','cargo_listar')->name('car_listar');
+        Route::post('cargo_nuevo','cargo_nuevo')->name('car_nuevo');
+        Route::post('cargo_editar','cargo_editar')->name('car_editar');
+        Route::delete('cargo_eliminar','cargo_eliminar')->name('car_eliminar');
+
+        //para la parte del personal
+        Route::get('personal','personal_trabajo')->name('petr_index');
+        Route::get('personal_listar/{id}','personal_listar')->name('petr_listar');
+    });
+    /**
+     * FIN DEL CONTROLADOR DE PERSONAL DE TRABAJO
+    */
+
 
     /**
      * PARA LA PARTE DEL CONTROLADOR INSTALACIÓN

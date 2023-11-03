@@ -7,6 +7,8 @@ use App\Models\Configuracion\Expedido;
 use App\Models\Configuracion\Profesion;
 use App\Models\Configuracion\Tipo_empresa;
 use App\Models\Configuracion\Tipo_propiedad;
+use App\Models\Servicio\Categoria_servicio;
+use App\Models\Servicio\Sub_categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,6 +30,137 @@ class Controlador_configuracion extends Controller
         return view('administrador.recaudaciones.configuracion.categoria', $data);
     }
 
+    public function categoria_listar(){
+        $listar_categoria = Categoria_servicio::get();
+        if($listar_categoria){
+            $data = mensaje_mostrar('success', $listar_categoria);
+        }else{
+            $data = mensaje_mostrar('error', 'Ocurrio un error al listar');
+        }
+        return response()->json($data);
+    }
+
+    //para guardar nueva categoria
+    public function categoria_nuevo(Request $request){
+        $validar = Validator::make($request->all(),[
+            'categoria'  => 'required|unique:nl_categoria,nombre',
+        ]);
+        if($validar->fails()){
+            $data = mensaje_mostrar('errores', $validar->errors());
+        }else{
+            $categoria             = new Categoria_servicio;
+            $categoria->nombre     =  $request->categoria;
+            $categoria->save();
+            if($categoria->id){
+                $data = mensaje_mostrar('success', 'Se guardo los datos con éxito');
+            }else{
+                $data = mensaje_mostrar('error','Ocurrio un error al guardar');
+            }
+        }
+        return response()->json($data);
+    }
+
+    //para eliminar la categoria
+    public function categoria_eliminar(Request $request){
+        try {
+            $categoria = Categoria_servicio::find($request->id);
+            if($categoria->delete()){
+                $data = mensaje_mostrar('success', 'Se eliminó con exito');
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un error al eliminar');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un error al eliminar');
+        }
+        return response()->json($data);
+    }
+
+    //para editar la categoria
+    public function categoria_editar(Request $request){
+        $categoria = Categoria_servicio::find($request->id);
+        if($categoria){
+            $data = mensaje_mostrar('success', $categoria);
+        }else{
+            $data = mensaje_mostrar('error', 'Ocurrio un error al mostrar los datos');
+        }
+        return response()->json($data);
+    }
+    //para guardar lo editado
+    public function categoria_editar_guardar(Request $request){
+        $validar = Validator::make($request->all(),[
+            'categoria_'  => 'required|unique:nl_categoria,nombre,'.$request->id_cat,
+        ]);
+        if($validar->fails()){
+            $data = mensaje_mostrar('errores', $validar->errors());
+        }else{
+            $categoria             = Categoria_servicio::find($request->id_cat);
+            $categoria->nombre     =  $request->categoria_;
+            $categoria->save();
+            if($categoria->id){
+                $data = mensaje_mostrar('success', 'Se editó los datos con éxito');
+            }else{
+                $data = mensaje_mostrar('error','Ocurrio un error al guardar');
+            }
+        }
+        return response()->json($data);
+    }
+    //para listar sub-categoria
+    public function sub_categoria_listar(Request $request){
+        $sub_categoria = Sub_categoria::where('id_categoria', $request->id)->orderby('id', 'desc')->get();
+        $data['sub_categoria'] = $sub_categoria;
+        return view('administrador.recaudaciones.configuracion.listar_sub_categoria', $data);
+    }
+
+    //para guardar el subcategoria
+    public function sub_categoria_nuevo(Request $request){
+        $validar = Validator::make($request->all(),[
+            'nombre_categoria'  => 'required',
+            'precio_fijo'       => 'required',
+        ]);
+        if($validar->fails()){
+            $data = mensaje_mostrar('errores', $validar->errors());
+        }else{
+
+            $precio_fijo = sin_separador_comas($request->precio_fijo);
+            if($request->id_sub_categoria != NULL){
+                $sub_categoria              =  Sub_categoria::find($request->id_sub_categoria);
+            }else{
+                $sub_categoria              =  new Sub_categoria;
+                $sub_categoria->id_categoria  =  $request->id_categoria;
+            }
+            $sub_categoria->nombre          =  $request->nombre_categoria;
+            $sub_categoria->precio_fijo     =  $precio_fijo;
+            $sub_categoria->descripcion     =  $request->descripcion;
+            $sub_categoria->save();
+            if($sub_categoria->id){
+                $data = array(
+                    'tipo'      =>  'success',
+                    'mensaje'   =>  'Se guardo los datos con éxito',
+                    'id_cate'    =>  $request->id_categoria
+                );
+            }else{
+                $data = mensaje_mostrar('error','Ocurrio un error al guardar');
+            }
+        }
+        return response()->json($data);
+    }
+
+    //para editar el subcategoria
+    public function sub_categoria_editar(Request $request){
+        $sub_categoria = Sub_categoria::find($request->id);
+        if($sub_categoria->id){
+            $data = array(
+                'tipo'                  => 'success',
+                'nombre_cat'            => $sub_categoria->nombre,
+                'descripcion_cat'       => $sub_categoria->descripcion,
+                'precio_fijo_cat'       => con_separador_comas($sub_categoria->precio_fijo),
+                'id_sub_categoria_cat'  => $sub_categoria->id,
+            );
+        }else{
+            $data = mensaje_mostrar('error', 'Ocurrio un error al editar');
+        }
+        return response()->json($data);
+    }
     /**
      * FIN DE LA PARTE DE LAS CATEGORIAS
      */

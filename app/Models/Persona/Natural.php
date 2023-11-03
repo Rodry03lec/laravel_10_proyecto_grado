@@ -5,6 +5,7 @@ namespace App\Models\Persona;
 use App\Models\Configuracion\Expedido;
 use App\Models\Configuracion\Profesion;
 use App\Models\Configuracion\Zonas;
+use App\Models\Personal\Personal_trabajo;
 use App\Models\Servicio\Instalacion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -93,5 +94,10 @@ class Natural extends Model
     //relacion con con nl_instalacion
     public function instalacion(){
         return $this->hasMany(Instalacion::class, 'id_persona_natural', 'id');
+    }
+
+    //relacion de uno a muchos con personal trabajo
+    public function personal_trabajo(){
+        return $this->hasMany(Personal_trabajo::class, 'id_persona', 'id');
     }
 }

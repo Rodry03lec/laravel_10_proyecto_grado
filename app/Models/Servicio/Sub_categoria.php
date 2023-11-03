@@ -9,7 +9,7 @@ use App\Models\Servicio\Categoria_servicio;
 class Sub_categoria extends Model
 {
     use HasFactory;
-    protected $table = 'nl_categoria';
+    protected $table = 'nl_sub_categoria';
     protected $fillable=[
         'nombre',
         'precio_fijo',
