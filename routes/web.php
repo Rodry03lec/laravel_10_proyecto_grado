@@ -196,6 +196,7 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         //para la parte del personal
         Route::get('personal','personal_trabajo')->name('petr_index');
         Route::get('personal_listar/{id}','personal_listar')->name('petr_listar');
+        Route::post('personal_buscar', 'personal_buscar')->name('petr_buscar');
     });
     /**
      * FIN DEL CONTROLADOR DE PERSONAL DE TRABAJO

@@ -37,7 +37,8 @@ return new class extends Migration
             $table->date('fecha_finalizacion');
             $table->string('estado', 20);
             $table->string('referencia_laboral', 20);
-            $table->string('descripcion');
+            $table->string('referencia_nombre', 20);
+            $table->string('descripcion')->nullable();
             $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_cargo');
             $table->timestamp('creado_el');

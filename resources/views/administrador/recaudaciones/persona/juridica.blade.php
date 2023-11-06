@@ -269,22 +269,6 @@
 
                                         </div>
                                     </div>
-
-                                    {{-- <div class="input-area relative">
-                                        <label for="id_asesor" class="form-label">ASESOR</label>
-                                        <input id="id_asesor" name="id_asesor" type="text" class="form-control" placeholder="Ingrese ci del asesor">
-                                        <div id="_id_asesor"></div>
-
-                                        <div class=" py-2 space-y-5">
-                                            <div class="alert alert-outline-primary ">
-                                                <div class="flex items-start space-x-3 rtl:space-x-reverse">
-                                                    <div class="flex-1 font-Inter">
-                                                    This is an alert—check it out!
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </fieldset>
 

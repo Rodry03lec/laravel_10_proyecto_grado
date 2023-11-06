@@ -16,6 +16,7 @@ class Personal_trabajo extends Model
         'fecha_finalizacion',
         'estado',
         'referencia_laboral',
+        'referencia_nombre',
         'descripcion',
         'id_persona',
         'id_cargo'

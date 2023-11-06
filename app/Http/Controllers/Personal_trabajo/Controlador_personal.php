@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Personal_trabajo;
 
 use App\Http\Controllers\Controller;
+use App\Models\Persona\Natural;
 use App\Models\Personal\Cargo;
+use App\Models\Personal\Personal_trabajo;
 use App\Models\Personal\Unidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -195,7 +197,32 @@ class Controlador_personal extends Controller
         $data['menu'] = 14;
         $id_descript = desencriptar($id);
         $data['id_descript'] = $id_descript;
+        $data['cargo'] = Cargo::where('id_unidad', $id_descript)->get();
         return view('administrador.recaudaciones.personal_trabajo.personal_registro', $data);
+    }
+
+    //para validar la persona
+    public function personal_buscar(Request $request){
+        $ci_persona = $request->ci;
+        $persona = Natural::where('ci','like', $ci_persona)->get();
+        if($persona->isNotEmpty()){
+            //ahora si la persona esta activa o no, como funcionario o no
+            $personal_alacaldia = Personal_trabajo::where('id_persona', $persona[0]->id)
+                                                    ->where('estado', 'activo')
+                                                    ->get();
+            if($personal_alacaldia->isNotEmpty()){
+                $data = mensaje_mostrar('error', 'La persona esta como funcionario, con un cargo');
+            }else{
+                $data = array(
+                    'tipo'              =>  'success',
+                    'mensaje'           =>  $persona,
+                    'mensaje_mostrar'   =>  'Puede realizar el registro de la persona'
+                );
+            }
+        }else{
+            $data = mensaje_mostrar('error', 'La persona no se encuentra registrado en el sistema');
+        }
+        return response()->json($data);
     }
     /**
      * FIN DEL REGISTRO DEL PERSONAL

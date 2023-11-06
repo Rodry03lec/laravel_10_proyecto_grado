@@ -48,7 +48,7 @@
                                     <h4 class="card-title">Listado de personal activo</h4>
                                 </header>
                                 <div class="flex space-x-4 justify-end items-center rtl:space-x-reverse ">
-                                    <button class="btn inline-flex justify-center btn-dark dark:bg-slate-800 m-1" data-bs-toggle="modal" data-bs-target="#modal_nueva_unidad">
+                                    <button class="btn inline-flex justify-center btn-dark dark:bg-slate-800 m-1" data-bs-toggle="modal" data-bs-target="#modal_nuevo_personal">
                                         <span class="flex items-center">
                                             <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="ph:plus-bold"></iconify-icon>
                                             <span>Nuevo</span>
@@ -87,14 +87,6 @@
                                 <header class="card-header noborder">
                                     <h4 class="card-title">Listado de personal inactivo</h4>
                                 </header>
-                                <div class="flex space-x-4 justify-end items-center rtl:space-x-reverse ">
-                                    <button class="btn inline-flex justify-center btn-dark dark:bg-slate-800 m-1" data-bs-toggle="modal" data-bs-target="#modal_nueva_unidad">
-                                        <span class="flex items-center">
-                                            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="ph:plus-bold"></iconify-icon>
-                                            <span>Nuevo</span>
-                                        </span>
-                                    </button>
-                                </div>
                             </div>
 
                             <div class="card-body px-6 pb-6">
@@ -129,21 +121,21 @@
     </div>
 
 
-    {{-- MODAL PARA CREAR LA NUEVA UNIDAD --}}
+    {{-- MODAL PARA CREAR LA NUEVA PERSONA NATURAL --}}
     <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-    id="modal_nueva_unidad" tabindex="-1" aria-labelledby="disabled_backdrop" aria-hidden="true"
+    id="modal_nuevo_personal" tabindex="-1" aria-labelledby="disabled_backdrop" aria-hidden="true"
     data-bs-backdrop="static" x-data="{ showModal: false }">
-        <div class="modal-dialog relative w-auto pointer-events-none">
+        <div class="modal-dialog modal-xl  relative w-auto pointer-events-none">
             <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding
             rounded-md outline-none text-current">
                 <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
                     <!-- Modal header -->
                     <div
                         class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
-                        <h3 class="text-xl font-medium text-white dark:text-white capitalize">
-                            Nueva unidad
+                        <h3 class="text-xl font-medium text-white dark:text-white">
+                            Nuevo registro de persona Juridica
                         </h3>
-                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal" onclick="cerrar_modal_cargo()">
+                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal" onclick="cerrar_modal_personal()">
                             <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -155,81 +147,152 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="p-6 space-y-4">
-                        <form method="POST" id="form_nueva_unidad" autocomplete="off">
+                    <div class="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto" id="scrollModal">
+                        <form method="POST" id="form_nueva_personal" autocomplete="off" enctype="multipart/form-data">
                             @csrf
-                            <div class="input-area">
-                                <label for="nombre" class="form-label">Ingrese nombre de la unidad</label>
-                                <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Ingrese una nombre" onkeypress="return soloLetras(event)">
-                                <div id="_nombre"></div>
-                            </div>
+                            <input type="hidden" id="id_repre" name="id_repre">
+                            <fieldset>
+                                <legend>PERSONA</legend>
+                                <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-7">
+                                    <div class="input-area relative">
+                                        <label for="ci_persona" class="form-label">INGRESE CI DE PERSONA</label>
+                                        <input id="ci_persona" name="ci_persona" type="text" class="form-control" maxlength="10" placeholder="Ingrese ci persona" onkeyup="buscar_ci_persona(this.value)"  onkeypress="return soloNumeros(event)">
+                                        <div id="_ci_persona"></div>
+                                    </div>
 
-                            <div class="input-area">
-                                <label for="descripcion" class="form-label">Ingrese la descripción de la unidad</label>
-                                <textarea name="descripcion" id="descripcion" class="form-control" cols="30" rows="3" placeholder="Ingrese la descripcion de la unidad"></textarea>
-                            </div>
+                                    <div class="input-area relative">
+                                        <div class=" py-2 space-y-5" id="ver_persona">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>INFORMACIÓN</legend>
+                                <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-7">
+
+                                    <div class="input-area relative">
+                                        <label for="fecha_contratacion" class="form-label">FECHA DE CONTRATACIÓN</label>
+                                        <input id="fecha_contratacion" name="fecha_contratacion" type="date" class="form-control" @disabled(true)>
+                                        <div id="_fecha_contratacion"></div>
+                                    </div>
+
+                                    <div class="input-area relative">
+                                        <label for="cargo" class="form-label">CARGO</label>
+                                        <select name="cargo" id="cargo" class="select2_uno form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la cargo" @disabled(true)>
+                                            <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione cargo]</option>
+                                            @foreach ($cargo as $lis)
+                                                <option value="{{ $lis->id }}" class="inline-block font-Inter font-normal text-sm text-slate-600">[{{ $lis->nombre }}] : {{ $lis->descripcion }}</option>
+                                            @endforeach
+
+                                        </select>
+                                        <div id="_cargo"></div>
+                                    </div>
+
+                                    <div class="input-area relative">
+                                        <label for="referencia_laboral" class="form-label">REFERENCIA LABORAL (TELEFONO O CELULAR)</label>
+                                        <input id="referencia_laboral" name="referencia_laboral" type="text" class="form-control" placeholder="Ingrese refrencia laboral" @disabled(true)>
+                                        <div id="_referencia_laboral"></div>
+                                    </div>
+
+                                    <div class="input-area relative">
+                                        <label for="nombre_referencia" class="form-label">REFERENCIA LABORAL (NOMBRE DE LA PERSONA)</label>
+                                        <input id="nombre_referencia" name="nombre_referencia" type="text" class="form-control" placeholder="Ingrese el nombre de la referencia laboral" @disabled(true)>
+                                        <div id="_nombre_referencia"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+
                         </form>
                     </div>
-                    <!-- Modal footer -->
                     <div
                         class="flex items-center justify-end p-6 space-x-2 border-t border-slate-200 rounded-b dark:border-slate-600">
-                        <button type="button" id="btn_guardar_unidad" class="btn inline-flex justify-center text-white bg-black-500">Guardar</button>
+                        <button type="button" id="btn_guardar_personal" class="btn inline-flex justify-center text-white bg-black-500">Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- MODAL PARA EDITAR UNIDAD --}}
-    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-    id="modal_editar_unidad" tabindex="-1" aria-labelledby="disabled_backdrop" aria-hidden="true"
-    data-bs-backdrop="static" x-data="{ showModal: false }">
-        <div class="modal-dialog relative w-auto pointer-events-none">
-            <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding
-            rounded-md outline-none text-current">
-                <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
-                    <!-- Modal header -->
-                    <div
-                        class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
-                        <h3 class="text-xl font-medium text-white dark:text-white capitalize">
-                            Editar unidad
-                        </h3>
-                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal" onclick="cerrar_modal_cargo()">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10
-                                11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="sr-only"></span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="p-6 space-y-4">
-                        <form method="POST" id="form_editar_unidad" autocomplete="off">
-                            @csrf
-                            <input type="hidden" name="id_unidad" id="id_unidad">
-                            <div class="input-area">
-                                <label for="nombre_" class="form-label">Ingrese nombre de la unidad</label>
-                                <input id="nombre_" name="nombre_" type="text" class="form-control" placeholder="Ingrese una nombre" onkeypress="return soloLetras(event)">
-                                <div id="_nombre_"></div>
-                            </div>
+@endsection
 
-                            <div class="input-area">
-                                <label for="descripcion_" class="form-label">Ingrese la descripción de la unidad</label>
-                                <textarea name="descripcion_" id="descripcion_" class="form-control" cols="30" rows="3" placeholder="Ingrese la descripcion de la unidad"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Modal footer -->
-                    <div
-                        class="flex items-center justify-end p-6 space-x-2 border-t border-slate-200 rounded-b dark:border-slate-600">
-                        <button type="button" id="btn_guardar_unidad_editado" class="btn inline-flex justify-center text-white bg-black-500">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
+@section('script_recaudaciones')
+    <script>
+        select2_uno('#modal_nuevo_personal');
+        let ver_persona = document.getElementById('ver_persona');
+        async function buscar_ci_persona(ci){
+            let ci_error = document.getElementById('_ci_persona');
+            if(ci.length > 5){
+                try {
+                    let respuesta = await fetch("{{ route('petr_buscar') }}", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({ci:ci})
+                    });
+                    let dato = await respuesta.json();
+                    console.log(dato);
+                    if (dato.tipo === 'success') {
+                        habilitar_deshabilitar_persona(false);
+                        ver_persona.innerHTML = `
+                        <div class="alert alert-outline-primary ">
+                            <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                                <div class="flex-1 font-Inter">
+                                    <dl class="list-none">
+                                        <dt class="mb-1 font-bold">Nombres y apellidos : `+dato.mensaje[0].nombres+` `+dato.mensaje[0].apellido_paterno+` `+dato.mensaje[0].apellido_materno+ `</dt>
+                                        <dd class="mb-1 font-bold"> Nº de celular : `+dato.mensaje[0].celular+`</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>`
+                    }
+                    if (dato.tipo === 'error') {
+                        habilitar_deshabilitar_persona(true);
+                        ver_persona.innerHTML='',
+                        ci_error.innerHTML = `<p id="error_estilo" >`+dato.mensaje+`</p>`;
+                    }
+                } catch (error) {
+                    console.log('Error de datos : ' + error);
+                    habilitar_deshabilitar_persona(true);
+                    ver_persona.innerHTML='',
+                }
+            }else{
+                ci_error.innerHTML = '';
+                habilitar_deshabilitar_persona(true);
+                ver_persona.innerHTML='',
+            }
+        }
+        //cuando cierre eñl modal
+        function cerrar_modal_personal(){
+            limpiar_campos('form_nueva_personal');
+            vaciar_errores_personal();
+            vaciar_select2();
+        }
+        //para vaciar los errores
+        function vaciar_errores_personal(){
+            let valores = ['ver_persona', '_fecha_contratacion', '_cargo', '_referencia_laboral', '_nombre_referencia'];
+            valores.forEach(elem => {
+                document.getElementById(elem).innerHTML = '';
+            });
+        }
+        //vacair los select2
+        function vaciar_select2(){
+            document.querySelectorAll('.select2_uno').forEach(select => {
+                select.value = 'selected';
+                select.dispatchEvent(new Event('change'));
+            });
+        }
+
+        function habilitar_deshabilitar_persona(val){
+            let valores = ['fecha_contratacion','cargo','referencia_laboral','nombre_referencia'];
+            valores.forEach(elem => {
+                document.getElementById(elem).disabled = val;
+            });
+        }
+    </script>
 @endsection
