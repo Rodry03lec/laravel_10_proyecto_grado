@@ -203,6 +203,53 @@ class Controlador_configuracion extends Controller
         }
         return response()->json($data);
     }
+    //para eliminar la profesion
+    public function profesion_eliminar(Request $request){
+        try {
+            $profesion = Profesion::find($request->id);
+            if($profesion->delete()){
+                $data = mensaje_mostrar('success', 'Se elimino con éxito');
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un problema al eliminar');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un problema al eliminar');
+        }
+        return response()->json($data);
+    }
+    //para editar la profesion
+    public function profesion_editar(Request $request){
+        try {
+            $profesion = Profesion::find($request->id);
+            if($profesion){
+                $data = mensaje_mostrar('success', $profesion);
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un error al editar');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un error al editar');
+        }
+        return response()->json($data);
+    }
+    //par aguardar la profesion editada
+    public function profesion_edi_guardar(Request $request){
+        $validar = Validator::make($request->all(),[
+            'profesion_'  => 'required|unique:nl_profesion,descripcion,'. $request->id_profesion,
+        ]);
+        if($validar->fails()){
+            $data = mensaje_mostrar('errores', $validar->errors());
+        }else{
+            $profesion                  = Profesion::find($request->id_profesion);
+            $profesion->descripcion     =  $request->profesion_;
+            $profesion->save();
+            if($profesion->id){
+                $data = mensaje_mostrar('success', 'Se editó los datos con éxito');
+            }else{
+                $data = mensaje_mostrar('error','Ocurrio un error al guardar');
+            }
+        }
+        return response()->json($data);
+    }
     /**
      * FIN DE LA PARTE DE PROFESIÓN
      */
@@ -238,6 +285,55 @@ class Controlador_configuracion extends Controller
             $expedido               = new Expedido;
             $expedido->sigla        =  $request->sigla;
             $expedido->descripcion  =  $request->descripcion;
+            $expedido->save();
+            if($expedido->id){
+                $data = mensaje_mostrar('success', 'Se guardo los datos con éxito');
+            }else{
+                $data = mensaje_mostrar('error','Ocurrio un error al guardar');
+            }
+        }
+        return response()->json($data);
+    }
+    //para eliminar el expedido
+    public function expedido_eliminar(Request $request){
+        try {
+            $profesion = Expedido::find($request->id);
+            if($profesion->delete()){
+                $data = mensaje_mostrar('success', 'Se eliminó con exitó');
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un error al eliminar');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un error al eliminar');
+        }
+        return response()->json($data);
+    }
+    //para editar el expedido
+    public function expedido_editar(Request $request){
+        try {
+            $profesion = Expedido::find($request->id);
+            if($profesion){
+                $data = mensaje_mostrar('success', $profesion);
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un error al obtener los datos');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un error al obtener los datos');
+        }
+        return response()->json($data);
+    }
+    //para guardar lo editado
+    public function expedido_edi_guardar(Request $request){
+        $validar = Validator::make($request->all(),[
+            'sigla_'         => 'required|unique:nl_expedido,sigla,'.$request->id_expedido,
+            'descripcion_'   => 'required',
+        ]);
+        if($validar->fails()){
+            $data = mensaje_mostrar('errores', $validar->errors());
+        }else{
+            $expedido               = Expedido::find($request->id_expedido);
+            $expedido->sigla        =  $request->sigla_;
+            $expedido->descripcion  =  $request->descripcion_;
             $expedido->save();
             if($expedido->id){
                 $data = mensaje_mostrar('success', 'Se guardo los datos con éxito');
@@ -285,6 +381,56 @@ class Controlador_configuracion extends Controller
             $tipo_empresa->save();
             if($tipo_empresa->id){
                 $data = mensaje_mostrar('success', 'Se guardo los datos con éxito');
+            }else{
+                $data = mensaje_mostrar('error','Ocurrio un error al guardar');
+            }
+        }
+        return response()->json($data);
+    }
+    //para eliminar el tipo de empresa
+    public function tipo_empresa_eliminar(Request $request){
+        try {
+            $tipo_empresa = Tipo_empresa::find($request->id);
+            if($tipo_empresa->delete()){
+                $data = mensaje_mostrar('success', 'Se eliminó con éxito');
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un problema al eliminar');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un problema al eliminar');
+        }
+        return response()->json($data);
+    }
+    //para editar el tipo de empresa
+    public function tipo_empresa_editar(Request $request){
+        try {
+            $tipo_empresa = Tipo_empresa::find($request->id);
+            if($tipo_empresa){
+                $data = mensaje_mostrar('success', $tipo_empresa);
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un problema al editar');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un problema al editar');
+        }
+        return response()->json($data);
+    }
+
+    //para guardar lo editado del tipo de empresa
+    public function tipo_empresa_editar_guardar(Request $request){
+        $validar = Validator::make($request->all(),[
+            'titulo_'        => 'required|unique:nl_tipo_empresa,titulo,'.$request->id_tipo_empresa,
+            'descripcion_'   => 'required',
+        ]);
+        if($validar->fails()){
+            $data = mensaje_mostrar('errores', $validar->errors());
+        }else{
+            $tipo_empresa               =  Tipo_empresa::find($request->id_tipo_empresa);
+            $tipo_empresa->titulo       =  $request->titulo_;
+            $tipo_empresa->descripcion  =  $request->descripcion_;
+            $tipo_empresa->save();
+            if($tipo_empresa->id){
+                $data = mensaje_mostrar('success', 'Se editó los datos con éxito');
             }else{
                 $data = mensaje_mostrar('error','Ocurrio un error al guardar');
             }

@@ -131,14 +131,23 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::get('profesion','profesion')->name('pro_index');
         Route::get('profesion_listar','profesion_listar')->name('pro_listar');
         Route::post('profesion_nuevo','profesion_nuevo')->name('pro_nuevo');
+        Route::delete('profesion_eliminar','profesion_eliminar')->name('pro_eliminar');
+        Route::post('profesion_editar','profesion_editar')->name('pro_editar');
+        Route::post('profesion_edi_guardar','profesion_edi_guardar')->name('pro_edi_guardar');
         //para la parte e expedido
         Route::get('expedido','expedido')->name('exp_index');
         Route::post('expedido_listar','expedido_listar')->name('exp_listar');
         Route::post('expedido_nuevo','expedido_nuevo')->name('exp_nuevo');
+        Route::delete('expedido_eliminar','expedido_eliminar')->name('exp_eliminar');
+        Route::post('expedido_editar','expedido_editar')->name('exp_editar');
+        Route::post('expedido_edi_guardar','expedido_edi_guardar')->name('exp_edit_guardar');
         //para la parte de tipo de empresa
         Route::get('tipo_empresa','tipo_empresa')->name('tem_index');
         Route::post('tipo_empresa_listar','tipo_empresa_listar')->name('tem_listar');
         Route::post('tipo_empresa_nuevo','tipo_empresa_nuevo')->name('tem_nuevo');
+        Route::delete('tipo_empresa_eliminar','tipo_empresa_eliminar')->name('tem_eliminar');
+        Route::post('tipo_empresa_editar','tipo_empresa_editar')->name('tem_editar');
+        Route::post('tipo_empresa_editar_guardar','tipo_empresa_editar_guardar')->name('tem_editar_guardar');
         //para la parte de tipo de propiedad
         Route::get('tipo_propiedad','tipo_propiedad')->name('tpr_index');
         Route::post('tipo_propiedad_listar','tipo_propiedad_listar')->name('tpr_listar');
