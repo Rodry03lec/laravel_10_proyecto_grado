@@ -153,8 +153,9 @@ class Controlador_persona extends Controller{
     }
 
     //para vizualizar
-    public function personaNatural_vizualizar(){
-        return view('administrador.recaudaciones.persona.natural_ver');
+    public function personaNatural_vizualizar(Request $request){
+        $data['persona_nat'] = Natural::with(['expedido', 'profesion', 'zona'])->find($request->id);
+        return view('administrador.recaudaciones.persona.natural_ver', $data);
     }
 
     //para eliminar el registro
@@ -339,6 +340,13 @@ class Controlador_persona extends Controller{
             }
         }
         return response()->json($data);
+    }
+    //para vizualizar persona juridica
+    public function persona_juridica_vizualizar(Request $request){
+        $data['persona_ju'] = Juridica::with(['tipo_empresa', 'representante_legal'=>function ($q1){
+            $q1->with(['expedido', 'profesion', 'zona']);
+        }])->find($request->id);
+        return view('administrador.recaudaciones.persona.juridica_ver', $data);
     }
     /**
      * FIN DE LAS PERSONAS JURIDICAS

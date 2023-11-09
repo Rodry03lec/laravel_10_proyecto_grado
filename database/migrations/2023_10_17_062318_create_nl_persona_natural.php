@@ -92,7 +92,7 @@ return new class extends Migration
             $table->string('celular', 20);
             $table->string('nit', 50)->unique();
             $table->string('fecha_constitucion', 50);
-            $table->string('actividad_economica', 50);
+            $table->text('actividad_economica');
             $table->string('numero_testimonio', 50);
             $table->string('testimonio', 100);
 
@@ -127,12 +127,13 @@ return new class extends Migration
         Schema::dropIfExists('nl_expedido');
         Schema::dropIfExists('nl_profesion');
         Schema::dropIfExists('nl_persona_natural');
+        Schema::dropIfExists('natural_profesion');
         Schema::dropIfExists('nl_tipo_empresa');
 
         //para eliminar el achivo
         $listar_persona_juridica = Juridica::get();
         foreach ($listar_persona_juridica as $lis) {
-            if($lis->testimonio !== null){
+            if($lis->testimonio != ''){
                 $ubicacion = public_path('testimonio/'.$lis->testimonio);
                 unlink($ubicacion);
             }

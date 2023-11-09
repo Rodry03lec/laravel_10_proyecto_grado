@@ -181,6 +181,7 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::delete('personaJuridica_eliminar','persona_juridica_eliminar')->name('pju_delete');
         Route::post('personaJuridica_editar','persona_juridica_editar')->name('pju_editar');
         Route::post('personaJuridica_update','persona_juridica_uptate')->name('pju_update');
+        Route::post('personaJuridica_vizualizar','persona_juridica_vizualizar')->name('pju_vizualizar');
     });
     /**
      * FIN DEL CONTROLADOR PERSONA

@@ -21,6 +21,7 @@ class Controlador_instalacion extends Controller
         $data['menu'] = 15;
         $data['zonas'] = Zonas::get();
         $data['gestion'] = Gestion::orderBy('gestion','desc')->get();
+        $data['categoria_listar'] = Categoria_servicio::orderBy('id','asc')->get();
         $data['propiedad'] = Tipo_propiedad::get();
         return view('administrador.recaudaciones.servicios.instalacion', $data);
     }

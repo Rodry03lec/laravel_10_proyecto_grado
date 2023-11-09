@@ -130,23 +130,24 @@
                                     </div>
 
                                     <div class="input-area relative">
-                                        <label for="gestion" class="form-label">SELECCIONA LA GESTIÓN</label>
-                                        <select name="gestion" id="gestion" class=" form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la gestion" onchange="seleccione_gestion(this.value)" @disabled(true)>
-                                            <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione la gestión]</option>
-                                            @foreach ($gestion as $lis)
-                                                <option value="{{ $lis->id }}">{{ $lis->gestion }}</option>
+                                        <label for="categoria" class="form-label">SELECCIONA LA CATEGORIA</label>
+                                        {{-- {{ $categoria_listar }} --}}
+                                        <select name="categoria" id="categoria" class=" form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la categoria" {{-- onchange="seleccione_categoria(this.value)" --}} @disabled(true)>
+                                            <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione la categoria]</option>
+                                            @foreach ($categoria_listar as $lis)
+                                                <option value="{{ $lis->id }}">{{ $lis->nombre }}</option>
                                             @endforeach
                                         </select>
-                                        <div id="_gestion"></div>
+                                        <div id="_categoria"></div>
                                     </div>
 
                                     <div class="input-area relative">
-                                        <label for="categoria" class="form-label">SELECCIONA LA CATEGORÍA</label>
-                                        <select name="categoria" id="categoria" class="select2_uno form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la categoria" onchange="monto_mostrar_categoria(this.value)" @disabled(true)>
+                                        <label for="sub_categoria" class="form-label">SELECCIONA LA SUB-CATEGORIA</label>
+                                        <select name="sub_categoria" id="sub_categoria" class="select2_uno form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la categoria" onchange="monto_mostrar_categoria(this.value)" @disabled(true)>
                                             <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione la categoría]</option>
 
                                         </select>
-                                        <div id="_categoria"></div>
+                                        <div id="_sub_categoria"></div>
                                     </div>
 
                                     <div class="input-area relative">
@@ -222,7 +223,7 @@
         let mostrar_datos_persona_html = document.getElementById('mostar_datos_html');
 
 
-        let categoria_select = document.getElementById('categoria');
+        let categoria_select = document.getElementById('sub_categoria');
         //para cerrar el registro de instalacion
         function cerrar_modal_registro_instalacion(){
             limpiar_campos('form_nueva_instalacion');
@@ -338,7 +339,7 @@
 
         //para desabilitar y habilitar
         function desabilitar_habilitar_instalacion(valor){
-            let valores = ['fecha_instalacion', 'gestion', 'categoria', 'monto_instalacion', 'glosa', 'propiedad', 'zona', 'direccion'];
+            let valores = ['fecha_instalacion', 'categoria', 'sub_categoria','monto_instalacion', 'glosa', 'propiedad', 'zona', 'direccion'];
             valores.forEach(elem => {
                 document.getElementById(elem).disabled = valor;
             });

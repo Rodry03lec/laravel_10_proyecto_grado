@@ -48,12 +48,8 @@
                                     <th scope="col" class="table-th">ID</th>
                                     <th scope="col" class="table-th">CI</th>
                                     <th scope="col" class="table-th">NOMBRES Y APELLIDOS</th>
-                                    {{-- <th scope="col" class="table-th">EMAIL</th>
-                                    <th scope="col" class="table-th">GENERO</th> --}}
                                     <th scope="col" class="table-th">CELULAR</th>
                                     <th scope="col" class="table-th">CELULAR DE REFERENCIA</th>
-                                    {{-- <th scope="col" class="table-th">ESTADO CIVIL</th> --}}
-                                    <th scope="col" class="table-th">PROFESIÓN</th>
                                     <th scope="col" class="table-th">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -398,7 +394,7 @@
                         <h3 class="text-xl font-medium text-white dark:text-white">
                             Vizualizar registro de persona Natural
                         </h3>
-                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal" onclick="cerrar_modal_persona_natural()">
+                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal">
                             <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -503,7 +499,7 @@
                         data: 'celular_referencia',
                         className: 'table-td'
                     },
-                    {
+                    /* {
                         data: null,
                         className: 'table-td',
                         render: function(data, type, row, meta) {
@@ -517,7 +513,7 @@
                                 return `<span class="badge bg-primary-500 text-primary-500 bg-opacity-30 capitalize pill">Sin profesión</span>` ;
                             }
                         }
-                    },
+                    }, */
                     {
                         data: null,
                         className: 'table-td',

@@ -1,17 +1,18 @@
 <fieldset>
-    <legend>INFORMACIÓN PERSONAL</legend>
+    <legend>REPRESENTANTE LEGAL</legend>
     <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-7">
         <table class="table">
+
             <tr>
                 <th>CI:</th>
                 <td>
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                @if ($persona_nat->complemento != null && $persona_nat->complemento != '')
-                                    {{ $persona_nat->ci.' - '.$persona_nat->complemento.' '.$persona_nat->expedido->sigla }}
+                                @if ($persona_ju->representante_legal->complemento != null && $persona_ju->representante_legal->complemento != '')
+                                    {{ $persona_ju->representante_legal->ci.' - '.$persona_ju->representante_legal->complemento.' '.$persona_ju->expedido->sigla }}
                                 @else
-                                    {{ $persona_nat->ci.' '.$persona_nat->expedido->sigla }}
+                                    {{ $persona_ju->representante_legal->ci.' '.$persona_ju->representante_legal->expedido->sigla }}
                                 @endif
                             </div>
                         </div>
@@ -24,31 +25,7 @@
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                {{ $persona_nat->nombres.' '.$persona_nat->apellido_paterno.' '.$persona_nat->apellido_materno }}
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>GENERO:</th>
-                <td>
-                    <div class="alert alert-outline-dark">
-                        <div class="flex items-start space-x-3 rtl:space-x-reverse">
-                            <div class="flex-1 font-Inter">
-                                {{ verificar_persona_generto($persona_nat->genero) }}
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>ESTADO CIVIL:</th>
-                <td>
-                    <div class="alert alert-outline-dark">
-                        <div class="flex items-start space-x-3 rtl:space-x-reverse">
-                            <div class="flex-1 font-Inter">
-                                {{ $persona_nat->estado_civil }}
+                                {{ $persona_ju->representante_legal->nombres.' '.$persona_ju->representante_legal->apellido_paterno.' '.$persona_ju->representante_legal->apellido_materno }}
                             </div>
                         </div>
                     </div>
@@ -60,7 +37,7 @@
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                @foreach ($persona_nat->profesion as $lis)
+                                @foreach ($persona_ju->representante_legal->profesion as $lis)
                                     <span class="badge bg-primary-500 text-primary-500 bg-opacity-30 capitalize pill">{{ $lis->descripcion }}</span>
                                 @endforeach
                             </div>
@@ -68,37 +45,83 @@
                     </div>
                 </td>
             </tr>
+        </table>
+
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>INFORMACIÓN ADICIONAL</legend>
+    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-7">
+        <table class="table">
+
             <tr>
-                <th>EMAIL:</th>
+                <th>TIPO DE EMPRESA:</th>
                 <td>
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                {{ $persona_nat->email }}
+                                {{ $persona_ju->tipo_empresa->titulo.' : ['.$persona_ju->tipo_empresa->descripcion.']' }}
                             </div>
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
-                <th>ZONA:</th>
+                <th>DESCRIPCIÓN DE ACTIVIDAD ECONOMICA :</th>
                 <td>
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                {{ $persona_nat->zona->nombre.' :'. '['.$persona_nat->zona->descripcion.']' }}
+                                {{ $persona_ju->actividad_economica }}
                             </div>
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
-                <th>DIRECCION DE DOMICILIO:</th>
+                <th>NUMERO DE TESTIMONIO :</th>
                 <td>
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                {{ $persona_nat->direccion }}
+                                {{ $persona_ju->numero_testimonio }}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>NIT :</th>
+                <td>
+                    <div class="alert alert-outline-dark">
+                        <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                            <div class="flex-1 font-Inter">
+                                {{ $persona_ju->nit }}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>NOMBRE DE LA EMPRESA:</th>
+                <td>
+                    <div class="alert alert-outline-dark">
+                        <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                            <div class="flex-1 font-Inter">
+                                {{ $persona_ju->nombre_empresa }}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Nº TELEFONO:</th>
+                <td>
+                    <div class="alert alert-outline-dark">
+                        <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                            <div class="flex-1 font-Inter">
+                                {{ $persona_ju->telefono }}
                             </div>
                         </div>
                     </div>
@@ -110,31 +133,46 @@
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                {{ $persona_nat->celular }}
+                                {{ $persona_ju->celular }}
                             </div>
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
-                <th>Nº CELULAR DE REFERENCIA:</th>
+                <th>EMAIL DE LA EMPRESA:</th>
                 <td>
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                {{ $persona_nat->celular_referencia }}
+                                {{ $persona_ju->email }}
                             </div>
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
-                <th>INFORMACIÓN ADICIONAL:</th>
+                <th>FECHA DE CONSTITUCIÓN :</th>
                 <td>
                     <div class="alert alert-outline-dark">
                         <div class="flex items-start space-x-3 rtl:space-x-reverse">
                             <div class="flex-1 font-Inter">
-                                {{ $persona_nat->informacion_adicional }}
+                                {{ $persona_ju->fecha_constitucion }}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <th>TESTIMONIO:</th>
+                <td>
+                    <div class="alert alert-outline-dark">
+                        <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                            <div class="flex-1 font-Inter">
+                                <div class="flex justify-center items-center py-2">
+                                    <embed src="{{ asset('testimonio/'.$persona_ju->testimonio) }}" type="application/pdf" class="rounded-md border-4 border-slate-200 block" width="400" height="400">
+                                </div>
                             </div>
                         </div>
                     </div>

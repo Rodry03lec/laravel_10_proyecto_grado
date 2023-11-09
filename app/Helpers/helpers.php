@@ -78,3 +78,16 @@
         }
     }
 
+
+    //para ver si es masculino femenino o prefiere no decir
+    function verificar_persona_generto($genero){
+        if($genero=='M'){
+            return 'MASCULINO';
+        }
+        if($genero=='F'){
+            return 'FEMENINO';
+        }
+        if($genero=='ND'){
+            return 'PREFIERE NO DECIR';
+        }
+    }
