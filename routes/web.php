@@ -152,6 +152,9 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::get('tipo_propiedad','tipo_propiedad')->name('tpr_index');
         Route::post('tipo_propiedad_listar','tipo_propiedad_listar')->name('tpr_listar');
         Route::post('tipo_propiedad_nuevo','tipo_propiedad_nuevo')->name('tpr_nuevo');
+        Route::delete('tipo_propiedad_eliminar','tipo_propiedad_eliminar')->name('tpr_eliminar');
+        Route::post('tipo_propiedad_editar','tipo_propiedad_editar')->name('tpr_editar');
+        Route::post('tipo_propiedad_guardar','tipo_propiedad_guardar')->name('tpr_guardar');
     });
     /**
      * FIN DE CONTROLADOR CONFIGURACION
@@ -206,6 +209,14 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::get('personal','personal_trabajo')->name('petr_index');
         Route::get('personal_listar/{id}','personal_listar')->name('petr_listar');
         Route::post('personal_buscar', 'personal_buscar')->name('petr_buscar');
+        Route::post('personal_nuevo', 'personal_nuevo')->name('petr_nuevo');
+        Route::post('personal_listar_activo', 'personal_listar_activo')->name('petr_lisar_act');
+        Route::post('personal_editar', 'personal_editar')->name('petr_editar');
+        Route::post('personal_editar_guardar', 'personal_editar_guardar')->name('petr_edi_guardar');
+        Route::post('personal_estado', 'personal_estado')->name('petr_estado');
+        Route::post('personal_estado_guardar', 'personal_estado_guardar')->name('petr_estado_guardar');
+        Route::delete('personal_eliminar', 'personal_eliminar')->name('petr_eliminar');
+        Route::post('personal_listar_inactivo', 'personal_listar_inactivo')->name('petr_listar_inac');
     });
     /**
      * FIN DEL CONTROLADOR DE PERSONAL DE TRABAJO

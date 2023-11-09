@@ -495,25 +495,6 @@
                             return row.nombres + ' ' + row.apellido_paterno+' '+row.apellido_materno;
                         }
                     },
-                    /* {
-                        data: 'email',
-                        className: 'table-td'
-                    }, */
-                   /*  {
-                        data: null,
-                        className: 'table-td',
-                        render: function(data, type, row, meta) {
-                            if (row.genero ==='F') {
-                                return `<span class="badge bg-warning-500 text-warning-500 bg-opacity-30 capitalize pill">FEMENINO</span>`;
-                            }
-                            if (row.genero ==='M') {
-                                return `<span class="badge bg-success-500 text-success-500 bg-opacity-30 capitalize pill">MASCULINO</span>`;
-                            }
-                            if (row.genero ==='ND') {
-                                return `<span class="badge bg-danger-500 text-danger-500 bg-opacity-30 capitalize pill">Prefiere no decir</span>`;
-                            }
-                        }
-                    }, */
                     {
                         data: 'celular',
                         className: 'table-td'
@@ -522,10 +503,6 @@
                         data: 'celular_referencia',
                         className: 'table-td'
                     },
-                    /* {
-                        data: 'estado_civil',
-                        className: 'table-td'
-                    }, */
                     {
                         data: null,
                         className: 'table-td',

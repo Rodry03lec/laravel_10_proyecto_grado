@@ -34,13 +34,14 @@ return new class extends Migration
         Schema::create('nl_personal_trabajo', function (Blueprint $table) {
             $table->id();
             $table->date('fecha_contratacion');
-            $table->date('fecha_finalizacion');
+            $table->date('fecha_finalizacion')->nullable();
             $table->string('estado', 20);
-            $table->string('referencia_laboral', 20);
+            $table->string('referencia_celular', 20);
             $table->string('referencia_nombre', 20);
             $table->string('descripcion')->nullable();
             $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_cargo');
+            $table->unsignedBigInteger('id_usuario');
             $table->timestamp('creado_el');
             $table->timestamp('editado_el');
 

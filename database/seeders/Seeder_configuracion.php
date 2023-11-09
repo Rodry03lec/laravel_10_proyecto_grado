@@ -7,6 +7,7 @@ use App\Models\Configuracion\Profesion;
 use App\Models\Configuracion\Tipo_empresa;
 use App\Models\Configuracion\Tipo_propiedad;
 use App\Models\Configuracion\Tipo_zona;
+use App\Models\Configuracion\Zonas;
 use App\Models\Gestion;
 use App\Models\Mes;
 use App\Models\Servicio\Categoria_servicio;
@@ -259,6 +260,42 @@ class Seeder_configuracion extends Seeder
             $tipo_zo = new Tipo_zona;
             $tipo_zo->nombre = $lis;
             $tipo_zo->save();
+        }
+
+
+        //para registrar las zonas
+        $zonas = array(
+            array(
+                'nombre'                => 'Zona urbana',
+                'descripcion'           => 'Capital del municipio, centro de gobierno, comercio y servicios: Cultura, gastronomía, compras',
+                'fecha_creacion'        => date('1552-11-02'),
+                'ultima_actualizacion'  => date('Y-m-d'),
+                'id_tipo_zona'          => 1,
+            ),
+            array(
+                'nombre'                => 'Rural',
+                'descripcion'           => 'Montañas que rodean la ciudad, agricultura y ganadería: Naturaleza, caminatas, camping, observación de aves',
+                'fecha_creacion'        => date('10000-01-01'),
+                'ultima_actualizacion'  => date('Y-m-d'),
+                'id_tipo_zona'          => 5,
+            ),
+            array(
+                'nombre'                => 'Amortiguamiento del Parque Nacional Isiboro Sécure',
+                'descripcion'           => 'Hogar de una gran variedad de flora y fauna: Ecoturismo, caminatas, camping, observación de aves ',
+                'fecha_creacion'        => date('1965-07-01'),
+                'ultima_actualizacion'  => date('Y-m-d'),
+                'id_tipo_zona'          => 8,
+            ),
+        );
+
+        foreach ($zonas as $lis) {
+            $zonas_guardar                          = new Zonas();
+            $zonas_guardar->nombre                  = $lis['nombre'];
+            $zonas_guardar->descripcion             = $lis['descripcion'];
+            $zonas_guardar->fecha_creacion          = $lis['fecha_creacion'];
+            $zonas_guardar->ultima_actualizacion    = $lis['ultima_actualizacion'];
+            $zonas_guardar->id_tipo_zona            = $lis['id_tipo_zona'];
+            $zonas_guardar->save();
         }
 
 

@@ -19,8 +19,12 @@ class Personal_trabajo extends Model
         'referencia_nombre',
         'descripcion',
         'id_persona',
-        'id_cargo'
+        'id_cargo',
+        'id_usuario'
     ];
+
+    const CREATED_AT = 'creado_el';
+    const UPDATED_AT = 'editado_el';
 
     //relacion reversa de nl_cargo
     public function cargo(){

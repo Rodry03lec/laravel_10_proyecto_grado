@@ -469,12 +469,61 @@ class Controlador_configuracion extends Controller
         if($validar->fails()){
             $data = mensaje_mostrar('errores', $validar->errors());
         }else{
-            $tipo_empresa               =  new Tipo_propiedad;
-            $tipo_empresa->titulo       =  $request->titulo;
-            $tipo_empresa->descripcion  =  $request->descripcion;
-            $tipo_empresa->save();
-            if($tipo_empresa->id){
+            $tipo_propiedad               =  new Tipo_propiedad;
+            $tipo_propiedad->titulo       =  $request->titulo;
+            $tipo_propiedad->descripcion  =  $request->descripcion;
+            $tipo_propiedad->save();
+            if($tipo_propiedad->id){
                 $data = mensaje_mostrar('success', 'Se guardo los datos con éxito');
+            }else{
+                $data = mensaje_mostrar('error','Ocurrio un error al guardar');
+            }
+        }
+        return response()->json($data);
+    }
+    //para eliminar el tipo de propiedads
+    public function tipo_propiedad_eliminar(Request $request){
+        try {
+            $tipo_propiedad = Tipo_propiedad::find($request->id);
+            if($tipo_propiedad->delete()){
+                $data = mensaje_mostrar('success', 'Se eliminó con éxito');
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un problema al eliminar');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un problema al eliminar');
+        }
+        return response()->json($data);
+    }
+    //para editar el registro
+    public function tipo_propiedad_editar(Request $request){
+        try {
+            $tipo_propiedad = Tipo_propiedad::find($request->id);
+            if($tipo_propiedad){
+                $data = mensaje_mostrar('success', $tipo_propiedad);
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un error ');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un error ');
+        }
+        return response()->json($data);
+    }
+    //para guardar lo editados
+    public function tipo_propiedad_guardar(Request $request){
+        $validar = Validator::make($request->all(),[
+            'titulo_'        => 'required|unique:nl_tipo_propiedad,titulo,'.$request->id_tipo_propiedad,
+            'descripcion_'   => 'required',
+        ]);
+        if($validar->fails()){
+            $data = mensaje_mostrar('errores', $validar->errors());
+        }else{
+            $tipo_propiedad               =  Tipo_propiedad::find($request->id_tipo_propiedad);
+            $tipo_propiedad->titulo       =  $request->titulo_;
+            $tipo_propiedad->descripcion  =  $request->descripcion_;
+            $tipo_propiedad->save();
+            if($tipo_propiedad->id){
+                $data = mensaje_mostrar('success', 'Se editó los datos con éxito');
             }else{
                 $data = mensaje_mostrar('error','Ocurrio un error al guardar');
             }

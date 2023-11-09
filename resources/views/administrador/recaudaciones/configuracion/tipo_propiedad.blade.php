@@ -111,6 +111,58 @@
         </div>
     </div>
 
+    {{-- MODAL PARA CREAR EXPEDIDO --}}
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+    id="modal_editar_tipo_propiedad" tabindex="-1" aria-labelledby="disabled_backdrop" aria-hidden="true"
+    data-bs-backdrop="static" x-data="{ showModal: false }">
+        <div class="modal-dialog relative w-auto pointer-events-none">
+            <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding
+            rounded-md outline-none text-current">
+                <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
+                    <!-- Modal header -->
+                    <div
+                        class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
+                        <h3 class="text-xl font-medium text-white dark:text-white">
+                            Editar tipo de Propiedad
+                        </h3>
+                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal" onclick="vaciar_campos_tipo_propiedad()">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10
+                                11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="sr-only"></span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <form method="POST" id="form_editar_tipo_propiedad" autocomplete="off">
+                            @csrf
+                            <input type="hidden" id="id_tipo_propiedad" name="id_tipo_propiedad">
+                            <div class="input-area">
+                                <label for="titulo_" class="form-label">Sigla</label>
+                                <input id="titulo_" name="titulo_" type="text" class="form-control" placeholder="Ingrese el titulo" >
+                                <div id="_titulo_"></div>
+                            </div>
+                            <div class="input-area">
+                                <label for="descripcion_" class="form-label">Descripcion</label>
+                                <textarea name="descripcion_" id="descripcion_" class="form-control" cols="30" rows="3" placeholder="Ingrese una descripcion del tipo de propiedad"></textarea>
+                                <div id="_descripcion_"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Modal footer -->
+                    <div
+                        class="flex items-center justify-end p-6 space-x-2 border-t border-slate-200 rounded-b dark:border-slate-600">
+                        <button type="button" id="btn_editar_tipo_propiedad" class="btn inline-flex justify-center text-white bg-black-500">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 @endsection
 @section('script_recaudaciones')
@@ -161,11 +213,12 @@
         //para vaciar los campos
         function vaciar_campos_tipo_propiedad(){
             limpiar_campos('form_nuevo_tipo_propiedad');
+            limpiar_campos('form_editar_tipo_propiedad');
             vaciar_errores_tipo_empresa();
         }
         //vaciar los errores expedido
         function vaciar_errores_tipo_propiedad(){
-            let valores = ['_titulo','_descripcion'];
+            let valores = ['_titulo','_descripcion','_titulo_','_descripcion_'];
             valores.forEach(elem => {
                 document.getElementById(elem).innerHTML = '';
             });
@@ -195,6 +248,111 @@
                     alerta_top(dato.tipo, dato.mensaje);
                     listar_tipo_propiedad();
                     $('#modal_nuevo_tipo_propiedad').modal('hide');
+                    vaciar_campos_tipo_propiedad();
+                }
+                if (dato.tipo === 'error') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                }
+            } catch (error) {
+                console.log('Error de datos : ' + error);
+            }
+        });
+
+        //para eliminar el registro de tipo de propiedad
+        function eliminar_tipo_propiedad(id){
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'NOTA!',
+                text: "Esta seguro de eliminar?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'No, cancelar',
+                reverseButtons: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let respuesta = await fetch("{{ route('tpr_eliminar') }}", {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({
+                            id: id
+                        })
+                    });
+                    let dato = await respuesta.json();
+                    if (dato.tipo === 'success') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                        listar_tipo_propiedad();
+                    }
+                    if (dato.tipo === 'error') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                    }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    alerta_top('error', 'Se cancelo');
+                }
+            })
+        }
+
+        //para editar el registro de tipo de propiedads
+        async function editar_tipo_propiedad(id) {
+            vaciar_errores_tipo_propiedad();
+            try {
+                let respuesta = await fetch("{{ route('tpr_editar') }}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify({id:id})
+                });
+                let dato = await respuesta.json();
+                if (dato.tipo === 'success') {
+                    $('#modal_editar_tipo_propiedad').modal('show');
+                    document.getElementById('id_tipo_propiedad').value    = dato.mensaje.id;
+                    document.getElementById('titulo_').value         = dato.mensaje.titulo;
+                    document.getElementById('descripcion_').value   = dato.mensaje.descripcion;
+                }
+                if (dato.tipo === 'error') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                }
+            } catch (error) {
+                console.log('Error de datos : ' + error);
+            }
+        }
+
+        //para guardar lo editado
+        let editar_tipo_propiedad_btn = document.getElementById('btn_editar_tipo_propiedad');
+        editar_tipo_propiedad_btn.addEventListener('click', async ()=>{
+            let datos = Object.fromEntries(new FormData(document.getElementById('form_editar_tipo_propiedad')).entries());
+            try {
+                let respuesta = await fetch("{{ route('tpr_guardar') }}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datos)
+                });
+                let dato = await respuesta.json();
+                vaciar_errores_tipo_propiedad();
+                if (dato.tipo === 'errores') {
+                    let obj = dato.mensaje;
+                    for (let key in obj) {
+                        document.getElementById('_' + key).innerHTML = `<p id="error_estilo" >` + obj[key] +`</p>`;
+                    }
+                }
+                if (dato.tipo === 'success') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                    listar_tipo_propiedad();
+                    $('#modal_editar_tipo_propiedad').modal('hide');
                     vaciar_campos_tipo_propiedad();
                 }
                 if (dato.tipo === 'error') {
