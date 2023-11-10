@@ -132,7 +132,7 @@
                                     <div class="input-area relative">
                                         <label for="categoria" class="form-label">SELECCIONA LA CATEGORIA</label>
                                         {{-- {{ $categoria_listar }} --}}
-                                        <select name="categoria" id="categoria" class=" form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la categoria" {{-- onchange="seleccione_categoria(this.value)" --}} @disabled(true)>
+                                        <select name="categoria" id="categoria" class=" form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la categoria" onchange="seleccione_categoria(this.value)" @disabled(true)>
                                             <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione la categoria]</option>
                                             @foreach ($categoria_listar as $lis)
                                                 <option value="{{ $lis->id }}">{{ $lis->nombre }}</option>
@@ -142,9 +142,9 @@
                                     </div>
 
                                     <div class="input-area relative">
-                                        <label for="sub_categoria" class="form-label">SELECCIONA LA SUB-CATEGORIA</label>
+                                        <label for="sub_categoria" class="form-label" id="mostrar_monto">SELECCIONA LA SUB-CATEGORIA </label>
                                         <select name="sub_categoria" id="sub_categoria" class="select2_uno form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la categoria" onchange="monto_mostrar_categoria(this.value)" @disabled(true)>
-                                            <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione la categoría]</option>
+                                            <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione la sub - categoría]</option>
 
                                         </select>
                                         <div id="_sub_categoria"></div>
@@ -200,6 +200,39 @@
                             </fieldset>
 
 
+                            <fieldset>
+                                <legend>ASINGAR UNIDAD DE RESPONSABLE</legend>
+                                <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-7">
+
+                                    <div class="input-area relative">
+                                        <label for="unidad_responsable" class="form-label">SELECCIONA UNIDAD RESPONSABLE</label>
+                                        <select name="unidad_responsable" id="unidad_responsable" class="select2_5 form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la zona" onchange="seleccione_unidad_responsable(this.value)"  @disabled(true)>
+                                            <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione la unidad  responsable]</option>
+                                            @foreach ($unidad_responsable as $lis)
+                                                <option value="{{ $lis->id }}"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[{{ $lis->nombre }}] : {{ $lis->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div id="_unidad_responsable"></div>
+                                    </div>
+
+                                    <div class="input-area relative">
+                                        <label for="cargo" class="form-label">SELECCIONA CARGO</label>
+                                        <select name="cargo" id="cargo" class="select2_7 form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la zona"  onchange="selccionar_listar_funcionario(this.value)" @disabled(true) >
+                                            <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione cargo]</option>
+                                        </select>
+                                        <div id="_cargo"></div>
+                                    </div>
+
+                                    <div class="input-area relative">
+                                        <label for="funcionario" class="form-label">FUNCIONARIO  RESPONSABLE</label>
+                                        <select name="funcionario" id="funcionario" class="select2_6 form-control w-full mt-2 py-2 text-lg" aria-placeholder="Seleccione la zona" @disabled(true) >
+                                            <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione funcionario responsable]</option>
+                                        </select>
+                                        <div id="_funcionario"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
                         </form>
                     </div>
                     <div
@@ -214,14 +247,17 @@
 @endsection
 @section('script_recaudaciones')
     <script>
-       select2_uno('#modal_nueva_registro_instalacion');
+        select2_uno('#modal_nueva_registro_instalacion');
         select2_dos('#modal_nueva_registro_instalacion');
         select2_tres('#modal_nueva_registro_instalacion');
         select2_cuatro('#modal_nueva_registro_instalacion');
 
+        select2_5('#modal_nueva_registro_instalacion');
+        select2_6('#modal_nueva_registro_instalacion');
+        select2_7('#modal_nueva_registro_instalacion');
+
 
         let mostrar_datos_persona_html = document.getElementById('mostar_datos_html');
-
 
         let categoria_select = document.getElementById('sub_categoria');
         //para cerrar el registro de instalacion
@@ -231,17 +267,27 @@
             selecte2_valores();
             document.getElementById('persona_juridica').disabled = true;
             document.getElementById('persona_juridica').innerHTML = '<option selected disabled>[Seleccione persona juridica]</option>';
-            categoria_select.innerHTML = '<option selected disabled>[Seleccione la categoria]</option>';
             //fin par select categoria
 
             desabilitar_habilitar_instalacion(true);
             mostrar_datos_persona_html.innerHTML = '';
             document.getElementById('_categoria').innerHTML='';
+
+            vaciar_errores_registro_instalacion();
         }
+
+        //para vaciar los errores
+        function vaciar_errores_registro_instalacion(){
+            let valores = ['_fecha_instalacion', '_categoria', '_sub_categoria','_monto_instalacion', '_glosa', '_propiedad', '_zona', '_direccion', '_unidad_responsable', '_funcionario', '_cargo'];
+            valores.forEach(elem => {
+                document.getElementById(elem).innerHTML = '';
+            });
+        }
+
 
         function selecte2_valores(){
             document.querySelectorAll('.select2_uno').forEach(select => {
-                select.innerHTML = '<option selected disabled>[Seleccione la categoria]</option>';
+                select.innerHTML = '<option selected disabled>[Seleccione la sub - categoría]</option>';
                 select.dispatchEvent(new Event('change'));
             });
             document.querySelectorAll('.select2_dos').forEach(select => {
@@ -254,6 +300,21 @@
             });
             document.querySelectorAll('.select2_cuatro').forEach(select => {
                 select.value = 'selected';
+                select.dispatchEvent(new Event('change'));
+            });
+
+            document.querySelectorAll('.select2_5').forEach(select => {
+                select.value = 'selected';
+                select.dispatchEvent(new Event('change'));
+            });
+
+            document.querySelectorAll('.select2_6').forEach(select => {
+                select.innerHTML = '<option selected disabled>[Seleccione funcionario responsable]</option>';
+                select.dispatchEvent(new Event('change'));
+            });
+
+            document.querySelectorAll('.select2_7').forEach(select => {
+                select.innerHTML = '<option selected disabled>[Seleccione cargo]</option>';
                 select.dispatchEvent(new Event('change'));
             });
         }
@@ -307,7 +368,7 @@
                         }
 
                         desabilitar_habilitar_instalacion(false);
-                        categoria_select.innerHTML = '<option selected disabled>[Seleccione la categoría]</option>';
+                        categoria_select.innerHTML = '<option selected disabled>[Seleccione la sub-categoría]</option>';
                     }
                     if (dato.tipo === 'error'){
                         mostrar_datos_persona_html.innerHTML = '';
@@ -315,19 +376,25 @@
 
                         document.getElementById('persona_juridica').innerHTML = '<option selected disabled>[Seleccione persona juridica]</option>';
                         categoria_select.innerHTML = '<option selected disabled>[Seleccione la categoría]</option>';
-                        ci_error.innerHTML = `<p id="error_estilo" >Persona no registrada</p>`;
+                        ci_error.innerHTML = `<p id="error_estilo" >`+dato.mensaje+` <a style="color:blue; cursor:pointer" href="{{ route('pna_index') }}">[ registre! ]</a> </p>`;
                         desabilitar_habilitar_instalacion(true);
                         selecte2_valores();
                         input_persona_juridica.value = '';
                         input_persona_natural.value = '';
+                        document.getElementById('_sub_categoria').innerHTML='';
                     }
                 } catch (error) {
                     console.log('Error de datos : ' + error);
                 }
             }else{
                 ci_error.innerHTML = '';
+                desabilitar_habilitar_instalacion(true);
+                document.getElementById('_sub_categoria').innerHTML='';
             }
         }
+
+
+
 
         //para validar que la persona es juridica
         function seleccionar_persona_juridica(id){
@@ -339,17 +406,22 @@
 
         //para desabilitar y habilitar
         function desabilitar_habilitar_instalacion(valor){
-            let valores = ['fecha_instalacion', 'categoria', 'sub_categoria','monto_instalacion', 'glosa', 'propiedad', 'zona', 'direccion'];
+            let valores = ['fecha_instalacion', 'categoria', 'sub_categoria','monto_instalacion', 'glosa', 'propiedad', 'zona', 'direccion', 'unidad_responsable', 'funcionario', 'cargo'];
             valores.forEach(elem => {
                 document.getElementById(elem).disabled = valor;
             });
+            document.getElementById('categoria').value = 'selected';
+            if(valor===true){
+                let valores1 = ['fecha_instalacion', 'sub_categoria', 'monto_instalacion', 'glosa', 'direccion'];
+                valores1.forEach(elem => {
+                    document.getElementById(elem).value = '';
+                });
+            }
         }
 
-
-
-        async function seleccione_gestion(id){
+        async function seleccione_categoria(id){
             try {
-                let respuesta = await fetch("{{ route('lisc_listar') }}", {
+                let respuesta = await fetch("{{ route('lisca_listar') }}", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json',
@@ -359,14 +431,14 @@
                 });
                 let dato = await respuesta.json();
                 //para que elimine todo y en cero
-                categoria_select.innerHTML = '<option selected disabled>[Seleccione la categoría]</option>';
-
+                categoria_select.innerHTML = '<option selected disabled>[Seleccione la sub - categoría]</option>';
+                document.getElementById('mostrar_monto').innerHTML = 'SELECCIONA LA SUB-CATEGORIA';
                 if (dato.tipo === 'success') {
                     let datos = dato.mensaje;
                     datos.forEach(value => {
                         let option = document.createElement('option');
                         option.value = value.id;
-                        option.textContent = value.nombre;
+                        option.textContent = value.nombre+' : ['+value.descripcion+']';
                         categoria_select.appendChild(option);
                     });
                 }
@@ -387,7 +459,7 @@
         //para mostrar el monto de la categoria
         async function monto_mostrar_categoria(id){
             if(!isNaN(id)){
-                let categoria_err = document.getElementById('_categoria');
+                let categoria_err = document.getElementById('mostrar_monto');
                 try {
                     let respuesta = await fetch("{{ route('ins_listar_categoria') }}", {
                         method: "POST",
@@ -400,12 +472,9 @@
                     let dato = await respuesta.json();
                     if (dato.tipo === 'success') {
                         categoria_err.innerHTML = `
-                        <div class="w-full h-64 flex items-center justify-center" >
-                            <button class="btn inline-flex justify-center btn-success">
-                                <iconify-icon class="text-xl spin-slow ltr:mr-2 rtl:ml-2 relative top-[1px]" icon="line-md:loading-twotone-loop"></iconify-icon>
-                                <span>` + dato.mensaje.precio_fijo +` Bs.</span>
-                            </button>
-                        </div>`
+                            SELECCIONA LA SUB-CATEGORIA
+                            <iconify-icon class="text-sm spin-slow ltr:mr-2 rtl:ml-2 relative top-[1px]" icon="line-md:loading-twotone-loop"></iconify-icon>
+                            <span style="color:blue" >` + dato.mensaje.precio_fijo +` Bs.</span>`
                     }
                     if (dato.tipo === 'error') {
                         categoria_err.innerHTML = '';
@@ -431,7 +500,6 @@
                     body: JSON.stringify(datos)
                 });
                 let dato = await respuesta.json();
-                console.log(dato);
                 if (dato.tipo === 'errores') {
                     let obj = dato.mensaje;
                     for (let key in obj) {
@@ -503,9 +571,16 @@
                         data: 'fecha_instalacion',
                         className: 'table-td'
                     },
-                    {
+                    /* {
                         data: 'monto_instalacion',
                         className: 'table-td'
+                    }, */
+
+
+                    {
+                        data: 'monto_instalacion',
+                        className: 'table-td',
+                        render: conSeparadorComas
                     },
                     {
                         data: null,
@@ -542,6 +617,81 @@
         }
 
         listar_instalaciones();
+
+
+        //para asignar una unidad responsable
+        async function seleccione_unidad_responsable(id){
+            if(!isNaN(id)){
+                let cargo = document.getElementById('cargo');
+                try {
+                    let respuesta = await fetch("{{ route('liscargo_listar') }}", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({id:id})
+                    });
+                    let dato = await respuesta.json();
+                    //para que elimine todo y en cero
+                    cargo.innerHTML = '<option selected disabled>[Seleccione cargo]</option>';
+                    document.getElementById('funcionario').innerHTML = '<option selected disabled>[Seleccione funcionario responsable]</option>';
+
+                    if (dato.tipo === 'success') {
+                        let datos = dato.mensaje;
+                        datos.forEach(value => {
+                            let option = document.createElement('option');
+                            option.value = value.id;
+                            option.textContent = value.nombre+' : ['+value.descripcion+']';
+                            cargo.appendChild(option);
+                        });
+                    }
+                    if (dato.tipo === 'error') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                    }
+                } catch (error) {
+                    console.log('Error de datos : ' + error);
+                }
+            }
+
+        }
+
+        //para listar el funcionario
+        async function selccionar_listar_funcionario(id){
+            if(!isNaN(id)){
+                let select_funcionario = document.getElementById('funcionario');
+                try {
+                    let respuesta = await fetch("{{ route('lisfu_listar') }}", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({id:id})
+                    });
+                    let dato = await respuesta.json();
+                    //para que elimine todo y en cero
+                    select_funcionario.innerHTML = '<option selected disabled>[Seleccione funcionario responsable]</option>';
+
+                    if (dato.tipo === 'success') {
+                        console.log(dato);
+                        let datos = dato.mensaje.personal_trabajo;
+                        datos.forEach(value => {
+                            let option = document.createElement('option');
+                            option.value = value.id;
+                            option.textContent = value.persona_natural.ci+' : ['+value.persona_natural.nombres+' '+value.persona_natural.apellido_paterno+' '+value.persona_natural.apellido_materno+']';
+                            select_funcionario.appendChild(option);
+                        });
+                    }
+                    if (dato.tipo === 'error') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                    }
+                } catch (error) {
+                    console.log('Error de datos : ' + error);
+                }
+            }
+        }
+
     </script>
 @endsection
 

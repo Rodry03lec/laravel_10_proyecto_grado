@@ -31,6 +31,10 @@ class Seeder_personal extends Seeder{
                 'nombre'=>'Área Administrativa',
                 'descripcion'=>'Se encarga de la gestión administrativa del municipio',
             ),
+            array(
+                'nombre'=>'Unidad de Intendencia',
+                'descripcion'=>'son responsables del suministro de bienes y servicios a una organización, institución o gobierno',
+            ),
         );
         foreach ($unidad as $lis) {
             $nueva_unidad = new Unidad();

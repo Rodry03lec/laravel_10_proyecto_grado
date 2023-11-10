@@ -323,7 +323,7 @@
                                     </div>
                                     <div class="input-area relative">
                                         <label for="email_empresa_" class="form-label">EMAIL</label>
-                                        <input id="email_empresa_" name="email_empresa_" type="text" class="form-control" placeholder="Ingrese numero de celular">
+                                        <input id="email_empresa_" name="email_empresa_" type="text" class="form-control" placeholder="Ingrese email de la empresa">
                                         <div id="_email_empresa_"></div>
                                     </div>
                                     <div class="input-area relative">
@@ -463,7 +463,7 @@
                         </div>`;
                     }
                     if (dato.tipo === 'error') {
-                        ci_error.innerHTML  = `<p id="error_estilo" >`+dato.mensaje+`</p>`;
+                        ci_error.innerHTML  = `<p id="error_estilo" >`+dato.mensaje+` <a style="color:blue; cursor:pointer" href="{{ route('pna_index') }}">[ registre! ]</a> </p>`;
                         desabilitar_habilitar_juridica(true);
                         ver_representante.innerHTML = '';
                         id_repre.value = '';

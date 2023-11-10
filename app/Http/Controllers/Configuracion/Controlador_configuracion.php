@@ -161,6 +161,21 @@ class Controlador_configuracion extends Controller
         }
         return response()->json($data);
     }
+
+    //para eliminar sub categoria
+    public function sub_categoria_eliminar(Request $request){
+        try {
+            $sub_categoria = Sub_categoria::find($request->id);
+            if($sub_categoria->delete()){
+                $data = mensaje_mostrar('success', 'Se elimino con éxito');
+            }else{
+                $data = mensaje_mostrar('error', 'Ocurrio un error al eliminar');
+            }
+        } catch (\Throwable $th) {
+            $data = mensaje_mostrar('error', 'Ocurrio un error al eliminar');
+        }
+        return response()->json($data);
+    }
     /**
      * FIN DE LA PARTE DE LAS CATEGORIAS
      */

@@ -528,5 +528,47 @@
                 console.log('Error de datos : ' + error);
             }
         }
+
+        //para eliminar la subcategoria
+        function eliminar_sub_categoria(id, id_categoria){
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'NOTA!',
+                text: "Esta seguro de eliminar?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'No, cancelar',
+                reverseButtons: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let respuesta = await fetch("{{ route('casub_eliminar') }}", {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({id:id})
+                    });
+                    let dato = await respuesta.json();
+                    if (dato.tipo === 'success') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                        listar_sub_categoria(id_categoria);
+                    }
+                    if (dato.tipo === 'error') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                    }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    alerta_top('error', 'Se cancelo');
+                }
+            })
+        }
     </script>
 @endsection

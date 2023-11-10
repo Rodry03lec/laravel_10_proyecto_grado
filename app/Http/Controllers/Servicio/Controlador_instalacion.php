@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Servicio;
 
 use App\Http\Controllers\Controller;
+use App\Models\Caja\Caja_detalle;
 use App\Models\Configuracion\Tipo_propiedad;
 use App\Models\Configuracion\Zonas;
 use App\Models\Gestion;
 use App\Models\Persona\Natural;
+use App\Models\Personal\Cargo;
+use App\Models\Personal\Unidad;
 use App\Models\Servicio\Categoria_servicio;
+use App\Models\Servicio\Historial_instalacion;
 use App\Models\Servicio\Instalacion;
+use App\Models\Servicio\Sub_categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class Controlador_instalacion extends Controller
 {
@@ -23,6 +29,7 @@ class Controlador_instalacion extends Controller
         $data['gestion'] = Gestion::orderBy('gestion','desc')->get();
         $data['categoria_listar'] = Categoria_servicio::orderBy('id','asc')->get();
         $data['propiedad'] = Tipo_propiedad::get();
+        $data['unidad_responsable'] = Unidad::get();
         return view('administrador.recaudaciones.servicios.instalacion', $data);
     }
 
@@ -32,7 +39,7 @@ class Controlador_instalacion extends Controller
         if(!$persona->isEmpty()){
             $data = mensaje_mostrar('success', $persona);
         }else{
-            $data = mensaje_mostrar('error', 'Ocurrio un error al mostrar');
+            $data = mensaje_mostrar('error', 'Persona no registrada! ');
         }
         return response()->json($data);
     }
@@ -41,7 +48,7 @@ class Controlador_instalacion extends Controller
     public function instalacion_listar(){
         $instalacion = Instalacion::with(['zona', 'persona_natural','persona_juridica'=> function($query){
             $query->with(['representante_legal']);
-        }, 'categoria', 'tipo_propiedad'])->get();
+        }, 'sub_categoria', 'tipo_propiedad'])->get();
         return response()->json($instalacion);
     }
 
@@ -49,37 +56,66 @@ class Controlador_instalacion extends Controller
     public function instalacion_nuevo(Request $request){
         $validar = Validator::make($request->all(),[
             'fecha_instalacion'      => 'required',
-            'gestion'                => 'required',
+            'sub_categoria'          => 'required',
             'categoria'              => 'required',
             'monto_instalacion'      => 'required',
             'glosa'                  => 'required',
             'propiedad'              => 'required',
             'zona'                   => 'required',
             'direccion'              => 'required',
+            'unidad_responsable'     => 'required',
+            'cargo'                  => 'required',
+            'funcionario'            => 'required',
         ]);
         if($validar->fails()){
             $data = mensaje_mostrar('errores', $validar->errors());
         }else{
             $instalacion_nuevo = new Instalacion();
 
-            $instalacion_nuevo->direccion = $request->direccion;
-            $instalacion_nuevo->fecha_instalacion = $request->fecha_instalacion;
-            $instalacion_nuevo->estado_instalacion = 'en_curso';
-            $instalacion_nuevo->monto_instalacion = sin_separador_comas($request->monto_instalacion);
-            $instalacion_nuevo->glosa = $request->glosa;
-            $instalacion_nuevo->id_zona = $request->zona;
+            $instalacion_nuevo->direccion               = $request->direccion;
+            $instalacion_nuevo->fecha_instalacion       = $request->fecha_instalacion;
+            $instalacion_nuevo->estado_instalacion      = 'en_curso';
+            $instalacion_nuevo->monto_instalacion       = sin_separador_comas($request->monto_instalacion);
+            $instalacion_nuevo->glosa                   = $request->glosa;
+            $instalacion_nuevo->id_zona                 = $request->zona;
             if($request->persona_natural_id != null || $request->persona_natural_id != ''){
-                $instalacion_nuevo->id_persona_natural = $request->persona_natural_id;
+                $instalacion_nuevo->id_persona_natural  = $request->persona_natural_id;
             }
             if($request->persona_juridica_id != null || $request->persona_juridica_id != ''){
                 $instalacion_nuevo->id_persona_juridica = $request->persona_juridica_id;
             }
-            $instalacion_nuevo->id_categoria = $request->categoria;
+            $instalacion_nuevo->id_sub_categoria = $request->sub_categoria;
             $instalacion_nuevo->id_propiedad = $request->propiedad;
 
-
-
+            $instalacion_nuevo->id_personal_trabajo = $request->funcionario;
+            $instalacion_nuevo->id_usuario = Auth::id();
             $instalacion_nuevo->save();
+
+
+            //ahora guardamos el historia de la instalacion
+            $historial_instalacion                  = new Historial_instalacion();
+            $historial_instalacion->fecha           = date('Y-m-d');
+            $historial_instalacion->descripcion     = 'Primera instalación : '.$request->glosa;
+            $historial_instalacion->id_usuario      = Auth::id();
+            $historial_instalacion->id_instalacion  = $instalacion_nuevo->id;
+            $historial_instalacion->save();
+
+            //primero sumamos todos los importes
+            //$sumar =
+
+            //ahora tambien el monto de instalacion debe irse caja detalle
+            $caja_detalle                   = new Caja_detalle();
+            $caja_detalle->fecha            = date('Y-m-d');
+            $caja_detalle->concepto         = 'instalacion de servicio';
+            $caja_detalle->moneda           = 'Bolivianos';
+            $caja_detalle->monto_ingreso    = sin_separador_comas($request->monto_instalacion);
+            $caja_detalle->monto_salida     = 0;
+            $caja_detalle->importe          = sin_separador_comas($request->monto_instalacion);
+            $caja_detalle->estado           = 'entrada';
+            $caja_detalle->id_usuario       = Auth::id();
+            $caja_detalle->id_instalacion   = $instalacion_nuevo->id;
+            $caja_detalle->id_cobro         = 0;
+            $caja_detalle->save();
 
             if($instalacion_nuevo->id){
                 $data = mensaje_mostrar('success', 'Se guardo los datos con éxito');
@@ -108,11 +144,48 @@ class Controlador_instalacion extends Controller
     }
 
     public function instalacion_categoria_listar(Request $request){
-        $categoria = Categoria_servicio::find($request->id);
-        if($categoria){
-            $data = mensaje_mostrar('success', $categoria);
+        $sub_categoria = Sub_categoria::find($request->id);
+        if($sub_categoria){
+            $data = mensaje_mostrar('success', $sub_categoria);
         }else{
             $data = mensaje_mostrar('error', 'Ocurrio un error');
+        }
+        return response()->json($data);
+    }
+
+
+    //para listar sub-categoria
+    public function listar_sub_categoria(Request $request){
+        $sub_categoria = Sub_categoria::where('id_categoria', $request->id)->get();
+        if($sub_categoria){
+            $data = mensaje_mostrar('success', $sub_categoria);
+        }else{
+            $data = mensaje_mostrar('error', 'Ocurrio un error al mostrar la sub-categoria');
+        }
+        return response()->json($data);
+    }
+
+    //listar la unidad responsable y los responsables
+    public function listar_cargo(Request $request){
+        $cargo = Cargo::where('id_unidad', $request->id)->get();
+        if($cargo){
+            $data = mensaje_mostrar('success', $cargo);
+        }else{
+            $data = mensaje_mostrar('error', 'Ocurrio un erro al mostrar los datos');
+        }
+        return response()->json($data);
+    }
+
+    //para listar los funcionariosn y que funcionario sera responsable
+    public function listar_funcionario_res(Request $request){
+        $personal_trabajo = Cargo::with(['personal_trabajo'=>function($q){
+            $q->with('persona_natural');
+            $q->where('estado', 'activo');
+        }])->find($request->id);
+        if($personal_trabajo){
+            $data = mensaje_mostrar('success', $personal_trabajo);
+        }else{
+            $data = mensaje_mostrar('error', 'Ocurrio un erro al mostrar los datos');
         }
         return response()->json($data);
     }

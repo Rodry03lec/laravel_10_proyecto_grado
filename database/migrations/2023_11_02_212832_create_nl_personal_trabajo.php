@@ -37,7 +37,7 @@ return new class extends Migration
             $table->date('fecha_finalizacion')->nullable();
             $table->string('estado', 20);
             $table->string('referencia_celular', 20);
-            $table->string('referencia_nombre', 20);
+            $table->string('referencia_nombre');
             $table->string('descripcion')->nullable();
             $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_cargo');

@@ -9,7 +9,7 @@
                 <button class="action-btn btn-warning" onclick="editar_sub_categoria('{{ $lis->id }}')" type="button">
                 <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
                 </button>
-                <button class="action-btn btn-danger" onclick="eliminar_sub_categoria('{{ $lis->id }}')" type="button">
+                <button class="action-btn btn-danger" onclick="eliminar_sub_categoria('{{ $lis->id }}', '{{ $lis->id_categoria }}')" type="button">
                 <iconify-icon icon="heroicons:trash"></iconify-icon>
                 </button>
             </div>

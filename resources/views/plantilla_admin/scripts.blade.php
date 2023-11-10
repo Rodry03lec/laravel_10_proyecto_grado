@@ -245,6 +245,12 @@
     }
 
 
+    function conSeparadorComas(monto) {
+        let saldoRespuesta = new Intl.NumberFormat('es-BO', { style: 'currency', currency: 'BOB' }).format(monto);
+        return saldoRespuesta;
+    }
+
+
     function select2_prueva(valor){
         $('.select2').select2({
             dropdownParent: $(valor),
@@ -281,6 +287,31 @@
 
     function select2_cuatro(valor){
         $('.select2_cuarto').select2({
+            dropdownParent: $(valor),
+            containerCssClass: "p-1 bg-gray-100",
+            selectionCssClass: "p-1 bg-blue-500 text-white",
+            dropdownCssClass: "p-1 bg-gray-300",
+        });
+    }
+
+    function select2_5(valor){
+        $('.select2_5').select2({
+            dropdownParent: $(valor),
+            containerCssClass: "p-1 bg-gray-100",
+            selectionCssClass: "p-1 bg-blue-500 text-white",
+            dropdownCssClass: "p-1 bg-gray-300",
+        });
+    }
+    function select2_6(valor){
+        $('.select2_6').select2({
+            dropdownParent: $(valor),
+            containerCssClass: "p-1 bg-gray-100",
+            selectionCssClass: "p-1 bg-blue-500 text-white",
+            dropdownCssClass: "p-1 bg-gray-300",
+        });
+    }
+    function select2_7(valor){
+        $('.select2_7').select2({
             dropdownParent: $(valor),
             containerCssClass: "p-1 bg-gray-100",
             selectionCssClass: "p-1 bg-blue-500 text-white",

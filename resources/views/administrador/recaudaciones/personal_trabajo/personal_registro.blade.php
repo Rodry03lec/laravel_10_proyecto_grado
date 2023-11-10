@@ -149,7 +149,7 @@
                     <div class="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto" id="scrollModal">
                         <form method="POST" id="form_nueva_personal" autocomplete="off" enctype="multipart/form-data">
                             @csrf
-                            <input type="text" id="id_persona" name="id_persona">
+                            <input type="hidden" id="id_persona" name="id_persona">
                             <fieldset>
                                 <legend>PERSONA</legend>
                                 <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-7">
@@ -191,7 +191,7 @@
 
                                     <div class="input-area relative">
                                         <label for="referencia_celular" class="form-label">REFERENCIA LABORAL (TELEFONO O CELULAR)</label>
-                                        <input id="referencia_celular" name="referencia_celular" type="text" class="form-control" placeholder="Ingrese refrencia laboral" @disabled(true)>
+                                        <input id="referencia_celular" name="referencia_celular" onkeypress="return soloNumeros(event)" type="text" class="form-control" placeholder="Ingrese refrencia laboral" @disabled(true)>
                                         <div id="_referencia_celular"></div>
                                     </div>
 
@@ -270,7 +270,7 @@
 
                                     <div class="input-area relative">
                                         <label for="referencia_celular_" class="form-label">REFERENCIA LABORAL (TELEFONO O CELULAR)</label>
-                                        <input id="referencia_celular_" name="referencia_celular_" type="text" class="form-control" placeholder="Ingrese refrencia laboral" >
+                                        <input id="referencia_celular_" name="referencia_celular_" onkeypress="return soloNumeros(event)" type="text" class="form-control" placeholder="Ingrese refrencia laboral" >
                                         <div id="_referencia_celular_"></div>
                                     </div>
 

@@ -125,6 +125,7 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::post('sub_categoria_listar', 'sub_categoria_listar')->name('casub_listar');
         Route::post('sub_categoria_nuevo', 'sub_categoria_nuevo')->name('casub_nuevo');
         Route::post('sub_categoria_editar', 'sub_categoria_editar')->name('casub_editar');
+        Route::delete('sub_categoria_eliminar', 'sub_categoria_eliminar')->name('casub_eliminar');
 
 
         //para la parte de profesion
@@ -237,6 +238,12 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
 
         //para la gestion
         Route::post('listar_categoria', 'listar_categoria')->name('lisc_listar');
+
+
+        //para listar subcategoria
+        Route::post('listar_sub_categoria','listar_sub_categoria')->name('lisca_listar');
+        Route::post('listar_cargo','listar_cargo')->name('liscargo_listar');
+        Route::post('listar_funcionario_res','listar_funcionario_res')->name('lisfu_listar');
     });
     /**
      * FIN DE LA PARTE DE CONTROLADOR INSTLACION
