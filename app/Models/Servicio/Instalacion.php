@@ -3,6 +3,7 @@
 namespace App\Models\Servicio;
 
 use App\Models\Caja\Caja_detalle;
+use App\Models\Caja\Registro_cobros;
 use App\Models\Configuracion\Tipo_propiedad;
 use App\Models\Configuracion\Zonas;
 use App\Models\Persona\Juridica;
@@ -38,15 +39,10 @@ class Instalacion extends Model
     const CREATED_AT = 'creado_el';
     const UPDATED_AT = 'editado_el';
 
-    /* protected function montoinstalacion():Attribute{
+    protected function montoinstalacion():Attribute{
         return new Attribute(
             get: fn ($value) => con_separador_comas($value),
         );
-    } */
-
-    public function getMontoInstalacion(): string
-    {
-        return con_separador_comas($this->monto_instalacion);
     }
 
 
@@ -83,5 +79,10 @@ class Instalacion extends Model
     //relacion con la parte de instalacion
     public function caja_detalle(){
         return $this->hasMany(Caja_detalle::class, 'id_instalacion', 'id');
+    }
+
+    //relacion de uno a uno con nl_registro_cobros
+    public function registro_cobros(){
+        return $this->hasOne(Registro_cobros::class, 'id_instalacion', 'id');
     }
 }

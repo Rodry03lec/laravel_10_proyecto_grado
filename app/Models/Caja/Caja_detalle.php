@@ -20,7 +20,7 @@ class Caja_detalle extends Model
         'estado',
         'id_usuario',
         'id_instalacion',
-        'id_cobro',
+        'id_factura',
     ];
 
     const CREATED_AT = 'creado_el';

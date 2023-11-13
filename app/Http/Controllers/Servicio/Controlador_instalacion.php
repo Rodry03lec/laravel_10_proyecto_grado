@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Servicio;
 
 use App\Http\Controllers\Controller;
 use App\Models\Caja\Caja_detalle;
+use App\Models\Caja\Registro_cobros;
 use App\Models\Configuracion\Tipo_propiedad;
 use App\Models\Configuracion\Zonas;
 use App\Models\Gestion;
@@ -17,6 +18,7 @@ use App\Models\Servicio\Sub_categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use DateTime;
 
 class Controlador_instalacion extends Controller
 {
@@ -48,7 +50,7 @@ class Controlador_instalacion extends Controller
     public function instalacion_listar(){
         $instalacion = Instalacion::with(['zona', 'persona_natural','persona_juridica'=> function($query){
             $query->with(['representante_legal']);
-        }, 'sub_categoria', 'tipo_propiedad'])->get();
+        }, 'sub_categoria', 'tipo_propiedad'])->where('estado_instalacion','like', 'en_curso')->get();
         return response()->json($instalacion);
     }
 
@@ -114,7 +116,7 @@ class Controlador_instalacion extends Controller
             $caja_detalle->estado           = 'entrada';
             $caja_detalle->id_usuario       = Auth::id();
             $caja_detalle->id_instalacion   = $instalacion_nuevo->id;
-            $caja_detalle->id_cobro         = 0;
+            $caja_detalle->id_factura       = 0;
             $caja_detalle->save();
 
             if($instalacion_nuevo->id){
@@ -186,6 +188,60 @@ class Controlador_instalacion extends Controller
             $data = mensaje_mostrar('success', $personal_trabajo);
         }else{
             $data = mensaje_mostrar('error', 'Ocurrio un erro al mostrar los datos');
+        }
+        return response()->json($data);
+    }
+
+    //para finalizar la instalacion
+    public function instalacion_finalizar(Request $request){
+        $instalacion = Instalacion::find($request->id);
+        if($instalacion){
+            $data = mensaje_mostrar('success', $instalacion);
+        }else{
+            $data = mensaje_mostrar('error', 'Ocurrio un error');
+        }
+        return response()->json($data);
+    }
+    //para guardar la finalizacion de la instalacion
+    public function finalizar_instalacion_guardar(Request $request){
+        $validar = Validator::make($request->all(),[
+            'fecha_finalizacion'    => 'required',
+            'descripcion__'         => 'required',
+        ]);
+        if($validar->fails()){
+            $data = mensaje_mostrar('errores', $validar->errors());
+        }else{
+            $instalacion                        = Instalacion::find($request->instalacion_id);
+            $instalacion->fecha_conclucion      = $request->fecha_finalizacion;
+            $instalacion->estado_instalacion    = 'finalizado';
+            $instalacion->save();
+
+            //guardamos el historial de instalacion
+            $historial_instalacion                  = new Historial_instalacion();
+            $historial_instalacion->fecha           = date('Y-m-d');
+            $historial_instalacion->descripcion     = $request->descripcion__;
+            $historial_instalacion->id_usuario      = Auth::id();
+            $historial_instalacion->id_instalacion  = $instalacion->id;
+            $historial_instalacion->save();
+            //ahora iniciamos o guardamos al registro cobros
+
+            $fechaIni = new DateTime($request->fecha_finalizacion);
+            $fechaIni->modify('+1 month');
+
+
+            $registro_cobros                    = new Registro_cobros();
+            $registro_cobros->numero_mes        = date('n', strtotime($fechaIni->format('Y-m-d')));
+            $registro_cobros->fecha             = $fechaIni->format('Y-m-d');
+            $registro_cobros->descripcion       = 'Resgitro de cobros';
+            $registro_cobros->estado            = 'activo';
+            $registro_cobros->id_instalacion    = $instalacion->id;
+            $registro_cobros->save();
+
+            if($registro_cobros->id){
+                $data = mensaje_mostrar('success', 'Se finalizo la instlacion y se guardo los datos con éxito');
+            }else{
+                $data = mensaje_mostrar('error','Ocurrio un error al guardar');
+            }
         }
         return response()->json($data);
     }

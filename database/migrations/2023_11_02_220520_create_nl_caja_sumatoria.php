@@ -32,17 +32,17 @@ return new class extends Migration
             $table->string('estado', 20);
             $table->unsignedBigInteger('id_usuario');
             $table->unsignedBigInteger('id_instalacion')->required();
-            $table->unsignedBigInteger('id_cobro')->required();
+            $table->unsignedBigInteger('id_factura')->required();
 
             $table->foreign('id_instalacion')
                     ->references('id')
                     ->on('nl_instalacion')
                     ->onDelete('restrict');
 
-           /*  $table->foreign('id_cobros')
+            $table->foreign('id_factura')
                     ->references('id')
-                    ->on('nl_instalacion')
-                    ->onDelete('restric'); */
+                    ->on('nl_facturacion')
+                    ->onDelete('restrict');
 
             $table->timestamp('creado_el');
             $table->timestamp('editado_el');

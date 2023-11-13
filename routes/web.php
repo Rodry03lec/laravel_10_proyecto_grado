@@ -236,6 +236,10 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::post('instalacion_categoria_listar','instalacion_categoria_listar')->name('ins_listar_categoria');
         Route::get('instalacion_listar','instalacion_listar')->name('ins_listar');
 
+        Route::post('instalacion_finalizar','instalacion_finalizar')->name('ins_finalizar');
+        Route::post('finalizar_ins_guardar','finalizar_instalacion_guardar')->name('finis_guardar');
+
+
         //para la gestion
         Route::post('listar_categoria', 'listar_categoria')->name('lisc_listar');
 

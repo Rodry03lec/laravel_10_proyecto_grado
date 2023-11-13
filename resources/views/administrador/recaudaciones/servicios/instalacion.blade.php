@@ -244,6 +244,63 @@
         </div>
     </div>
 
+
+    {{-- MODAL PARA CREAR la instalacion de servicio --}}
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+    id="modal_finalizar_instalacion" tabindex="-1" aria-labelledby="disabled_backdrop" aria-hidden="true"
+    data-bs-backdrop="static" x-data="{ showModal: false }">
+        <div class="modal-dialog modal-md  relative w-auto pointer-events-none">
+            <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding
+            rounded-md outline-none text-current">
+                <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
+                    <!-- Modal header -->
+                    <div
+                        class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
+                        <h3 class="text-xl font-medium text-white dark:text-white">
+                            Registro de Finalización de Instalación
+                        </h3>
+                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal" onclick="cerrar_modal_registro_instalacion()">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10
+                                11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="sr-only"></span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto" id="scrollModal">
+                        <form method="POST" id="form_finalizar_instalacion" autocomplete="off" enctype="multipart/form-data">
+                            @csrf
+                            <input type="text" name="instalacion_id" id="instalacion_id">
+                            <fieldset>
+                                <legend>FINALIZAR INSTALACIÓN</legend>
+                                <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-7">
+                                    <div class="input-area relative">
+                                        <label for="fecha_finalizacion" class="form-label">Fecha de finalización</label>
+                                        <input type="date" name="fecha_finalizacion" id="fecha_finalizacion" class="form-control"  placeholder="Seleccione fecha de finalización" value="{{ date('Y-m-d') }}">
+                                        <div id="_fecha_finalizacion"></div>
+                                    </div>
+
+                                    <div class="input-area relative">
+                                        <label for="descripcion__" class="form-label">Descripción de finalización</label>
+                                        <textarea name="descripcion__" id="descripcion__" class="form-control" cols="30" rows="4" placeholder="Ingrese una descripción"></textarea>
+                                        <div id="_descripcion__"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="flex items-center justify-end p-6 space-x-2 border-t border-slate-200 rounded-b dark:border-slate-600">
+                        <button type="button" id="btn_guardar_finalizar_instalacion" class="btn inline-flex justify-center text-white bg-black-500">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script_recaudaciones')
     <script>
@@ -274,6 +331,8 @@
             document.getElementById('_categoria').innerHTML='';
 
             vaciar_errores_registro_instalacion();
+            document.getElementById('mostrar_monto').innerHTML = 'SELECCIONA LA SUB-CATEGORIA';
+            document.getElementById('_ci_persona').innerHTML = '';
         }
 
         //para vaciar los errores
@@ -514,6 +573,7 @@
                         cerrar_modal_registro_instalacion();
                         $('#modal_nueva_registro_instalacion').modal('hide');
                         $('#listar_instalacion_tab').fadeIn(200);
+
                     });
                 }
                 if (dato.tipo === 'error') {
@@ -530,8 +590,6 @@
             let respuesta = await fetch("{{ route('ins_listar') }}");
             let dato = await respuesta.json();
             let i = 1;
-
-            console.log(dato);
             $('#listar_instalacion_tab').DataTable({
                 responsive: true,
                 data: dato,
@@ -543,7 +601,6 @@
                             return i++;
                         }
                     },
-
                     {
                         data: null,
                         className: 'table-td',
@@ -555,7 +612,6 @@
                             }
                         }
                     },
-
                     {
                         data: null,
                         className: 'table-td',
@@ -571,12 +627,6 @@
                         data: 'fecha_instalacion',
                         className: 'table-td'
                     },
-                    /* {
-                        data: 'monto_instalacion',
-                        className: 'table-td'
-                    }, */
-
-
                     {
                         data: 'monto_instalacion',
                         className: 'table-td',
@@ -599,14 +649,17 @@
                         render: function(data, type, row, meta) {
                             return `
                                 <div class="flex space-x-3 items-center ">
-                                    <button class=" action-btn btn-primary" onclick="ver_persona_natural('${row.id}')" >
+                                    <button class="action-btn btn-success" onclick="finalizar_instalacion('${row.id}')" >
+                                        <iconify-icon icon="heroicons:shield-check"></iconify-icon>
+                                    </button>
+                                    <button class="action-btn btn-warning" onclick="editar_instalacion('${row.id}')" >
+                                        <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
+                                    </button>
+                                    <button class="action-btn btn-primary" onclick="ver_instalacion('${row.id}')" >
                                         <iconify-icon icon="heroicons:eye"></iconify-icon>
                                     </button>
-                                    <button class="action-btn btn-warning" onclick="editar_persona_natural('${row.id}')" type="button">
-                                    <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
-                                    </button>
-                                    <button class="action-btn btn-danger" onclick="eliminar_persona_natural('${row.id}')" type="button">
-                                    <iconify-icon icon="heroicons:trash"></iconify-icon>
+                                    <button class="action-btn btn-danger" onclick="eliminar_instalacion('${row.id}')" type="button">
+                                    <iconify-icon icon="heroicons:document-duplicate-solid"></iconify-icon>
                                     </button>
                                 </div>
                             `;
@@ -692,6 +745,91 @@
             }
         }
 
+        //para editar la instalacion
+        /* async function editar_instalacion(id){
+            try {
+                let respuesta = await fetch("{{ route('pju_editar') }}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify({id:id})
+                });
+                let dato = await respuesta.json();
+                console.log(dato);
+                if (dato.tipo === 'success') {
+
+                }
+                if (dato.tipo === 'error') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                }
+            } catch (error) {
+                console.log('Error de datos : ' + error);
+            }
+        }
+ */
+
+        //para finalizar la instalacion
+        async function finalizar_instalacion(id){
+            try {
+                let respuesta = await fetch("{{ route('ins_finalizar') }}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify({id:id})
+                });
+                let dato = await respuesta.json();
+                console.log(dato);
+                if (dato.tipo === 'success') {
+                    $('#modal_finalizar_instalacion').modal('show');
+                    document.getElementById('instalacion_id').value = dato.mensaje.id;
+                }
+                if (dato.tipo === 'error') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                }
+            } catch (error) {
+                console.log('Error de datos : ' + error);
+            }
+        }
+
+        //para finalizar la instalacion del servicio
+        let btn_guardar_finalizar_instalacion = document.getElementById('btn_guardar_finalizar_instalacion');
+        btn_guardar_finalizar_instalacion.addEventListener('click', async ()=>{
+            let datos = Object.fromEntries(new FormData(document.getElementById('form_finalizar_instalacion')).entries());
+            try {
+                let respuesta = await fetch("{{ route('finis_guardar') }}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify(datos)
+                });
+                let dato = await respuesta.json();
+                if (dato.tipo === 'errores') {
+                    let obj = dato.mensaje;
+                    for (let key in obj) {
+                        document.getElementById('_' + key).innerHTML = `<p id="error_estilo" >` + obj[key] +`</p>`;
+                    }
+                }
+                if (dato.tipo === 'success') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                    $('#listar_instalacion_tab').fadeOut(200, function() {
+                        $('#listar_instalacion_tab').DataTable().destroy();
+                        listar_instalaciones();
+                        $('#listar_instalacion_tab').fadeIn(200);
+                    });
+                }
+                if (dato.tipo === 'error') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                }
+            } catch (error) {
+                console.log('Error de datos : ' + error);
+            }
+        });
     </script>
 @endsection
 
