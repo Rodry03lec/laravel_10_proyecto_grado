@@ -12,8 +12,6 @@ return new class extends Migration
     public function up(): void
     {
 
-        //aqui realizar de los cobros y detalles ojo
-
         Schema::create('nl_caja_sumatoria', function (Blueprint $table) {
             $table->id();
             $table->decimal('monto_total', 100, 2);
@@ -32,7 +30,7 @@ return new class extends Migration
             $table->string('estado', 20);
             $table->unsignedBigInteger('id_usuario');
             $table->unsignedBigInteger('id_instalacion')->required();
-            $table->unsignedBigInteger('id_factura')->required();
+            $table->unsignedBigInteger('id_factura')->nullable();
 
             $table->foreign('id_instalacion')
                     ->references('id')

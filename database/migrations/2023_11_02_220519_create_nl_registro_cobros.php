@@ -34,6 +34,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_mes');
             $table->dateTime('fecha');
             $table->unsignedBigInteger('id_registro_cobro');
+            $table->string('estado', 20);
 
             $table->timestamp('creado_el');
             $table->timestamp('editado_el');

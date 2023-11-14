@@ -80,6 +80,7 @@ class Controlador_instalacion extends Controller
             $instalacion_nuevo->monto_instalacion       = sin_separador_comas($request->monto_instalacion);
             $instalacion_nuevo->glosa                   = $request->glosa;
             $instalacion_nuevo->id_zona                 = $request->zona;
+            $instalacion_nuevo->id_persona              = $request->persona_id;
             if($request->persona_natural_id != null || $request->persona_natural_id != ''){
                 $instalacion_nuevo->id_persona_natural  = $request->persona_natural_id;
             }
@@ -116,7 +117,7 @@ class Controlador_instalacion extends Controller
             $caja_detalle->estado           = 'entrada';
             $caja_detalle->id_usuario       = Auth::id();
             $caja_detalle->id_instalacion   = $instalacion_nuevo->id;
-            $caja_detalle->id_factura       = 0;
+            $caja_detalle->id_factura       = null;
             $caja_detalle->save();
 
             if($instalacion_nuevo->id){

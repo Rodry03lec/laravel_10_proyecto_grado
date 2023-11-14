@@ -120,7 +120,7 @@
 
 
                         <li class="">
-                            <a href="javascript:void(0)" class="navItem  @if ($menu=='15') {{ 'active' }} @endif">
+                            <a href="javascript:void(0)" class="navItem  @if ($menu=='15'||$menu=='16') {{ 'active' }} @endif">
                                 <span class="flex items-center">
                                     <iconify-icon class=" nav-icon" icon="mdi:account-wrench-outline"></iconify-icon>
                                     <span>Servicio</span>
@@ -131,12 +131,26 @@
                                 <li >
                                     <a href="{{ route('ins_index') }}" class="@if ($menu=='15') {{ 'active' }} @endif">Instalación</a>
                                 </li>
+                                <li >
+                                    <a href="{{ route('its_index') }}" class="@if ($menu=='16') {{ 'active' }} @endif">Instalados</a>
+                                </li>
                             </ul>
                         </li>
 
 
+
                         <li>
-                            <a href="#" class="navItem">
+                            <a href="{{ route('cobus_index') }}" class="navItem @if ($menu=='17') {{ 'active' }} @endif">
+                                <span class="flex items-center">
+                                    <iconify-icon class="nav-icon" icon="solar:hand-money-bold"></iconify-icon>
+                                    <span>Cobros</span>
+                                </span>
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="#" class="navItem ">
                                 <span class="flex items-center">
                                     <iconify-icon class="nav-icon" icon="mdi:file-pdf-box"></iconify-icon>
                                     <span>Reportes</span>

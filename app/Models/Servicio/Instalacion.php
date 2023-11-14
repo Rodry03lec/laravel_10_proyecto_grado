@@ -28,6 +28,7 @@ class Instalacion extends Model
         'monto_instalacion',
         'glosa',
         'id_zona',
+        'id_persona',
         'id_persona_natural',
         'id_persona_juridica',
         'id_sub_categoria',

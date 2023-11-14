@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('glosa');
 
             $table->unsignedBigInteger('id_zona');
+            $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_persona_natural')->nullable();
             $table->unsignedBigInteger('id_persona_juridica')->nullable();
             $table->unsignedBigInteger('id_sub_categoria');

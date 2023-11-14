@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Caja\Controlador_cobro;
 use App\Http\Controllers\Configuracion\Controlador_configuracion;
 use App\Http\Controllers\Configuracion\Controlador_gestion;
 use App\Http\Controllers\Configuracion\Controlador_zona;
 use App\Http\Controllers\Persona\Controlador_persona;
 use App\Http\Controllers\Personal_trabajo\Controlador_personal;
 use App\Http\Controllers\Servicio\Controlador_instalacion;
+use App\Http\Controllers\Servicio\Controlador_instalado;
 use App\Http\Controllers\Usuario\Admin_login;
 use App\Http\Controllers\Usuario\Admin_usuario;
 use Illuminate\Support\Facades\Route;
@@ -251,6 +253,40 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
     });
     /**
      * FIN DE LA PARTE DE CONTROLADOR INSTLACION
+     */
+
+
+    /**
+     * LOS QUE YA ESTAN INSTALADOS
+    */
+    Route::controller(Controlador_instalado::class)->group(function(){
+        Route::get('instalados','instalados')->name('its_index');
+        Route::post('instalados_activos','instalados_activos')->name('its_activos');
+        Route::get('instalados_inactivos','instalados_inactivos')->name('its_inactivos');
+    });
+    /**
+     * FIN DE LOS QUE YA ESTAN INSTALADOS
+     */
+
+
+
+    /**
+     * PARA REALIZAR LOS COBROS
+     */
+    Route::controller(Controlador_cobro::class)->group(function(){
+        Route::get('cobros_busqueda','cobros_busqueda')->name('cobus_index');
+        Route::post('busqueda_ci','busqueda_ci')->name('ci_busqueda');
+        Route::get('cobros/{id}','cobros')->name('cobr_lista');
+
+        //para liustar gestiones
+        Route::post('listar_gestion','listar_gestion')->name('lis_gestion');
+        Route::post('cobro_gestion','cobro_gestion')->name('lis_cobro_gestion');
+
+
+        Route::post('cobro_anual','cobro_anual')->name('lis_cobro_anual');
+    });
+    /**
+     * FIN DE REALIZAR LOS COBROS
      */
 
 });

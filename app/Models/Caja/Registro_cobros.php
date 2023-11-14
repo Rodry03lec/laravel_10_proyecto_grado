@@ -17,6 +17,7 @@ class Registro_cobros extends Model
         'descripcion',
         'estado',
         'id_instalacion',
+        'estado',
     ];
 
     const CREATED_AT = 'creado_el';
@@ -26,7 +27,7 @@ class Registro_cobros extends Model
         return $this->hasMany(Facturacion::class, 'id_registro_cobro', 'id');
     }
     //relacion reversa nl_instalacion
-    public function instlacion(){
+    public function instalacion(){
         return $this->belongsTo(Instalacion::class, 'id_instalacion', 'id');
     }
 }

@@ -1,5 +1,5 @@
 @extends('menu.principal_recaudaciones')
-@section('titulo_recaudaciones', '| SERVICIO')
+@section('titulo_recaudaciones', '| INSTALACIÓN')
 @section('contenido_recaudaciones')
 
     <div class="mb-5">
@@ -48,7 +48,7 @@
                                     <th scope="col" class="table-th">CI REPRESENTANTE</th>
                                     <th scope="col" class="table-th">FECHA DE INSTALACIÓN</th>
                                     <th scope="col" class="table-th">MONTO (Bs)</th>
-                                    <th scope="col" class="table-th">ESTADO_INSTALACIÓN</th>
+                                    <th scope="col" class="table-th">ESTADO INSTALACIÓN</th>
                                     <th scope="col" class="table-th">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -92,6 +92,7 @@
                         <form method="POST" id="form_nueva_instalacion" autocomplete="off" enctype="multipart/form-data">
                             @csrf
 
+                            <input type="hidden" name="persona_id" id="persona_id">
                             <input type="hidden" name="persona_natural_id" id="persona_natural_id">
                             <input type="hidden" name="persona_juridica_id" id="persona_juridica_id">
 
@@ -274,7 +275,7 @@
                     <div class="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto" id="scrollModal">
                         <form method="POST" id="form_finalizar_instalacion" autocomplete="off" enctype="multipart/form-data">
                             @csrf
-                            <input type="text" name="instalacion_id" id="instalacion_id">
+                            <input type="hidden" name="instalacion_id" id="instalacion_id">
                             <fieldset>
                                 <legend>FINALIZAR INSTALACIÓN</legend>
                                 <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-7">
@@ -383,6 +384,7 @@
             let ci_error = document.getElementById('_ci_persona');
             let input_persona_natural = document.getElementById('persona_natural_id');
             let input_persona_juridica = document.getElementById('persona_juridica_id');
+            let input_persona_id = document.getElementById('persona_id');
             if(ci.length > 5){
                 try {
                     let respuesta = await fetch("{{ route('ins_validarp') }}", {
@@ -421,8 +423,10 @@
                                 $('#persona_juridica').append('<option value = "' + value.id + '">' + value.nombre_empresa + '</option>');
                             });
                             input_persona_natural.value = dato.mensaje[0].id;
+                            input_persona_id.value = dato.mensaje[0].id;
                         }else{
                             input_persona_natural.value = dato.mensaje[0].id;
+                            input_persona_id.value = dato.mensaje[0].id;
                             input_persona_juridica.value = '';
                         }
 
@@ -440,6 +444,7 @@
                         selecte2_valores();
                         input_persona_juridica.value = '';
                         input_persona_natural.value = '';
+                        input_persona_id.value = '';
                         document.getElementById('_sub_categoria').innerHTML='';
                     }
                 } catch (error) {
@@ -449,6 +454,7 @@
                 ci_error.innerHTML = '';
                 desabilitar_habilitar_instalacion(true);
                 document.getElementById('_sub_categoria').innerHTML='';
+                input_persona_id.value = '';
             }
         }
 
@@ -573,7 +579,6 @@
                         cerrar_modal_registro_instalacion();
                         $('#modal_nueva_registro_instalacion').modal('hide');
                         $('#listar_instalacion_tab').fadeIn(200);
-
                     });
                 }
                 if (dato.tipo === 'error') {
@@ -727,7 +732,6 @@
                     select_funcionario.innerHTML = '<option selected disabled>[Seleccione funcionario responsable]</option>';
 
                     if (dato.tipo === 'success') {
-                        console.log(dato);
                         let datos = dato.mensaje.personal_trabajo;
                         datos.forEach(value => {
                             let option = document.createElement('option');
@@ -782,7 +786,6 @@
                     body: JSON.stringify({id:id})
                 });
                 let dato = await respuesta.json();
-                console.log(dato);
                 if (dato.tipo === 'success') {
                     $('#modal_finalizar_instalacion').modal('show');
                     document.getElementById('instalacion_id').value = dato.mensaje.id;
@@ -821,6 +824,8 @@
                         $('#listar_instalacion_tab').DataTable().destroy();
                         listar_instalaciones();
                         $('#listar_instalacion_tab').fadeIn(200);
+                        $('#modal_finalizar_instalacion').modal('hide');
+                        limpiar_campos('form_finalizar_instalacion');
                     });
                 }
                 if (dato.tipo === 'error') {
