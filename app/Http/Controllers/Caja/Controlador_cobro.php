@@ -97,6 +97,7 @@ class Controlador_cobro extends Controller
 
         $gestion = Gestion::find($id_gestion);
         $id_registro_cobro =  $request->id_registro_cobro;
+
         $registro_cobro = Registro_cobros::with(['facturacion'=>function($q){
             $q->with(['gestion','mes']);
         }])->find($id_registro_cobro);

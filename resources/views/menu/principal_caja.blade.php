@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" dir="ltr" class="light">
 <head>
-    <title>ADM | CAJA  @yield('titulo') </title>
+    <title>ADM | CAJA  @yield('titulo_caja') </title>
     @include('plantilla_admin.estilos')
 </head>
 
@@ -47,14 +47,14 @@
                                 </span>
                             </a>
                         </li>
-                        {{-- <li>
-                            <a href="#" class="navItem">
+                        <li>
+                            <a href="{{ route('cobus_index') }}" class="navItem @if ($menu=='17') {{ 'active' }} @endif">
                                 <span class="flex items-center">
-                                    <iconify-icon class="nav-icon" icon="mdi:user"></iconify-icon>
-                                    <span>Chat</span>
+                                    <iconify-icon class="nav-icon" icon="solar:hand-money-bold"></iconify-icon>
+                                    <span>Cobros</span>
                                 </span>
                             </a>
-                        </li> --}}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -77,5 +77,6 @@
         </main>
         <!-- scripts -->
         @include('plantilla_admin.scripts')
+        @yield('script_caja')
 </body>
 </html>

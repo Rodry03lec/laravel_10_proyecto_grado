@@ -226,7 +226,7 @@
                                     <button class="action-btn btn-primary" onclick="ver_servicio('${row.id}')" >
                                         <iconify-icon icon="heroicons:eye"></iconify-icon>
                                     </button>
-                                    <button class="action-btn btn-danger" onclick="eliminar_instalacion('${row.id}')" type="button">
+                                    <button class="action-btn btn-danger" onclick="ver_pdf_instalacion('${row.instalacion.id}')" type="button">
                                     <iconify-icon icon="heroicons:document-duplicate-solid"></iconify-icon>
                                     </button>
                                 </div>
@@ -338,7 +338,7 @@
                                     <button class="action-btn btn-primary" onclick="ver_servicio('${row.id}')" >
                                         <iconify-icon icon="heroicons:eye"></iconify-icon>
                                     </button>
-                                    <button class="action-btn btn-danger" onclick="eliminar_instalacion('${row.id}')" type="button">
+                                    <button class="action-btn btn-danger" onclick="ver_pdf_instalacion('${row.id}')" type="button">
                                     <iconify-icon icon="heroicons:document-duplicate-solid"></iconify-icon>
                                     </button>
                                 </div>
@@ -349,5 +349,33 @@
             });
         }
         listar_registro_inactivo();
+
+
+
+        //para ver la instalacion realizada
+        async function ver_pdf_instalacion(id){
+            try {
+                let respuesta = await fetch("{{ route('veins_instalado') }}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify({id:id})
+                });
+                let dato = await respuesta.json();
+                if (dato.tipo === 'success') {
+                    alerta_top(dato.tipo, 'Abriendo el PDF con exito');
+                    setTimeout(() => {
+                        window.open("{{ route('pdf_registro', ['id' => ':id']) }}".replace(':id', dato.mensaje), '_blank');
+                    }, 1000);
+                }
+                if (dato.tipo === 'error') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                }
+            } catch (error) {
+                console.log('Error de datos : ' + error);
+            }
+        }
     </script>
 @endsection

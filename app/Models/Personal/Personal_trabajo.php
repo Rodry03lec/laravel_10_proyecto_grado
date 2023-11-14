@@ -6,6 +6,7 @@ use App\Models\Persona\Natural;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Personal\Cargo;
+use App\Models\Servicio\Instalacion;
 
 class Personal_trabajo extends Model
 {
@@ -33,5 +34,10 @@ class Personal_trabajo extends Model
     //relacion reversa con la persona natural
     public function persona_natural(){
         return $this->belongsTo(Natural::class, 'id_persona', 'id');
+    }
+
+    //relacion con nl_instalacion
+    public function instalacion(){
+        return $this->hasMany(Instalacion::class, 'id_personal_trabajo', 'id');
     }
 }

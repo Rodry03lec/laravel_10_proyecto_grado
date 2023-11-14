@@ -1,6 +1,6 @@
-@extends('menu.principal_recaudaciones')
-@section('titulo_recaudaciones', '| COBROS ESPECIFICOS')
-@section('contenido_recaudaciones')
+@extends('menu.principal_caja')
+@section('titulo_caja', '| COBROS ESPECIFICOS')
+@section('contenido_caja')
     <div class="mb-5">
         <ul class="m-0 p-0 list-none">
             <li class="inline-block relative top-[3px] text-base text-primary-500 font-Inter ">
@@ -117,9 +117,9 @@
                                                             <iconify-icon icon="heroicons:arrow-down-on-square-stack-solid"></iconify-icon>
                                                             </button>
 
-                                                            <button class="action-btn btn-success" onclick="cobrar_de_toda_gestion('{{ $lis->id }}','{{ $instalacion->registro_cobros->id }}')" type="button">
+                                                            {{-- <button class="action-btn btn-success" onclick="cobrar_de_toda_gestion('{{ $lis->id }}','{{ $instalacion->registro_cobros->id }}')" type="button">
                                                                 <iconify-icon icon="heroicons:arrow-down-on-square-stack-solid"></iconify-icon>
-                                                            </button>
+                                                            </button> --}}
 
                                                             <button class="action-btn btn-danger" onclick="eliminar_expedido('{{ $lis->id }}','{{ $instalacion->registro_cobros->id }}')" type="button">
                                                             <iconify-icon icon="heroicons:printer"></iconify-icon>
@@ -217,7 +217,7 @@
     </div>
 
 @endsection
-@section('script_recaudaciones')
+@section('script_caja')
     <script>
         async function cobrar_deuda_gestion(id_gestion, id_registro_cobro) {
             try {
@@ -242,7 +242,7 @@
         }
 
         //para pagar todo el año completo
-        function cobrar_de_toda_gestion(id_gestion, id_registro_cobro){
+        async function cobrar_de_toda_gestion(id_gestion, id_registro_cobro){
             try {
                 let formData = new FormData();
                 formData.append('id_gestion', id_gestion);

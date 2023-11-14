@@ -60,6 +60,8 @@
                 </div>
             </div>
         </div>
+
+        {{-- <button class="btn btn-warning" onclick="prueba_pagina_en_blanco()" >Prueba</button> --}}
     </div>
 
     {{-- MODAL PARA CREAR la instalacion de servicio --}}
@@ -663,9 +665,6 @@
                                     <button class="action-btn btn-primary" onclick="ver_instalacion('${row.id}')" >
                                         <iconify-icon icon="heroicons:eye"></iconify-icon>
                                     </button>
-                                    <button class="action-btn btn-danger" onclick="eliminar_instalacion('${row.id}')" type="button">
-                                    <iconify-icon icon="heroicons:document-duplicate-solid"></iconify-icon>
-                                    </button>
                                 </div>
                             `;
                         }
@@ -827,6 +826,9 @@
                         $('#modal_finalizar_instalacion').modal('hide');
                         limpiar_campos('form_finalizar_instalacion');
                     });
+                    setTimeout(() => {
+                        window.open("{{ route('pdf_registro', ['id' => ':id']) }}".replace(':id', dato.id_insta), '_blank');
+                    }, 1000);
                 }
                 if (dato.tipo === 'error') {
                     alerta_top(dato.tipo, dato.mensaje);
@@ -835,6 +837,12 @@
                 console.log('Error de datos : ' + error);
             }
         });
+
+
+/*         function prueba_pagina_en_blanco() {
+            let id = 1;
+            window.open("{{ route('pdf_registro', ['id' => ':id']) }}".replace(':id', id), '_blank');
+        } */
     </script>
 @endsection
 

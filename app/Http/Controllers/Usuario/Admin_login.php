@@ -67,7 +67,7 @@ class Admin_login extends Controller
     //para ingresar a caja
     public function caja(){
         $data['menu'] = '0';
-        return view('menu.principal_caja', $data);
+        return view('administrador.caja.inicio_caja', $data);
     }
 
     /**

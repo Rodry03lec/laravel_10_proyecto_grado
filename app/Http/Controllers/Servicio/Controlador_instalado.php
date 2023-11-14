@@ -51,4 +51,15 @@ class Controlador_instalado extends Controller
 
         return response()->json($registro);
     }
+
+    //para ver el instalado
+    public function ver_instalado(Request $request){
+        $id_encriptado = encriptar($request->id);
+        if($id_encriptado){
+            $data = mensaje_mostrar('success', $id_encriptado);
+        }else{
+            $data = mensaje_mostrar('error', 'Ocurrio un error al encriptar');
+        }
+        return response()->json($data);
+    }
 }

@@ -1,0 +1,97 @@
+.my-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.my-table th, .my-table td {
+    border: 1px solid black;
+    padding: 10px;
+}
+.my-table th {
+    background-color: #f2f2f2;
+}
+
+#thead tr {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* Agrega un fondo blanco para evitar que se mezcle con el contenido */
+}
+
+.table-container {
+    position: relative;
+    page: auto;
+}
+
+.table-container:not(:first-child) {
+    page-break-before: always;
+}
+
+.thead-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.corner-image {
+    position: absolute;
+    top: 10px; /* Ajusta la posición vertical */
+    left: 10px; /* Ajusta la posición horizontal */
+}
+
+
+
+/*para */
+.img-esquina {
+    position: absolute;
+    width: 90px;
+}
+
+.img-esquina-top-left {
+    top: 0;
+    left: 0;
+}
+
+.img-esquina-top-right {
+    top: -20;
+    right: -25px;
+}
+
+.formulario_esquina{
+    position: absolute;
+}
+.form-esquina-top-rigth{
+    top: -47;
+    right: -25px;
+}
+
+.form-esquina-top-left{
+    top: -60px;
+    left: -30px;
+}
+
+.imagen-transparente {
+    z-index: -1;
+}
+
+
+/**/
+.img_fondo {
+    position: absolute;
+    opacity: 0.8;
+    top: 2%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    width: 70%;
+}
+
+.seccion {
+    position: relative;
+}
+.text-primary{
+    padding-top: 0px;
+    margin-top: -18px;
+}
+.text-secundario{
+    padding-top: 0px;
+    margin-top: -12px;
+}

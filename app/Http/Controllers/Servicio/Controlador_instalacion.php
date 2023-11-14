@@ -239,7 +239,11 @@ class Controlador_instalacion extends Controller
             $registro_cobros->save();
 
             if($registro_cobros->id){
-                $data = mensaje_mostrar('success', 'Se finalizo la instlacion y se guardo los datos con éxito');
+                $data = array(
+                    'tipo'      =>  'success',
+                    'mensaje'   =>  'Se finalizo la instlacion y se guardo los datos con éxito',
+                    'id_insta'  =>  encriptar($instalacion->id)
+                );
             }else{
                 $data = mensaje_mostrar('error','Ocurrio un error al guardar');
             }

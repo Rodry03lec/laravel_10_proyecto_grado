@@ -139,14 +139,14 @@
 
 
 
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('cobus_index') }}" class="navItem @if ($menu=='17') {{ 'active' }} @endif">
                                 <span class="flex items-center">
                                     <iconify-icon class="nav-icon" icon="solar:hand-money-bold"></iconify-icon>
                                     <span>Cobros</span>
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
 
 
                         <li>

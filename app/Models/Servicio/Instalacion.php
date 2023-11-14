@@ -8,6 +8,7 @@ use App\Models\Configuracion\Tipo_propiedad;
 use App\Models\Configuracion\Zonas;
 use App\Models\Persona\Juridica;
 use App\Models\Persona\Natural;
+use App\Models\Personal\Personal_trabajo;
 use App\Models\Servicio\Sub_categoria;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -85,5 +86,10 @@ class Instalacion extends Model
     //relacion de uno a uno con nl_registro_cobros
     public function registro_cobros(){
         return $this->hasOne(Registro_cobros::class, 'id_instalacion', 'id');
+    }
+
+    //relacion reversa con nl_personal trabajo
+    public function personal_trabajo(){
+        return $this->belongsTo(Personal_trabajo::class, 'id_personal_trabajo', 'id');
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Configuracion\Controlador_gestion;
 use App\Http\Controllers\Configuracion\Controlador_zona;
 use App\Http\Controllers\Persona\Controlador_persona;
 use App\Http\Controllers\Personal_trabajo\Controlador_personal;
+use App\Http\Controllers\Reportes\Controlador_instalacion_pdf;
 use App\Http\Controllers\Servicio\Controlador_instalacion;
 use App\Http\Controllers\Servicio\Controlador_instalado;
 use App\Http\Controllers\Usuario\Admin_login;
@@ -263,6 +264,8 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::get('instalados','instalados')->name('its_index');
         Route::post('instalados_activos','instalados_activos')->name('its_activos');
         Route::get('instalados_inactivos','instalados_inactivos')->name('its_inactivos');
+
+        Route::post('ver_instalado','ver_instalado')->name('veins_instalado');
     });
     /**
      * FIN DE LOS QUE YA ESTAN INSTALADOS
@@ -274,6 +277,9 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
      * PARA REALIZAR LOS COBROS
      */
     Route::controller(Controlador_cobro::class)->group(function(){
+
+        Route::get('caja_inicio','caja_inicio')->name('inicio_caja');
+
         Route::get('cobros_busqueda','cobros_busqueda')->name('cobus_index');
         Route::post('busqueda_ci','busqueda_ci')->name('ci_busqueda');
         Route::get('cobros/{id}','cobros')->name('cobr_lista');
@@ -287,6 +293,18 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
     });
     /**
      * FIN DE REALIZAR LOS COBROS
+     */
+
+
+
+    /**
+     * PARA LOS REPORTES PDF
+     */
+    Route::controller(Controlador_instalacion_pdf::class)->group(function(){
+        Route::get('registro_documento/{id}','registro_documento')->name('pdf_registro');
+    });
+    /**
+     * FIN DE LOS REPOSTES PDF
      */
 
 });

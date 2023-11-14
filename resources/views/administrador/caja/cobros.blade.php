@@ -1,6 +1,6 @@
-@extends('menu.principal_recaudaciones')
-@section('titulo_recaudaciones', '| COBROS')
-@section('contenido_recaudaciones')
+@extends('menu.principal_caja')
+@section('titulo_caja', '| COBROS')
+@section('contenido_caja')
 
     <div class="mb-5">
         <ul class="m-0 p-0 list-none">
@@ -40,7 +40,7 @@
                         </form>
                     </div>
                     <div class="text-center py-4 px-5" id="listado_pagar_html">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde rerum illum laudantium dolores officia asperiores, voluptates adipisci cupiditate a vitae ex delectus similique tempora sequi minus voluptatibus quas nesciunt ut.
+
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
     </div>
 @endsection
 
-@section('script_recaudaciones')
+@section('script_caja')
     <script>
         async function buscar_ci_persona(ci){
             let listado_html = document.getElementById('listado_pagar_html');
