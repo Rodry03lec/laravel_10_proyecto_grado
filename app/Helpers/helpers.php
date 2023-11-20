@@ -9,7 +9,7 @@
 
     use Hashids\Hashids;
     //rodry
-    function encriptar($id){
+    /* function encriptar($id){
         $encriptado = new Hashids('eyJpdiI6Im42S3d0MzZwSlc2ZWZjOXlVTlZ4YXc9PSIsInZhbHVlIjoia1hmN08vNE9nUFRWcXR6a3E3YTNHZz09IiwibWFjIjoiZTEzOTVhY2NmNzljZTQ0OGQ0YzVkZmIxM2Q3MmJiYTU0NmUxZTVlZDEzNjhjNjBiZWY5MGE3MTRjZGNmZjUwYyIsInRhZyI6IiJ9', 15);
         $id1 = $encriptado->encodeHex($id);
         return $id1;
@@ -20,7 +20,58 @@
         $encriptado = new Hashids('eyJpdiI6Im42S3d0MzZwSlc2ZWZjOXlVTlZ4YXc9PSIsInZhbHVlIjoia1hmN08vNE9nUFRWcXR6a3E3YTNHZz09IiwibWFjIjoiZTEzOTVhY2NmNzljZTQ0OGQ0YzVkZmIxM2Q3MmJiYTU0NmUxZTVlZDEzNjhjNjBiZWY5MGE3MTRjZGNmZjUwYyIsInRhZyI6IiJ9', 15);
         $id1 = $encriptado->decodeHex($id);
         return $id1;
+    } */
+
+    function encriptar($string){
+        $method= 'AES-256-CBC';
+        $secret_key = '@NoemyLiz';
+        $secret_iv= '09091999';
+
+        $output=FALSE;
+        $key=hash('sha256', $secret_key);
+        $iv=substr(hash('sha256', $secret_iv), 0, 16);
+        $output=openssl_encrypt($string, $method, $key, 0, $iv);
+        $output=base64_encode($output);
+        return $output;
     }
+    function desencriptar($string){
+        $method= 'AES-256-CBC';
+        $secret_key = '@NoemyLiz';
+        $secret_iv= '09091999';
+
+        $key=hash('sha256', $secret_key);
+        $iv=substr(hash('sha256', $secret_iv), 0, 16);
+        $output=openssl_decrypt(base64_decode($string), $method, $key, 0, $iv);
+        return $output;
+    }
+
+
+    /* function encriptar($string) {
+        $key='NoeLiz';
+        $root = '';
+        for($i=0; $i<strlen($string); $i++) {
+            $char = substr($string, $i, 1);
+            $keychar = substr($key, ($i % strlen($key))-1, 1);
+            $char = chr(ord($char)+ord($keychar));
+            $root.=$char;
+        }
+        $noe=base64_encode($root);
+        $liz = str_replace(array('+','/','='),array('-','_','$2y$10$2ix1tkeH2DUtR/E7thE2bOIS6aecJGRJmJXDZt7Wcrl4l9TOxm0aq'),$noe);
+        return $liz;
+    }
+    function desencriptar($string) {
+        $key='NoeLiz';
+        $string = str_replace(array('-','_','$2y$10$2ix1tkeH2DUtR/E7thE2bOIS6aecJGRJmJXDZt7Wcrl4l9TOxm0aq'),array('+','/','='),$string);
+        $noe = '';
+        $string = base64_decode($string);
+        for($i=0; $i<strlen($string); $i++) {
+            $char = substr($string, $i, 1);
+            $keychar = substr($key, ($i % strlen($key))-1, 1);
+            $char = chr(ord($char)-ord($keychar));
+            $noe.=$char;
+        }
+        return $noe;
+    } */
 
     //para 1000000.00
     function sin_separador_comas($monto){

@@ -103,7 +103,7 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-7">
                                     <div class="input-area relative">
                                         <label for="ci_persona" class="form-label">INGRESE CI</label>
-                                        <input name="ci_persona" id="ci_persona" class="form-control"  placeholder="Ingrese CI de la persona" onkeyup="buscar_ci_persona(this.value)">
+                                        <input name="ci_persona" id="ci_persona" class="form-control"  placeholder="Ingrese CI de la persona" onkeyup="buscar_ci_persona(this.value)" onkeypress="return soloNumeros(event)" maxlength="10">
                                         <div id="_ci_persona"></div>
                                     </div>
                                     <div class="input-area relative">

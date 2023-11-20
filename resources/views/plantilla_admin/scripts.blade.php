@@ -250,6 +250,31 @@
         return saldoRespuesta;
     }
 
+    function obtenerNombreMesJS(numeroMes) {
+    const nombresMeses = {
+        1: 'Enero',
+        2: 'Febrero',
+        3: 'Marzo',
+        4: 'Abril',
+        5: 'Mayo',
+        6: 'Junio',
+        7: 'Julio',
+        8: 'Agosto',
+        9: 'Septiembre',
+        10: 'Octubre',
+        11: 'Noviembre',
+        12: 'Diciembre'
+    };
+
+    // Verificar que el número de mes esté dentro del rango válido
+    if (numeroMes >= 1 && numeroMes <= 12) {
+        return nombresMeses[numeroMes];
+    } else {
+        return 'Número de mes no válido';
+    }
+}
+
+
 
     function select2_prueva(valor){
         $('.select2').select2({

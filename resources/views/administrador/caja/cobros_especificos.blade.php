@@ -103,7 +103,8 @@
                                             <tr>
                                                 <th scope="col" class="table-th">ID</th>
                                                 <th scope="col" class="table-th">GESTIÓN</th>
-                                                <th scope="col" class="table-th">ACCIONES</th>
+                                                <th scope="col" class="table-th">COBROS POR GESTIÓN</th>
+                                                <th scope="col" class="table-th">COBROS POR MESES</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tabla_gestion_tab">
@@ -111,20 +112,23 @@
                                                 <tr>
                                                     <td class='table-td' >{{ $loop->iteration }}</td>
                                                     <td class='table-td' >{{ $lis->gestion }}</td>
-                                                    <td class='table-td' >
+                                                    <td class="table-td" >
                                                         <div class="flex space-x-3 rtl:space-x-reverse">
-                                                            <button class="action-btn btn-success" onclick="cobrar_deuda_gestion('{{ $lis->id }}','{{ $instalacion->registro_cobros->id }}')" type="button">
-                                                            <iconify-icon icon="heroicons:arrow-down-on-square-stack-solid"></iconify-icon>
-                                                            </button>
-
-                                                            {{-- <button class="action-btn btn-success" onclick="cobrar_de_toda_gestion('{{ $lis->id }}','{{ $instalacion->registro_cobros->id }}')" type="button">
-                                                                <iconify-icon icon="heroicons:arrow-down-on-square-stack-solid"></iconify-icon>
-                                                            </button> --}}
-
-                                                            <button class="action-btn btn-danger" onclick="eliminar_expedido('{{ $lis->id }}','{{ $instalacion->registro_cobros->id }}')" type="button">
-                                                            <iconify-icon icon="heroicons:printer"></iconify-icon>
+                                                            <button class="btn inline-flex justify-center btn-outline-primary btn-sm" onclick="realizar_cobro_anual('{{ $lis->id }}','{{ $instalacion->registro_cobros->id }}')">
+                                                                <span class="flex items-center">
+                                                                    <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="heroicons-outline:newspaper"></iconify-icon>
+                                                                    <span>Cobrar Anual</span>
+                                                                </span>
                                                             </button>
                                                         </div>
+                                                    </td>
+                                                    <td class="table-td" >
+                                                        <button class="btn inline-flex justify-center btn-outline-primary btn-sm" onclick="realizar_cobro_mensual('{{ $lis->id }}','{{ $instalacion->registro_cobros->id }}')">
+                                                            <span class="flex items-center">
+                                                                <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="heroicons-outline:newspaper"></iconify-icon>
+                                                                <span>Cobrar Mensual</span>
+                                                            </span>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -140,21 +144,21 @@
     </div>
 
 
-    {{-- MODAL PARA CREAR LA NUEVA GESTION --}}
+    {{-- MODAL PARA CREAR LA NUEVA GESTION  modal_cobro_servicio --}}
     <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
     id="modal_cobro_servicio" tabindex="-1" aria-labelledby="disabled_backdrop" aria-hidden="true"
     data-bs-backdrop="static" x-data="{ showModal: false }">
-        <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+        <div class="modal-dialog modal-xl  relative w-auto pointer-events-none">
             <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding
             rounded-md outline-none text-current">
                 <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
                     <!-- Modal header -->
                     <div
                         class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
-                        <h3 class="text-xl font-medium text-white dark:text-white capitalize">
-                            Cobros mensuales
+                        <h3 class="text-xl font-medium text-white dark:text-white">
+                            Cobro mensual
                         </h3>
-                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal">
+                        <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal" onclick="salir_cobro_mensual()">
                             <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
@@ -166,12 +170,12 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="p-6 space-y-4" id="html_cobro_servicio">
+                    <div class="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto" id="html_cobro_servicio_mensual">
 
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center justify-end p-6 space-x-2 border-t border-slate-200 rounded-b dark:border-slate-600">
-                        <button type="button" id="btn_guardar_cobro_servicio" class="btn inline-flex justify-center text-white bg-black-500">Guardar</button>
+                        <button type="button" id="btn_guardar_cobro_servicio_mensuales" class="btn inline-flex justify-center text-white bg-black-500">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -190,7 +194,7 @@
                     <div
                         class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
                         <h3 class="text-xl font-medium text-white dark:text-white capitalize">
-                            Cobros mensuales
+                            Cobro Anual
                         </h3>
                         <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal">
                             <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20"
@@ -204,13 +208,14 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="p-6 space-y-4" id="html_cobro_servicio_anual">
+                    <div class="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto" id="html_cobro_servicio_anual">
 
                     </div>
-                    <!-- Modal footer -->
+
                     <div class="flex items-center justify-end p-6 space-x-2 border-t border-slate-200 rounded-b dark:border-slate-600">
-                        <button type="button" id="btn_guardar_cobro_servicio_anual" class="btn inline-flex justify-center text-white bg-black-500">Guardar</button>
+                        <button type="button" id="btn_guardar_cobro_servicio_anualmente" class="btn inline-flex justify-center text-white bg-black-500">Registrar cobro</button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -219,7 +224,7 @@
 @endsection
 @section('script_caja')
     <script>
-        async function cobrar_deuda_gestion(id_gestion, id_registro_cobro) {
+        /* async function cobrar_deuda_gestion(id_gestion, id_registro_cobro) {
             try {
                 let formData = new FormData();
                 formData.append('id_gestion', id_gestion);
@@ -239,10 +244,34 @@
             } catch (error) {
                 console.log('Error de datos : ' + error);
             }
+        } */
+
+        //para el cobro mensual
+        async function realizar_cobro_mensual(id_gestion, id_registro_cobro) {
+            try {
+                let formData = new FormData();
+                formData.append('id_gestion', id_gestion);
+                formData.append('id_registro_cobro', id_registro_cobro);
+                formData.append('_token', token);
+                let response = await fetch("{{ route('lis_cobro_mensual') }}", {
+                    method: "POST",
+                    body: formData
+                });
+                if (response.ok) {
+                    let data = await response.text();
+                    $('#modal_cobro_servicio').modal('show');
+                    document.getElementById('html_cobro_servicio_mensual').innerHTML = data;
+                } else {
+                    console.error("Error en la solicitud AJAX:", response.status);
+                }
+            } catch (error) {
+                console.log('Error de datos : ' + error);
+            }
         }
 
+
         //para pagar todo el año completo
-        async function cobrar_de_toda_gestion(id_gestion, id_registro_cobro){
+        async function realizar_cobro_anual(id_gestion, id_registro_cobro){
             try {
                 let formData = new FormData();
                 formData.append('id_gestion', id_gestion);
@@ -263,5 +292,187 @@
                 console.log('Error de datos : ' + error);
             }
         }
+
+        //PARA PAGAR ANUALMENTE - GUARDAR
+        let guardar_cobro_servicio_anualmente_btn = document.getElementById('btn_guardar_cobro_servicio_anualmente');
+        if(guardar_cobro_servicio_anualmente_btn != null){
+            guardar_cobro_servicio_anualmente_btn.addEventListener('click', async ()=>{
+                let formulario = document.getElementById('formulario_pagar_anualmente');
+                if (formulario !== null) {
+                    // El elemento con el ID 'formulario_pagar_anualmente' existe
+                    let datos = Object.fromEntries(new FormData(formulario).entries());
+
+                    if (Object.keys(datos).length === 0) {
+                        // El objeto está vacío
+                        alerta_top('error', 'Objeto no existente');
+                    } else {
+                        // El objeto no está vacío
+                        try {
+                            let respuesta = await fetch("{{ route('save_cobro_anual') }}", {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(datos)
+                            });
+                            let dato = await respuesta.json();
+                            if (dato.tipo === 'success') {
+                                alerta_top(dato.tipo, dato.mensaje);
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1400);
+                            }
+                        } catch (error) {
+                            console.log('Error de datos : ' + error);
+                        }
+                    }
+                } else {
+                    // El elemento con el ID 'formulario_pagar_anualmente' no existe
+                    alerta_top('error', 'No existente');
+                }
+            });
+        }
+
+        //para realizar el pago mensuaal directo
+        function realizar_pago_mensual(id_mes, id_gestion, id_registro_cobro, nombre_mes){
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'NOTA!',
+                text: "Esta seguro de cobrar del mes de : "+nombre_mes,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, cobrar',
+                cancelButtonText: 'No, cancelar',
+                reverseButtons: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let respuesta = await fetch("{{ route('save_cobro_mensual') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({
+                            id_mes:id_mes,
+                            id_gestion:id_gestion,
+                            id_registro_cobro:id_registro_cobro,
+                            nombre_mes:nombre_mes,
+                        })
+                    });
+                    let dato = await respuesta.json();
+                    if (dato.tipo === 'success') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                        $('#modal_cobro_servicio').modal('show');
+                        document.getElementById('html_cobro_servicio_mensual').innerHTML = '';
+                        salir_cobro_mensual();
+                        realizar_cobro_mensual(id_gestion, id_registro_cobro);
+                    }
+                    if (dato.tipo === 'error') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                    }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    alerta_top('error', 'Se cancelo');
+                }
+            })
+        }
+
+
+
+
+        let checkboxesSeleccionados = [];
+        let precio_total_cobrar = 0;
+
+        function handleCheckboxClick(checkbox, precio) {
+            // Obtener el ID del checkbox
+            let checkboxId = checkbox.value;
+
+            // Verificar si el checkbox está marcado
+            if (checkbox.checked) {
+                // Agregar el ID al array si el checkbox está marcado
+                checkboxesSeleccionados.push(checkboxId);
+                //console.log('Checkbox marcado. IDs seleccionados:', checkboxesSeleccionados);
+                // Puedes realizar más acciones aquí si es necesario
+                precio_total_cobrar = parseFloat(precio_total_cobrar)+parseFloat(precio);
+            } else {
+                // Eliminar el ID del array si el checkbox está desmarcado
+                checkboxesSeleccionados = checkboxesSeleccionados.filter(id => id !== checkboxId);
+                //console.log('Checkbox desmarcado. IDs seleccionados:', checkboxesSeleccionados);
+                // Puedes realizar más acciones aquí si es necesario
+                precio_total_cobrar = parseFloat(precio_total_cobrar)-parseFloat(precio);
+            }
+            let cantidadSeleccionados = checkboxesSeleccionados.length;
+            document.getElementById('mostrar_precio_cobrando').innerHTML = `
+                <button class="btn relative inline-flex justify-center btn-dark">Seleccionados `+conSeparadorComas(precio_total_cobrar)+`
+                    <span class="w-5 h-5 inline-flex items-center justify-center bg-danger-500 text-white rounded-full font-Inter text-xs absolute -top-[5px] -right-1">`+cantidadSeleccionados+`</span>
+                </button>
+            `;
+        }
+
+        //para guardar registros mensuales los pagos
+        let guardar_cobro_servicio_mensuales_btn = document.getElementById('btn_guardar_cobro_servicio_mensuales');
+        guardar_cobro_servicio_mensuales_btn.addEventListener('click', async ()=>{
+            if(checkboxesSeleccionados.length > 0){
+                let mese_arra = checkboxesSeleccionados.map(element => obtenerNombreMesJS(element));
+
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                    title: 'NOTA!',
+                    html: "¿Está seguro de cobrar de los meses de:<br>" + mese_arra.join('<br>') + "<br>Con el monto total de: " + conSeparadorComas(precio_total_cobrar),
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si, cobrar',
+                    cancelButtonText: 'No, cancelar',
+                    reverseButtons: true
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        let datos = Object.fromEntries(new FormData(document.getElementById('form_mensual_pagar')).entries());
+                        let datosCombinados = {
+                            formulario: datos,
+                            idsSeleccionados: checkboxesSeleccionados,
+                        };
+                        let respuesta = await fetch("{{ route('save_cobro_mensual_conjunto') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': token
+                            },
+                            body: JSON.stringify(datosCombinados)
+                        });
+                        let dato = await respuesta.json();
+                        console.log(dato);
+                        if (dato.tipo === 'success') {
+                            alerta_top(dato.tipo, dato.mensaje);
+                        }
+                        if (dato.tipo === 'error') {
+                            alerta_top(dato.tipo, dato.mensaje);
+                        }
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        alerta_top('error', 'Se cancelo');
+                    }
+                })
+            }else{
+                alerta_top('error', 'No selecciono ningun elemento');
+            }
+        });
+
+        function salir_cobro_mensual(){
+            checkboxesSeleccionados = [];
+            precio_total_cobrar = 0;
+        }
+
     </script>
 @endsection

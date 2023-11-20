@@ -31,11 +31,11 @@ class Controlador_instalacion extends Controller
         $data['gestion'] = Gestion::orderBy('gestion','desc')->get();
         $data['categoria_listar'] = Categoria_servicio::orderBy('id','asc')->get();
         $data['propiedad'] = Tipo_propiedad::get();
-        $data['unidad_responsable'] = Unidad::get();
+        $data['unidad_responsable'] = Unidad::where('nombre','ilike','%intendencia%')->get();
         return view('administrador.recaudaciones.servicios.instalacion', $data);
     }
 
-    //par ala parte de la busqueda de persona si existe o no
+    //par ala parte de la busqueda de persona si existe o no b,
     public function instalacion_validar_persona(Request $request){
         $persona = Natural::with(['juridica_representante_legal'])->where('ci', 'like', $request->ci)->get();
         if(!$persona->isEmpty()){

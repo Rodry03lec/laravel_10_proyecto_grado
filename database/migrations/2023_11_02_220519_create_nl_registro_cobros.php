@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('numero_factura');
             $table->unsignedBigInteger('id_gestion');
             $table->unsignedBigInteger('id_mes');
-            $table->dateTime('fecha');
+            $table->date('fecha');
             $table->unsignedBigInteger('id_registro_cobro');
             $table->string('estado', 20);
 

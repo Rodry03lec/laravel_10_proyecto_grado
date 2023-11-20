@@ -290,6 +290,11 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
 
 
         Route::post('cobro_anual','cobro_anual')->name('lis_cobro_anual');
+        Route::post('cobro_anual_guardar','cobro_anual_guardar')->name('save_cobro_anual');
+
+        Route::post('cobro_mensual','cobro_mensual')->name('lis_cobro_mensual');
+        Route::post('cobro_mensual_guardar','cobro_mensual_guardar')->name('save_cobro_mensual');
+        Route::post('cobro_mensual_guardar_conjunto','cobro_mensual_guardar_conjunto')->name('save_cobro_mensual_conjunto');
     });
     /**
      * FIN DE REALIZAR LOS COBROS

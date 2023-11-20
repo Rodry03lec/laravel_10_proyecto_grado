@@ -98,12 +98,12 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-7">
                                     <div class="input-area relative">
                                         <label for="ci" class="form-label">CI</label>
-                                        <input id="ci" name="ci" type="text" class="form-control" placeholder="Ingrese un CI" onkeyup="validar_ci_natural(this.value)" onkeypress="return soloNumeros(event);" >
+                                        <input id="ci" name="ci" type="text" class="form-control" placeholder="Ingrese un CI" onkeyup="validar_ci_natural(this.value)" onkeypress="return soloNumeros(event);" maxlength="10" >
                                         <div id="_ci"></div>
                                     </div>
                                     <div class="input-area relative">
                                         <label for="complemento" class="form-label">Complemento</label>
-                                        <input id="complemento" name="complemento" type="text" class="form-control" maxlength="10" placeholder="Ingrese el complemento si lo tiene" @disabled(true)>
+                                        <input id="complemento" name="complemento" type="text" class="form-control" maxlength="5" placeholder="Ingrese el complemento si lo tiene" @disabled(true)>
                                         <div id="_complemento"></div>
                                     </div>
                                     <div class="input-area relative">
@@ -118,17 +118,17 @@
                                     </div>
                                     <div class="input-area relative">
                                         <label for="nombres" class="form-label">Nombres</label>
-                                        <input id="nombres" name="nombres" type="text" class="form-control" placeholder="Ingrese sus nombres" @disabled(true)>
+                                        <input id="nombres" name="nombres" type="text" class="form-control" placeholder="Ingrese sus nombres" onkeypress="return soloLetras(event)" @disabled(true)>
                                         <div id="_nombres"></div>
                                     </div>
                                     <div class="input-area relative">
                                         <label for="apellido_paterno" class="form-label">Apellido Paterno</label>
-                                        <input id="apellido_paterno" name="apellido_paterno" type="text" class="form-control" placeholder="Ingrese su apellido Paterno" @disabled(true)>
+                                        <input id="apellido_paterno" name="apellido_paterno" type="text" class="form-control" placeholder="Ingrese su apellido Paterno" onkeypress="return soloLetras(event)" @disabled(true)>
                                         <div id="_apellido_paterno"></div>
                                     </div>
                                     <div class="input-area relative">
                                         <label for="apellido_materno" class="form-label">Apellido Materno</label>
-                                        <input id="apellido_materno" name="apellido_materno" type="text" class="form-control" placeholder="Ingrese su apellido Materno" @disabled(true)>
+                                        <input id="apellido_materno" name="apellido_materno" type="text" class="form-control" placeholder="Ingrese su apellido Materno" onkeypress="return soloLetras(event)" @disabled(true)>
                                     </div>
                                     <div class="input-area relative">
                                         <label for="genero" class="form-label">Seleccione género</label>
@@ -175,12 +175,12 @@
                                     </div>
                                     <div class="input-area relative">
                                         <label for="celular" class="form-label">Nº de celular</label>
-                                        <input id="celular_persona" name="celular_persona" type="tel" class="form-control" onkeypress="return soloNumeros(event);" placeholder="Ingrese número de celular" @disabled(true)>
+                                        <input id="celular_persona" name="celular_persona" type="tel" class="form-control" onkeypress="return soloNumeros(event);" placeholder="Ingrese número de celular" @disabled(true) maxlength="10">
                                         <div id="_celular_persona"></div>
                                     </div>
                                     <div class="input-area relative">
                                         <label for="numero_referencia" class="form-label">Nº de celular de referencia</label>
-                                        <input id="numero_referencia" name="numero_referencia" type="cel" class="form-control" onkeypress="return soloNumeros(event);" placeholder="Ingrese número de celular de referencia" @disabled(true)>
+                                        <input id="numero_referencia" name="numero_referencia" type="cel" class="form-control" onkeypress="return soloNumeros(event);" placeholder="Ingrese número de celular de referencia" @disabled(true) maxlength="10">
                                         <div id="_numero_referencia"></div>
                                     </div>
                                 </fieldset>
@@ -262,7 +262,7 @@
                                     </div>
                                     <div class="input-area relative">
                                         <label for="complemento" class="form-label">Complemento</label>
-                                        <input id="complemento_" name="complemento_" type="text" class="form-control" maxlength="10" placeholder="Ingrese el complemento si lo tiene">
+                                        <input id="complemento_" name="complemento_" type="text" class="form-control" maxlength="5" placeholder="Ingrese el complemento si lo tiene">
                                         <div id="_complemento"></div>
                                     </div>
                                     <div class="input-area relative">
@@ -334,12 +334,12 @@
                                     </div>
                                     <div class="input-area relative">
                                         <label for="celular_persona_" class="form-label">Nº de celular</label>
-                                        <input id="celular_persona_" name="celular_persona_" type="tel" class="form-control" onkeypress="return soloNumeros(event);" placeholder="Ingrese número de celular">
+                                        <input id="celular_persona_" name="celular_persona_" type="tel" class="form-control" onkeypress="return soloNumeros(event);" placeholder="Ingrese número de celular" maxlength="10">
                                         <div id="_celular_persona_"></div>
                                     </div>
                                     <div class="input-area relative">
                                         <label for="numero_referencia_" class="form-label">Nº de celular de referencia</label>
-                                        <input id="numero_referencia_" name="numero_referencia_" type="cel" class="form-control" onkeypress="return soloNumeros(event);" placeholder="Ingrese número de celular de referencia">
+                                        <input id="numero_referencia_" name="numero_referencia_" type="cel" class="form-control" onkeypress="return soloNumeros(event);" placeholder="Ingrese número de celular de referencia" maxlength="10">
                                         <div id="_numero_referencia_"></div>
                                     </div>
                                 </fieldset>

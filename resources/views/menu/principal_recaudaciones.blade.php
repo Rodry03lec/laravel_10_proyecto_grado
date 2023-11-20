@@ -50,7 +50,7 @@
 
 
                         <li class="">
-                            <a href="javascript:void(0)" class="navItem @if ($menu=='4' || $menu=='5' || $menu=='6'|| $menu=='7'|| $menu=='8'|| $menu=='9'|| $menu=='10') {{ 'active' }} @endif ">
+                            <a href="javascript:void(0)" class="navItem @if ($menu=='4' || $menu=='5' || $menu=='6'||  $menu=='9'|| $menu=='10') {{ 'active' }} @endif ">
                                 <span class="flex items-center">
                                     <iconify-icon class=" nav-icon" icon="heroicons-outline:cog-6-tooth"></iconify-icon>
                                     <span>Configuración</span>
@@ -68,16 +68,28 @@
                                     <a href="{{ route('zn_index') }}" class="@if ($menu=='6') {{ 'active' }} @endif">Zonas</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('pro_index') }}" class="@if ($menu=='7') {{ 'active' }} @endif">Profesión</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('exp_index') }}" class="@if ($menu=='8') {{ 'active' }} @endif">Expedido</a>
-                                </li>
-                                <li>
                                     <a href="{{ route('tem_index') }}" class="@if ($menu=='9') {{ 'active' }} @endif">Tipo de empresa</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('tpr_index') }}" class="@if ($menu=='10') {{ 'active' }} @endif">Tipo de propiedad</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="">
+                            <a href="javascript:void(0)" class="navItem @if ($menu=='7'|| $menu=='8') {{ 'active' }} @endif ">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:cog-6-tooth"></iconify-icon>
+                                    <span>Configuración Adicional</span>
+                                </span>
+                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="{{ route('pro_index') }}" class="@if ($menu=='7') {{ 'active' }} @endif">Profesión</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('exp_index') }}" class="@if ($menu=='8') {{ 'active' }} @endif">Expedido</a>
                                 </li>
                             </ul>
                         </li>

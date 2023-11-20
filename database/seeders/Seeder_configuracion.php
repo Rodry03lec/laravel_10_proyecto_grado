@@ -18,10 +18,16 @@ class Seeder_configuracion extends Seeder
 {
     public function run(): void
     {
-        $gestion = new Gestion;
-        $gestion->gestion = '2023';
-        $gestion->estado = 'activo';
-        $gestion->save();
+        $gestiones = array('2023','2024','2025');
+
+        foreach($gestiones as $g){
+            $gestion = new Gestion;
+            $gestion->gestion = $g;
+            $gestion->estado = 'activo';
+            $gestion->save();
+        }
+
+
 
         //para guardar lo que contendra
         $array_categoria = array(
