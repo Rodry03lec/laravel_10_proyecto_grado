@@ -173,6 +173,7 @@ class Controlador_cobro extends Controller
             $facturacion->id_mes            = $lis->id;
             $facturacion->fecha             = date('Y-m-d');
             $facturacion->id_registro_cobro = $request->id_registro_cobros;
+            $facturacion->id_usuario        = Auth::id();
             $facturacion->estado            = 'pagado';
             $facturacion->save();
 
@@ -258,6 +259,7 @@ class Controlador_cobro extends Controller
         $facturacion->id_mes            = $request->id_mes;
         $facturacion->fecha             = date('Y-m-d');
         $facturacion->id_registro_cobro = $request->id_registro_cobro;
+        $facturacion->id_usuario        = Auth::id();
         $facturacion->estado            = 'pagado';
         $facturacion->save();
 
@@ -276,7 +278,12 @@ class Controlador_cobro extends Controller
         $caja_detalle_nuevo->save();
 
         if($caja_detalle_nuevo->id){
-            $data = mensaje_mostrar('success', 'Se pago el mes de : '. $request->nombre_mes .' con exito');
+            //$data = mensaje_mostrar('success', 'Se pago el mes de : '. $request->nombre_mes .' con exito');
+            $data = array(
+                'tipo'=>'success',
+                'mensaje'=> 'Se pago el mes de : '. $request->nombre_mes .' con exito',
+                'facturacion_id_des'=> encriptar($facturacion->id)
+            );
         }else{
             $data = mensaje_mostrar('error', 'Ocurrio un problema al cobrar ...');
         }
@@ -302,6 +309,7 @@ class Controlador_cobro extends Controller
             $facturacion->id_mes            = $lis;
             $facturacion->fecha             = date('Y-m-d');
             $facturacion->id_registro_cobro = $id_registro_cobro;
+            $facturacion->id_usuario        = Auth::id();
             $facturacion->estado            = 'pagado';
             $facturacion->save();
 

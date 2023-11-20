@@ -20,7 +20,7 @@ class Controlador_instalado extends Controller
     public function instalados_activos(Request $request){
 
         $registro = Registro_cobros::with(['instalacion'=>function($q1){
-            $q1->with(['persona_natural'=>function($q2){
+            $q1->with(['caja_detalle','persona_natural'=>function($q2){
                 $q2->with(['expedido']);
             },'persona_juridica'=>function($q3){
                 $q3->with(['representante_legal'=>function($q4){

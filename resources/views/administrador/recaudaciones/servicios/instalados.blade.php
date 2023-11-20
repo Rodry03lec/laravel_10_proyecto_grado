@@ -217,17 +217,15 @@
                         render: function(data, type, row, meta) {
                             return `
                                 <div class="flex space-x-3 items-center ">
-                                    <button class="action-btn btn-success" onclick="finalizar_servicio('${row.id}')" >
-                                        <iconify-icon icon="heroicons:shield-check"></iconify-icon>
-                                    </button>
-                                    <button class="action-btn btn-warning" onclick="editar_servicio('${row.id}')" >
-                                        <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
-                                    </button>
+
                                     <button class="action-btn btn-primary" onclick="ver_servicio('${row.id}')" >
                                         <iconify-icon icon="heroicons:eye"></iconify-icon>
                                     </button>
                                     <button class="action-btn btn-danger" onclick="ver_pdf_instalacion('${row.instalacion.id}')" type="button">
                                     <iconify-icon icon="heroicons:document-duplicate-solid"></iconify-icon>
+                                    </button>
+                                    <button class="action-btn btn-danger" onclick="ver_pdf_monto_instalacion('${row.instalacion.id}')" >
+                                        <iconify-icon icon="heroicons:shield-check"></iconify-icon>
                                     </button>
                                 </div>
                             `;
@@ -368,6 +366,32 @@
                     alerta_top(dato.tipo, 'Abriendo el PDF con exito');
                     setTimeout(() => {
                         window.open("{{ route('pdf_registro', ['id' => ':id']) }}".replace(':id', dato.mensaje), '_blank');
+                    }, 1000);
+                }
+                if (dato.tipo === 'error') {
+                    alerta_top(dato.tipo, dato.mensaje);
+                }
+            } catch (error) {
+                console.log('Error de datos : ' + error);
+            }
+        }
+
+        //para ver la instalacion del servicion de agua por los 350.00  ... aqui es donde se deve verificar si funciona con los demas
+        async function ver_pdf_monto_instalacion(id){
+            try {
+                let respuesta = await fetch("{{ route('veins_instalado') }}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify({id:id})
+                });
+                let dato = await respuesta.json();
+                if (dato.tipo === 'success') {
+                    alerta_top(dato.tipo, 'Abriendo el PDF de instalación con exito');
+                    setTimeout(() => {
+                        window.open("{{ route('pdf_comprobante_instalacion', ['id' => ':id']) }}".replace(':id', dato.mensaje), '_blank');
                     }, 1000);
                 }
                 if (dato.tipo === 'error') {

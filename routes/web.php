@@ -21,6 +21,8 @@ Route::prefix('/')->middleware(['no_autenticados'])->group(function(){
         return view('login');
     })->name('login');
     Route::post('ingresar',[Admin_login::class, 'ingresar'])->name('ingresar');
+
+    Route::get('captcha', [Admin_login::class, 'generateCaptchaImage'])->name('captcha');
 });
 
 
@@ -266,6 +268,7 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::get('instalados_inactivos','instalados_inactivos')->name('its_inactivos');
 
         Route::post('ver_instalado','ver_instalado')->name('veins_instalado');
+        Route::post('ver_comprovante','ver_comprovante')->name('vecom_comprobante');
     });
     /**
      * FIN DE LOS QUE YA ESTAN INSTALADOS
@@ -307,6 +310,10 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
      */
     Route::controller(Controlador_instalacion_pdf::class)->group(function(){
         Route::get('registro_documento/{id}','registro_documento')->name('pdf_registro');
+        Route::get('Instalacion/{id}','comprobante_cobro_instalacion')->name('pdf_comprobante_instalacion');
+        Route::get('Comprobante/{id}','comprobante_cobro_mensual')->name('pdf_comprobante_mensual');
+        //encriptar ese
+        //Route::get('Instalacion_comprobante/{id}','comprobante_cobro_instalacion')->name('pdf_comprobante_instalacion');
     });
     /**
      * FIN DE LOS REPOSTES PDF

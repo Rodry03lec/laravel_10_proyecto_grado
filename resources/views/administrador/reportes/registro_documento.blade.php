@@ -224,7 +224,6 @@
 
     <div class="firmas">
         <div>
-
             <table class="my-table" style="width: 100%; font-size: 9px; border-collapse: collapse;">
                 <tr>
                     <td style="padding-top: 40px; margin-bottom: 40px; margin: 0; border: 0; text-align: center;">-------------------------------------------------------<br>    CI : @if ($instalacion->personal_trabajo->persona_natural->complemento != null && $instalacion->personal_trabajo->persona_natural->complemento != '')

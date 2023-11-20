@@ -109,7 +109,7 @@ class Controlador_instalacion extends Controller
             //ahora tambien el monto de instalacion debe irse caja detalle
             $caja_detalle                   = new Caja_detalle();
             $caja_detalle->fecha            = date('Y-m-d');
-            $caja_detalle->concepto         = 'instalacion de servicio';
+            $caja_detalle->concepto         = 'Instalacion de agua';
             $caja_detalle->moneda           = 'Bolivianos';
             $caja_detalle->monto_ingreso    = sin_separador_comas($request->monto_instalacion);
             $caja_detalle->monto_salida     = 0;
@@ -121,7 +121,11 @@ class Controlador_instalacion extends Controller
             $caja_detalle->save();
 
             if($instalacion_nuevo->id){
-                $data = mensaje_mostrar('success', 'Se guardo los datos con éxito');
+                $data =  array(
+                    'tipo'      =>  'success',
+                    'mensaje'   =>  'Se guardo los datos con éxito',
+                    'instala_id' =>  encriptar($instalacion_nuevo->id)
+                );
             }else{
                 $data = mensaje_mostrar('error','Ocurrio un error al guardar');
             }

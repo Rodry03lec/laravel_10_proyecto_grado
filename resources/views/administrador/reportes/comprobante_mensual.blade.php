@@ -321,28 +321,28 @@
             </tr>
             <tr>
                 <th>Codigo</th>
-                <td>{{ cadena_sin_guion_punto($instalacion->caja_detalle[0]->creado_el) }}</td>
+                <td>{{ $factura->numero_factura }}</td>
             </tr>
             <tr>
                 <th>Nombres</th>
                 <td>
-                    @if ($instalacion->id_persona_juridica != null && $instalacion->id_persona_juridica != '')
-                        {{ $instalacion->persona_juridica->representante_legal->nombres . ' ' . $instalacion->persona_juridica->representante_legal->apellido_paterno . ' ' . $instalacion->persona_juridica->representante_legal->apellido_materno }}
+                    @if ($factura->registro_cobros->instalacion->id_persona_juridica != null && $factura->registro_cobros->instalacion->id_persona_juridica != '')
+                        {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->nombres . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->apellido_paterno . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->apellido_materno }}
                         ,con C.I. N° @if (
-                            $instalacion->persona_juridica->representante_legal->complemento != null &&
-                                $instalacion->persona_juridica->representante_legal->complemento != '')
-                            {{ $instalacion->persona_juridica->representante_legal->ci . ' - ' . $instalacion->persona_juridica->representante_legal->complemento . ' ' . $instalacion->persona_juridica->representante_legal->expedido->sigla }}
+                            $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento != null &&
+                            $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento != '')
+                            {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->ci . ' - ' . $instalacion->persona_juridica->representante_legal->complemento . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->expedido->sigla }}
                         @else
-                            {{ $instalacion->persona_juridica->representante_legal->ci . ' ' . $instalacion->persona_juridica->representante_legal->expedido->sigla }}
+                            {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->ci . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->expedido->sigla }}
                         @endif, representante legal de la
-                        {{ $instalacion->persona_juridica->nombre_empresa }}
+                        {{ $factura->registro_cobros->instalacion->persona_juridica->nombre_empresa }}
                         (Juridica)
                     @else
-                        {{ $instalacion->persona_natural->nombres . ' ' . $instalacion->persona_natural->apellido_paterno . ' ' . $instalacion->persona_natural->apellido_materno }}
-                        con C.I. N° @if ($instalacion->persona_natural->complemento != null && $instalacion->persona_natural->complemento != '')
-                            {{ $instalacion->persona_natural->ci . ' - ' . $instalacion->persona_natural->complemento . ' ' . $instalacion->persona_natural->expedido->sigla }}
+                        {{ $factura->registro_cobros->instalacion->persona_natural->nombres . ' ' . $factura->registro_cobros->instalacion->persona_natural->apellido_paterno . ' ' . $factura->registro_cobros->instalacion->persona_natural->apellido_materno }}
+                        con C.I. N° @if ($factura->registro_cobros->instalacion->persona_natural->complemento != null && $factura->registro_cobros->instalacion->persona_natural->complemento != '')
+                            {{ $factura->registro_cobros->instalacion->persona_natural->ci . ' - ' . $factura->registro_cobros->instalacion->persona_natural->complemento . ' ' . $factura->registro_cobros->instalacion->persona_natural->expedido->sigla }}
                         @else
-                            {{ $instalacion->persona_natural->ci . ' ' . $instalacion->persona_natural->expedido->sigla }}
+                            {{ $factura->registro_cobros->instalacion->persona_natural->ci . ' ' . $factura->registro_cobros->instalacion->persona_natural->expedido->sigla }}
                         @endif
                         (Natural)
                     @endif
@@ -350,24 +350,24 @@
             </tr>
             <tr>
                 <th>Tipo / Categoria / Costo mensual</th>
-                <td>{{ $instalacion->tipo_propiedad->titulo . ' / ' . $instalacion->sub_categoria->categoria->nombre . ' "' . $instalacion->sub_categoria->nombre . '" ' . con_separador_comas($instalacion->sub_categoria->precio_fijo) . ' Bs' . ' (' . convertir($instalacion->sub_categoria->precio_fijo) . ')' }}
+                <td>{{ $factura->registro_cobros->instalacion->tipo_propiedad->titulo . ' / ' . $factura->registro_cobros->instalacion->sub_categoria->categoria->nombre . ' "' . $factura->registro_cobros->instalacion->sub_categoria->nombre . '" ' . con_separador_comas($factura->registro_cobros->instalacion->sub_categoria->precio_fijo) . ' Bs' . ' (' . convertir($factura->registro_cobros->instalacion->sub_categoria->precio_fijo) . ')' }}
                 </td>
             </tr>
             <tr>
                 <th>Ubicación</th>
-                <td>{{ $instalacion->zona->nombre . ', ' . $instalacion->direccion }} </td>
+                <td>{{ $factura->registro_cobros->instalacion->zona->nombre . ', ' . $factura->registro_cobros->instalacion->direccion }} </td>
             </tr>
 
             <tr>
                 <th>Gosa</th>
-                <td>{{ $instalacion->glosa }}</td>
+                <td>{{ $factura->registro_cobros->instalacion->glosa }}</td>
             </tr>
         </table>
     </article>
 
     <p class="information">
         La Alcaldía de la capital de Chulumani (Gobierno Autonomo Municipal de Chulumani 'GAMCH') está comprometida con
-        proporcionar servicios de agua seguros y confiables para el bienestar de nuestra comunidad.ó
+        proporcionar servicios de agua seguros y confiables para el bienestar de nuestra comunidad.
     </p>
 
 
@@ -377,33 +377,15 @@
             <tr>
                 <th>Nº</th>
                 <th>DESCRIPCIÓN</th>
-                <th>RESPONSBLE DE INSTALACIÓN</th>
                 <th>TOTAL</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>1</td>
-                <td>{{ $instalacion->caja_detalle[0]->concepto }}</td>
-                <td>
-                    @if (
-                        $instalacion->personal_trabajo->persona_natural->complemento != null &&
-                            $instalacion->personal_trabajo->persona_natural->complemento != '')
-                        {{ $instalacion->personal_trabajo->persona_natural->ci . ' - ' . $instalacion->personal_trabajo->persona_natural->complemento . ' ' . $instalacion->personal_trabajo->persona_natural->expedido->sigla }}
-                    @else
-                        {{ $instalacion->personal_trabajo->persona_natural->ci . ' ' . $instalacion->personal_trabajo->persona_natural->expedido->sigla }}
-                    @endif
-                    <br>
-                    NOMBRES Y APELLIDOS :
-                    {{ $instalacion->personal_trabajo->persona_natural->nombres . ' ' . $instalacion->personal_trabajo->persona_natural->apellido_paterno . ' ' . $instalacion->personal_trabajo->persona_natural->apellido_materno }}
-                    <br>
-                    CARGO : {{ $instalacion->personal_trabajo->cargo->nombre }}
-                    <br>
-                    UNIDAD : {{ $instalacion->personal_trabajo->cargo->unidad->nombre }}
-                </td>
-                </td>
-                <td>{{ con_separador_comas($instalacion->monto_instalacion) . ' Bs' }} <br>
-                    ({{ convertir($instalacion->monto_instalacion) }})</td>
+                <td>{{ $factura->mes->numero_mes }}</td>
+                <td>{{ $factura->caja_detalle->concepto }}</td>
+                <td>{{ con_separador_comas($factura->caja_detalle->monto_ingreso) . ' Bs' }} <br>
+                    ({{ convertir($factura->caja_detalle->monto_ingreso) }})</td>
             </tr>
         </tbody>
     </table>
@@ -424,30 +406,30 @@
                     </td>
                     <td style="padding-top: 40px; margin-bottom: 40px; margin: 0; border: 0; text-align: center;">
                         ------------------------------------------------------- <br>
-                        @if ($instalacion->id_persona_juridica != null && $instalacion->id_persona_juridica != '')
+                        @if ($factura->registro_cobros->instalacion->id_persona_juridica != null && $factura->registro_cobros->instalacion->id_persona_juridica != '')
 
                             CI : @if (
-                                $instalacion->persona_juridica->representante_legal->complemento != null &&
-                                    $instalacion->persona_juridica->representante_legal->complemento != '')
-                                {{ $instalacion->persona_juridica->representante_legal->ci . ' - ' . $instalacion->persona_juridica->representante_legal->complemento . ' ' . $instalacion->persona_juridica->representante_legal->expedido->sigla }}
+                                $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento != null &&
+                                $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento != '')
+                                {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->ci . ' - ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->expedido->sigla }}
                             @else
-                                {{ $instalacion->persona_juridica->representante_legal->ci . ' ' . $instalacion->persona_juridica->representante_legal->expedido->sigla }}
+                                {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->ci . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->expedido->sigla }}
                             @endif
                             <br>
-                            {{ $instalacion->persona_juridica->representante_legal->nombres . ' ' . $instalacion->persona_juridica->representante_legal->apellido_paterno . ' ' . $instalacion->persona_juridica->representante_legal->apellido_materno }}
+                            {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->nombres . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->apellido_paterno . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->apellido_materno }}
                             <br>
-                            {{ $instalacion->persona_juridica->nombre_empresa }}
+                            {{ $factura->registro_cobros->instalacion->persona_juridica->nombre_empresa }}
                             <br>
                             TIPO : PERSONA JURÍDICA
                         @else
-                            CI : @if ($instalacion->persona_natural->complemento != null && $instalacion->persona_natural->complemento != '')
-                                {{ $instalacion->persona_natural->ci . ' - ' . $instalacion->persona_natural->complemento . ' ' . $instalacion->persona_natural->expedido->sigla }}
+                            CI : @if ($factura->registro_cobros->instalacion->persona_natural->complemento != null && $factura->registro_cobros->instalacion->persona_natural->complemento != '')
+                                {{ $factura->registro_cobros->instalacion->persona_natural->ci . ' - ' . $factura->registro_cobros->instalacion->persona_natural->complemento . ' ' . $factura->registro_cobros->instalacion->persona_natural->expedido->sigla }}
                             @else
-                                {{ $instalacion->persona_natural->ci . ' ' . $instalacion->persona_natural->expedido->sigla }}
+                                {{ $factura->registro_cobros->instalacion->persona_natural->ci . ' ' . $factura->registro_cobros->instalacion->persona_natural->expedido->sigla }}
                             @endif
                             <br>
                             NOMBRES Y APELLIDOS :
-                            {{ $instalacion->persona_natural->nombres . ' ' . $instalacion->persona_natural->apellido_paterno . ' ' . $instalacion->persona_natural->apellido_materno }}
+                            {{ $factura->registro_cobros->instalacion->persona_natural->nombres . ' ' . $factura->registro_cobros->instalacion->persona_natural->apellido_paterno . ' ' . $factura->registro_cobros->instalacion->persona_natural->apellido_materno }}
                             <br>
                             TIPO : PERSONA NATURAL
                             <br>
@@ -477,28 +459,28 @@
             </tr>
             <tr>
                 <th>Codigo</th>
-                <td>{{ cadena_sin_guion_punto($instalacion->caja_detalle[0]->creado_el) }}</td>
+                <td>{{ $factura->numero_factura }}</td>
             </tr>
             <tr>
                 <th>Nombres</th>
                 <td>
-                    @if ($instalacion->id_persona_juridica != null && $instalacion->id_persona_juridica != '')
-                        {{ $instalacion->persona_juridica->representante_legal->nombres . ' ' . $instalacion->persona_juridica->representante_legal->apellido_paterno . ' ' . $instalacion->persona_juridica->representante_legal->apellido_materno }}
+                    @if ($factura->registro_cobros->instalacion->id_persona_juridica != null && $factura->registro_cobros->instalacion->id_persona_juridica != '')
+                        {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->nombres . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->apellido_paterno . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->apellido_materno }}
                         ,con C.I. N° @if (
-                            $instalacion->persona_juridica->representante_legal->complemento != null &&
-                                $instalacion->persona_juridica->representante_legal->complemento != '')
-                            {{ $instalacion->persona_juridica->representante_legal->ci . ' - ' . $instalacion->persona_juridica->representante_legal->complemento . ' ' . $instalacion->persona_juridica->representante_legal->expedido->sigla }}
+                            $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento != null &&
+                            $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento != '')
+                            {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->ci . ' - ' . $instalacion->persona_juridica->representante_legal->complemento . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->expedido->sigla }}
                         @else
-                            {{ $instalacion->persona_juridica->representante_legal->ci . ' ' . $instalacion->persona_juridica->representante_legal->expedido->sigla }}
+                            {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->ci . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->expedido->sigla }}
                         @endif, representante legal de la
-                        {{ $instalacion->persona_juridica->nombre_empresa }}
+                        {{ $factura->registro_cobros->instalacion->persona_juridica->nombre_empresa }}
                         (Juridica)
                     @else
-                        {{ $instalacion->persona_natural->nombres . ' ' . $instalacion->persona_natural->apellido_paterno . ' ' . $instalacion->persona_natural->apellido_materno }}
-                        con C.I. N° @if ($instalacion->persona_natural->complemento != null && $instalacion->persona_natural->complemento != '')
-                            {{ $instalacion->persona_natural->ci . ' - ' . $instalacion->persona_natural->complemento . ' ' . $instalacion->persona_natural->expedido->sigla }}
+                        {{ $factura->registro_cobros->instalacion->persona_natural->nombres . ' ' . $factura->registro_cobros->instalacion->persona_natural->apellido_paterno . ' ' . $factura->registro_cobros->instalacion->persona_natural->apellido_materno }}
+                        con C.I. N° @if ($factura->registro_cobros->instalacion->persona_natural->complemento != null && $factura->registro_cobros->instalacion->persona_natural->complemento != '')
+                            {{ $factura->registro_cobros->instalacion->persona_natural->ci . ' - ' . $factura->registro_cobros->instalacion->persona_natural->complemento . ' ' . $factura->registro_cobros->instalacion->persona_natural->expedido->sigla }}
                         @else
-                            {{ $instalacion->persona_natural->ci . ' ' . $instalacion->persona_natural->expedido->sigla }}
+                            {{ $factura->registro_cobros->instalacion->persona_natural->ci . ' ' . $factura->registro_cobros->instalacion->persona_natural->expedido->sigla }}
                         @endif
                         (Natural)
                     @endif
@@ -506,60 +488,42 @@
             </tr>
             <tr>
                 <th>Tipo / Categoria / Costo mensual</th>
-                <td>{{ $instalacion->tipo_propiedad->titulo . ' / ' . $instalacion->sub_categoria->categoria->nombre . ' "' . $instalacion->sub_categoria->nombre . '" ' . con_separador_comas($instalacion->sub_categoria->precio_fijo) . ' Bs' . ' (' . convertir($instalacion->sub_categoria->precio_fijo) . ')' }}
+                <td>{{ $factura->registro_cobros->instalacion->tipo_propiedad->titulo . ' / ' . $factura->registro_cobros->instalacion->sub_categoria->categoria->nombre . ' "' . $factura->registro_cobros->instalacion->sub_categoria->nombre . '" ' . con_separador_comas($factura->registro_cobros->instalacion->sub_categoria->precio_fijo) . ' Bs' . ' (' . convertir($factura->registro_cobros->instalacion->sub_categoria->precio_fijo) . ')' }}
                 </td>
             </tr>
             <tr>
                 <th>Ubicación</th>
-                <td>{{ $instalacion->zona->nombre . ', ' . $instalacion->direccion }} </td>
+                <td>{{ $factura->registro_cobros->instalacion->zona->nombre . ', ' . $factura->registro_cobros->instalacion->direccion }} </td>
             </tr>
 
             <tr>
                 <th>Gosa</th>
-                <td>{{ $instalacion->glosa }}</td>
+                <td>{{ $factura->registro_cobros->instalacion->glosa }}</td>
             </tr>
         </table>
     </article>
 
     <p class="information">
         La Alcaldía de la capital de Chulumani (Gobierno Autonomo Municipal de Chulumani 'GAMCH') está comprometida con
-        proporcionar servicios de agua seguros y confiables para el bienestar de nuestra comunidad.ó
+        proporcionar servicios de agua seguros y confiables para el bienestar de nuestra comunidad.
     </p>
 
 
     <p style="margin: 2px 0" align="center"> Detalle </p>
-    <table>
+    <table class="">
         <thead>
             <tr>
                 <th>Nº</th>
                 <th>DESCRIPCIÓN</th>
-                <th>RESPONSBLE DE INSTALACIÓN</th>
                 <th>TOTAL</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>1</td>
-                <td>{{ $instalacion->caja_detalle[0]->concepto }}</td>
-                <td>
-                    @if (
-                        $instalacion->personal_trabajo->persona_natural->complemento != null &&
-                            $instalacion->personal_trabajo->persona_natural->complemento != '')
-                        {{ $instalacion->personal_trabajo->persona_natural->ci . ' - ' . $instalacion->personal_trabajo->persona_natural->complemento . ' ' . $instalacion->personal_trabajo->persona_natural->expedido->sigla }}
-                    @else
-                        {{ $instalacion->personal_trabajo->persona_natural->ci . ' ' . $instalacion->personal_trabajo->persona_natural->expedido->sigla }}
-                    @endif
-                    <br>
-                    NOMBRES Y APELLIDOS :
-                    {{ $instalacion->personal_trabajo->persona_natural->nombres . ' ' . $instalacion->personal_trabajo->persona_natural->apellido_paterno . ' ' . $instalacion->personal_trabajo->persona_natural->apellido_materno }}
-                    <br>
-                    CARGO : {{ $instalacion->personal_trabajo->cargo->nombre }}
-                    <br>
-                    UNIDAD : {{ $instalacion->personal_trabajo->cargo->unidad->nombre }}
-                </td>
-                </td>
-                <td>{{ con_separador_comas($instalacion->monto_instalacion) . ' Bs' }} <br>
-                    ({{ convertir($instalacion->monto_instalacion) }})</td>
+                <td>{{ $factura->mes->numero_mes }}</td>
+                <td>{{ $factura->caja_detalle->concepto }}</td>
+                <td>{{ con_separador_comas($factura->caja_detalle->monto_ingreso) . ' Bs' }} <br>
+                    ({{ convertir($factura->caja_detalle->monto_ingreso) }})</td>
             </tr>
         </tbody>
     </table>
@@ -580,30 +544,32 @@
                     </td>
                     <td style="padding-top: 40px; margin-bottom: 40px; margin: 0; border: 0; text-align: center;">
                         ------------------------------------------------------- <br>
-                        @if ($instalacion->id_persona_juridica != null && $instalacion->id_persona_juridica != '')
+                        @if ($factura->registro_cobros->instalacion->id_persona_juridica != null && $factura->registro_cobros->instalacion->id_persona_juridica != '')
 
-                            CI : @if (
-                                $instalacion->persona_juridica->representante_legal->complemento != null &&
-                                    $instalacion->persona_juridica->representante_legal->complemento != '')
-                                {{ $instalacion->persona_juridica->representante_legal->ci . ' - ' . $instalacion->persona_juridica->representante_legal->complemento . ' ' . $instalacion->persona_juridica->representante_legal->expedido->sigla }}
+                            CI :
+                            @if (
+                                $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento != null &&
+                                $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento != '')
+                                {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->ci . ' - ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->complemento . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->expedido->sigla }}
                             @else
-                                {{ $instalacion->persona_juridica->representante_legal->ci . ' ' . $instalacion->persona_juridica->representante_legal->expedido->sigla }}
+                                {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->ci . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->expedido->sigla }}
                             @endif
                             <br>
-                            {{ $instalacion->persona_juridica->representante_legal->nombres . ' ' . $instalacion->persona_juridica->representante_legal->apellido_paterno . ' ' . $instalacion->persona_juridica->representante_legal->apellido_materno }}
+                            {{ $factura->registro_cobros->instalacion->persona_juridica->representante_legal->nombres . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->apellido_paterno . ' ' . $factura->registro_cobros->instalacion->persona_juridica->representante_legal->apellido_materno }}
                             <br>
-                            {{ $instalacion->persona_juridica->nombre_empresa }}
+                            {{ $factura->registro_cobros->instalacion->persona_juridica->nombre_empresa }}
                             <br>
                             TIPO : PERSONA JURÍDICA
                         @else
-                            CI : @if ($instalacion->persona_natural->complemento != null && $instalacion->persona_natural->complemento != '')
-                                {{ $instalacion->persona_natural->ci . ' - ' . $instalacion->persona_natural->complemento . ' ' . $instalacion->persona_natural->expedido->sigla }}
+                            CI :
+                            @if ($factura->registro_cobros->instalacion->persona_natural->complemento != null && $factura->registro_cobros->instalacion->persona_natural->complemento != '')
+                                {{ $factura->registro_cobros->instalacion->persona_natural->ci . ' - ' . $factura->registro_cobros->instalacion->persona_natural->complemento . ' ' . $factura->registro_cobros->instalacion->persona_natural->expedido->sigla }}
                             @else
-                                {{ $instalacion->persona_natural->ci . ' ' . $instalacion->persona_natural->expedido->sigla }}
+                                {{ $factura->registro_cobros->instalacion->persona_natural->ci . ' ' . $factura->registro_cobros->instalacion->persona_natural->expedido->sigla }}
                             @endif
                             <br>
                             NOMBRES Y APELLIDOS :
-                            {{ $instalacion->persona_natural->nombres . ' ' . $instalacion->persona_natural->apellido_paterno . ' ' . $instalacion->persona_natural->apellido_materno }}
+                            {{ $factura->registro_cobros->instalacion->persona_natural->nombres . ' ' . $factura->registro_cobros->instalacion->persona_natural->apellido_paterno . ' ' . $factura->registro_cobros->instalacion->persona_natural->apellido_materno }}
                             <br>
                             TIPO : PERSONA NATURAL
                             <br>

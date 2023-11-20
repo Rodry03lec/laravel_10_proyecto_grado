@@ -40,6 +40,9 @@
                             $anio_registrado    = date('Y', strtotime($registro_cobros->fecha));
                             $mes_registrado     = $registro_cobros->numero_mes;
                         @endphp
+
+
+
                         @foreach ($resultados as $resultado)
                             @if ($anio_registrado==$gestion->gestion)
                                 @if ($resultado['mes']->numero_mes >= $mes_registrado)
@@ -76,7 +79,7 @@
                                             </td>
                                             <td class="table-td">
                                                 <div class="flex space-x-3 rtl:space-x-reverse">
-                                                    <a href="#" class="action-btn btn-danger" type="button">
+                                                    <a href="{{ route('pdf_comprobante_mensual', ['id'=>encriptar($resultado['factura_consulta'][0]->id)]) }}" class="action-btn btn-danger" target="_blank">
                                                     <iconify-icon icon="heroicons-outline:document-text"></iconify-icon>
                                                     </a>
                                                 </div>
@@ -124,13 +127,15 @@
                                         @endif
                                     </td>
 
+
                                     @if (!$resultado['factura_consulta']->isEmpty())
                                         <td class="table-td">
                                             <span class="badge bg-success-500 text-white capitalize pill">Pagado</span>
                                         </td>
                                         <td class="table-td">
+                                            {{-- {{ $resultado['factura_consulta'][0]->id }} --}}
                                             <div class="flex space-x-3 rtl:space-x-reverse">
-                                                <a href="#" class="action-btn btn-danger" type="button">
+                                                <a href="{{ route('pdf_comprobante_mensual', ['id'=>encriptar($resultado['factura_consulta'][0]->id)]) }}" class="action-btn btn-danger" target="_blank">
                                                 <iconify-icon icon="heroicons-outline:document-text"></iconify-icon>
                                                 </a>
                                             </div>

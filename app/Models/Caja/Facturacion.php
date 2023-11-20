@@ -20,6 +20,7 @@ class Facturacion extends Model
         'id_mes',
         'fecha',
         'id_registro_cobro',
+        'id_usuario',
     ];
 
     const CREATED_AT = 'creado_el';

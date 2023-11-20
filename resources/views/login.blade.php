@@ -9,24 +9,26 @@
     <link rel="icon" type="image/png" href="{{ asset('logos/logogamch.png') }}">
     <link rel="stylesheet" href="{{ asset('admin_template/css/app.css') }}">
 
-  <style>
-    #error_estilo{
-        color:red;
-        text-align: center;
-        font-size: 14px;
-    }
-    #success_estilo{
-        color:rgb(0, 177, 24);
-        text-align: center;
-        font-size: 14px;
-    }
+    <link rel="stylesheet" href="{{ asset('estilo/estilo_capcha.css') }}">
 
-    #estilo_imagen_f{
-        background-color: rgba(0, 0, 0, 0.795) !important;
-        background-image: url(imagenes/fondo1_chulumani.jpg);
-    }
 
-</style>
+    <style>
+        #error_estilo{
+            color:red;
+            text-align: center;
+            font-size: 14px;
+        }
+        #success_estilo{
+            color:rgb(0, 177, 24);
+            text-align: center;
+            font-size: 14px;
+        }
+
+        #estilo_imagen_f{
+            background-color: rgba(0, 0, 0, 0.795) !important;
+            background-image: url(imagenes/fondo1_chulumani.jpg);
+        }
+    </style>
 </head>
 
 <body class=" font-inter skin-default">
@@ -57,6 +59,28 @@
                                         <input type="password" name="password" id="password" class="form-control py-2" placeholder="Ingrese su contraseña">
                                     </div>
                                 </div>
+
+                                <div class="fromGroup" >
+                                    <div class="captcha">
+                                        <div class="captcha-container">
+                                            <div class="rectangulo"></div>
+                                            <span class="captcha-text" id="optener_cap"></span>
+                                        </div>
+                                        <button class="action-btn btn-refrescar" onclick="inicio()" type="button">
+                                            <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="fromGroup">
+                                    <label class="block capitalize form-label">Captcha</label>
+                                    <div class="relative">
+                                        <input type="text" name="captcha" id="captcha" class="form-control py-2" placeholder="Ingrese capcha">
+                                    </div>
+                                </div>
+
                         </form>
                         <div class="py-3">
                             <button class="btn btn-dark block w-full text-center" id="btn_ingresar">INGRESAR</button>
@@ -109,4 +133,19 @@
             console.log('Existe un error: '+error);
         }
     });
+
+    function inicio() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = xhr.responseText;
+                document.getElementById('optener_cap').innerHTML = data;
+                //document.getElementById('captcha_validar').value = data;
+            }
+        };
+        xhr.open("GET", "{{ route('captcha') }}", true);
+        xhr.send();
+    }
+
+    document.addEventListener("DOMContentLoaded", inicio);
 </script>

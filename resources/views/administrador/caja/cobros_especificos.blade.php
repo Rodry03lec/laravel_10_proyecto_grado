@@ -373,6 +373,10 @@
                         document.getElementById('html_cobro_servicio_mensual').innerHTML = '';
                         salir_cobro_mensual();
                         realizar_cobro_mensual(id_gestion, id_registro_cobro);
+                        //
+                        setTimeout(() => {
+                            window.open("{{ route('pdf_comprobante_mensual', ['id' => ':id']) }}".replace(':id', dato.facturacion_id_des), '_blank');
+                        }, 1500);
                     }
                     if (dato.tipo === 'error') {
                         alerta_top(dato.tipo, dato.mensaje);

@@ -170,6 +170,13 @@
         }
     }
 
+    function cadena_sin_guion_punto($valor){
+        $cadena_sin_guiones_y_puntos = str_replace(['-', ':'], ' ', $valor);
+        // Eliminar espacios en blanco
+        $cadena_sin_espacios = str_replace(' ', '', $cadena_sin_guiones_y_puntos);
+        return $cadena_sin_espacios;
+    }
+
 
     function unidad($numuero){
         switch ($numuero){

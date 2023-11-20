@@ -582,6 +582,9 @@
                         $('#modal_nueva_registro_instalacion').modal('hide');
                         $('#listar_instalacion_tab').fadeIn(200);
                     });
+                    setTimeout(() => {
+                        window.open("{{ route('pdf_comprobante_instalacion', ['id' => ':id']) }}".replace(':id', dato.instala_id), '_blank');
+                    }, 1000);
                 }
                 if (dato.tipo === 'error') {
                     alerta_top(dato.tipo, dato.mensaje);
