@@ -199,8 +199,8 @@ class Controlador_persona extends Controller{
     public function persona_juridica_nuevo(Request $request){
         $validar = Validator::make($request->all(),[
             'tipo_empresa'          =>  'required',
-            'numero_testimonio'     =>  'required',
-            'testimonio'            =>  'required|file',
+            /* 'numero_testimonio'     =>  'required',
+            'testimonio'            =>  'required|file', */
             'nit'                   =>  'required|unique:nl_persona_juridica,nit',
             'nombre'                =>  'required|unique:nl_persona_juridica,nombre_empresa',
             'telefono'              =>  'required|numeric',
@@ -214,9 +214,18 @@ class Controlador_persona extends Controller{
 
             //vamos a recivir el pdf
             $pdf            = $request->file('testimonio');
-            $ruta_pdf       = 'testimonio/';
+
+            if ($request->hasFile('testimonio') && $pdf->isValid()) {
+                $ruta_pdf = 'testimonio/';
+                $testimonio_doc = date('YmdHis') . '.pdf';
+                $pdf->move($ruta_pdf, $testimonio_doc);
+            } else {
+                $testimonio_doc = '';
+            }
+
+            /* $ruta_pdf       = 'testimonio/';
             $testimonio_doc = date('YmdHis').'.pdf';
-            $pdf->move($ruta_pdf, $testimonio_doc);
+            $pdf->move($ruta_pdf, $testimonio_doc); */
 
             $persona_juridica                           = new Juridica;
             $persona_juridica->nombre_empresa           = $request->nombre;
@@ -279,7 +288,7 @@ class Controlador_persona extends Controller{
     public function persona_juridica_uptate(Request $request){
         $validar = Validator::make($request->all(),[
             'tipo_empresa_'          =>  'required',
-            'numero_testimonio_'     =>  'required',
+            /* 'numero_testimonio_'     =>  'required', */
             /* 'testimonio_'            =>  'required|file', */
             'nit_'                   =>  'required|unique:nl_persona_juridica,nit,'.$request->id_persona_juridica,
             'nombre_'                =>  'required|unique:nl_persona_juridica,nombre_empresa,'.$request->id_persona_juridica,
@@ -309,10 +318,10 @@ class Controlador_persona extends Controller{
 
             $valor_e = '';
             if(!is_null($request->file('testimonio_'))){
-
-                $ubicacion = public_path('testimonio/'.$persona_juridica->testimonio);
-                unlink($ubicacion);
-
+                if($persona_juridica->testimonio!= null && $persona_juridica->testimonio!= ''){
+                    $ubicacion = public_path('testimonio/'.$persona_juridica->testimonio);
+                    unlink($ubicacion);
+                }
                 $pdf            = $request->file('testimonio_');
                 $ruta_pdf       = 'testimonio/';
                 $testimonio_doc = date('YmdHis').'.pdf';
@@ -321,6 +330,8 @@ class Controlador_persona extends Controller{
             }else{
                 $valor_e = 0;
             }
+
+
             if($valor_e == 1){
                 $persona_juridica->testimonio               = $testimonio_doc;
             }

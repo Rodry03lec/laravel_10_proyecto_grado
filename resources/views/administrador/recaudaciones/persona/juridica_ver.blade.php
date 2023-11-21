@@ -164,19 +164,21 @@
                 </td>
             </tr>
 
-            <tr>
-                <th>TESTIMONIO:</th>
-                <td>
-                    <div class="alert alert-outline-dark">
-                        <div class="flex items-start space-x-3 rtl:space-x-reverse">
-                            <div class="flex-1 font-Inter">
-                                <div class="flex justify-center items-center py-2">
-                                    <embed src="{{ asset('testimonio/'.$persona_ju->testimonio) }}" type="application/pdf" class="rounded-md border-4 border-slate-200 block" width="400" height="400">
+            @if ($persona_ju->testimonio!== null && $persona_ju->testimonio !== '')
+                <tr>
+                    <th>TESTIMONIO:</th>
+                    <td>
+                        <div class="alert alert-outline-dark">
+                            <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                                <div class="flex-1 font-Inter">
+                                    <div class="flex justify-center items-center py-2">
+                                        <embed src="{{ asset('testimonio/'.$persona_ju->testimonio) }}" type="application/pdf" class="rounded-md border-4 border-slate-200 block" width="400" height="400">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </td>
+                    </td>
+                @endif
             </tr>
         </table>
 

@@ -683,7 +683,6 @@
                 if (dato.tipo === 'success') {
                     $('#modal_editar_persona_juridica').modal('show');
                     document.getElementById('id_persona_juridica').value = dato.mensaje.id;
-                    console.log(dato);
 
                     //para completar el tipo de empresa
                     let selectElement = document.getElementById('tipo_empresa_');
@@ -708,8 +707,12 @@
                     document.getElementById('actividad_economica_').value = dato.mensaje.actividad_economica;
                     document.getElementById('numero_testimonio_').value = dato.mensaje.numero_testimonio;
 
-                    let urlDocumento = "{{ asset('testimonio/') }}/" + dato.mensaje.testimonio;
-                    document.querySelector('#vizualizar_pdf_').setAttribute('src', urlDocumento);
+                    if(dato.mensaje.testimonio !== null && dato.mensaje.testimonio !== ''){
+                        let urlDocumento = "{{ asset('testimonio/') }}/" + dato.mensaje.testimonio;
+                        document.querySelector('#vizualizar_pdf_').setAttribute('src', urlDocumento);
+                    }
+
+
 
                     document.getElementById('nit_').value = dato.mensaje.nit;
                     document.getElementById('nombre_').value = dato.mensaje.nombre_empresa;
@@ -788,7 +791,6 @@
                     body: formData
                 });
                 let dato = await respuesta.json();
-                console.log(dato);
                 vaciar_errores_juridica();
                 if (dato.tipo === 'errores') {
                     let obj = dato.mensaje;

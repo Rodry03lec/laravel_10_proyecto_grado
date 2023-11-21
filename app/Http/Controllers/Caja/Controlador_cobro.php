@@ -192,7 +192,13 @@ class Controlador_cobro extends Controller
             $caja_detalle_nuevo->save();
         }
 
-        $data = mensaje_mostrar('success','Se realizo el pago anual con exito');
+        //$data = mensaje_mostrar('success','Se realizo el pago anual con exito');
+        $data=array(
+            'tipo'                          => 'success',
+            'mensaje'                       => 'Se realizo el pago anual con exito',
+            'gestion_id_encriptado_anual'   => encriptar($request->id_gestion_cobros),
+            'registro_cobro_encrip_anual'   => encriptar($request->id_registro_cobros),
+        );
         return response()->json($data);
     }
 
@@ -239,6 +245,23 @@ class Controlador_cobro extends Controller
             ];
         }
         $data['resultados'] = $resultados;
+
+        //validamos si la persona se registro antes o si es de esaj gestion
+        $anio_registrado    = date('Y', strtotime($registro_cobros->fecha));
+        $mes_registrado     = $registro_cobros->numero_mes;
+
+        $conta = 0;
+        foreach ($resultados as $resultado) {
+            if($anio_registrado==$gestion->gestion){
+                if($resultado['mes']->numero_mes >= $mes_registrado){
+                    $conta = $conta + 1;
+                }
+            }else{
+                $conta = $conta + 1;
+            }
+        }
+        $monto_anual = $registro_cobros->instalacion->sub_categoria->precio_fijo * $conta;
+        $data['monto_total_anual'] = $monto_anual;
 
 
         return view('administrador.caja.cobros.cobro_mes', $data);
@@ -328,7 +351,16 @@ class Controlador_cobro extends Controller
             $caja_detalle_nuevo->save();
 
             if($caja_detalle_nuevo->id){
-                $data = mensaje_mostrar('success', 'Se guardo con exito los meses');
+
+                $data=array(
+                    'tipo'                  => 'success',
+                    'mensaje'               => 'Se guardo con exito los meses',
+                    'gestion_id_encriptado' => encriptar($id_gestion),
+                    'registro_cobro_encrip' => encriptar($id_registro_cobro),
+                    'gestion_id1'           => $id_gestion,
+                    'registro_cobro1'       => $id_registro_cobro,
+                );
+                //$data = mensaje_mostrar('success', 'Se guardo con exito los meses');
             }else{
                 $data = mensaje_mostrar('error', 'Ocurrio un error en el guardado');
             }

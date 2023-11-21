@@ -412,6 +412,6 @@
         if($cents>0){
             return $numf." con ".centena($cents).' centavos';
         }else{
-            return $numf. 'Bolivianos';
+            return $numf. ' Bolivianos';
         }
     }

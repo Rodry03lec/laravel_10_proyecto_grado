@@ -1,5 +1,5 @@
 @extends('menu.principal_recaudaciones')
-@section('titulo_recaudaciones', '| CAEGORÍA')
+@section('titulo_recaudaciones', '| CATEGORÍA')
 @section('contenido_recaudaciones')
 
     <div class="mb-5">

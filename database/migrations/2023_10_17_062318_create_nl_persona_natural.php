@@ -93,8 +93,8 @@ return new class extends Migration
             $table->string('nit', 50)->unique();
             $table->string('fecha_constitucion', 50);
             $table->text('actividad_economica');
-            $table->string('numero_testimonio', 50);
-            $table->string('testimonio', 100);
+            $table->string('numero_testimonio', 50)->nullable();
+            $table->string('testimonio', 100)->nullable();
 
             $table->unsignedBigInteger('id_representante_legal')->nullable();
             $table->unsignedBigInteger('id_asesor')->nullable();

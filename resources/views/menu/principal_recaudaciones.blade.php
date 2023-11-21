@@ -151,24 +151,24 @@
 
 
 
-                        {{-- <li>
-                            <a href="{{ route('cobus_index') }}" class="navItem @if ($menu=='17') {{ 'active' }} @endif">
+                        <li>
+                            <a href="{{ route('ac_index') }}" class="navItem @if ($menu=='18') {{ 'active' }} @endif ">
                                 <span class="flex items-center">
                                     <iconify-icon class="nav-icon" icon="solar:hand-money-bold"></iconify-icon>
-                                    <span>Cobros</span>
+                                    <span>Caja actual</span>
                                 </span>
                             </a>
-                        </li> --}}
+                        </li>
 
 
-                        <li>
+                        {{-- <li>
                             <a href="#" class="navItem ">
                                 <span class="flex items-center">
                                     <iconify-icon class="nav-icon" icon="mdi:file-pdf-box"></iconify-icon>
                                     <span>Reportes</span>
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
 
                     </ul>
                 </div>

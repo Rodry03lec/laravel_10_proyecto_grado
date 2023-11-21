@@ -1,7 +1,3 @@
-<div class="flex-1 text-center">
-    <div class="card-title text-slate-500 dark:text-white">GESTIÓN : {{ $gestion->gestion }}</div>
-</div>
-
 <form id="form_mensual_pagar" method="post" autocomplete="off">
     @csrf
     <input type="hidden" id="id_gestion_mes" name="id_gestion_mes" value="{{ $gestion->id }}">
@@ -11,6 +7,7 @@
 <div class="card-body px-6 pb-6">
     <div class="flex flex-wrap justify-between items-center mb-4">
         <header class="card-header noborder">
+            <div class="card-title text-slate-500 dark:text-white">GESTIÓN : {{ $gestion->gestion }}</div>
         </header>
         <div class="flex space-x-4 justify-end items-center rtl:space-x-reverse " id="mostrar_precio_cobrando">
             <button class="btn relative inline-flex justify-center btn-dark">Seleccionados Bs. 0.00
@@ -39,6 +36,7 @@
                         @php
                             $anio_registrado    = date('Y', strtotime($registro_cobros->fecha));
                             $mes_registrado     = $registro_cobros->numero_mes;
+                            $monto_total        = 0;
                         @endphp
 
 
@@ -84,6 +82,9 @@
                                                     </a>
                                                 </div>
                                             </td>
+                                            @php
+                                                $monto_total = $monto_total + $resultado['factura_consulta'][0]->caja_detalle->importe;
+                                            @endphp
                                         @else
                                             <td class="table-td">
                                                 <span class="badge bg-danger-500 text-white capitalize pill">Pendiente</span>
@@ -140,6 +141,9 @@
                                                 </a>
                                             </div>
                                         </td>
+                                        @php
+                                            $monto_total = $monto_total + $resultado['factura_consulta'][0]->caja_detalle->importe;
+                                        @endphp
                                     @else
                                         <td class="table-td">
                                             <span class="badge bg-danger-500 text-white capitalize pill">Pendiente</span>
@@ -156,6 +160,14 @@
                             @endif
                         @endforeach
                     </tbody>
+                    <tfoot class=" bg-slate-200 dark:bg-slate-700 ">
+                        <tr>
+                            <td scope="col" class="table-th">Total cancelado</td>
+                            <td scope="col" class="table-th" colspan="2" > {{ con_separador_comas($monto_total).' Bs ('.convertir($monto_total).')' }} </td>
+                            <td scope="col" class="table-th">Monto faltante</td>
+                            <td scope="col" class="table-th" colspan="2" >{{ con_separador_comas($monto_total_anual-$monto_total).' Bs ('.convertir($monto_total_anual-$monto_total).')' }}</td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

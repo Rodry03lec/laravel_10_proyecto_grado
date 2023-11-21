@@ -11,6 +11,9 @@ use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
 use Dompdf\Options;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Gestion;
+use App\Models\Mes;
+use App\Models\Caja\Registro_cobros;
 
 class Controlador_instalacion_pdf extends Controller{
     //para los pdf
@@ -101,19 +104,6 @@ class Controlador_instalacion_pdf extends Controller{
             }]);
         },'caja_detalle'])->find($id_factura);
 
-
-        /* $factura = Facturacion::with(['gestion','mes','registro_cobros'=>function($rc){
-            $rc->with(['instalacion'=>function($i){
-                $i->with(['zona','persona_natural'=>function($pn){
-                    $pn->with(['expedido']);
-                },'persona_juridica'=>function($pj){
-                    $pj->with(['representante_legal'=>function($rl){
-                        $rl->with(['expedido']);
-                    },'tipo_empresa']);
-                },'sub_categoria','tipo_propiedad','']);
-            }]);
-        },'caja_detalle'])->find($id_factura); */
-
         $data['factura'] = $factura;
         $data['usuario_registro'] = User::find($factura->id_usuario);
 
@@ -131,4 +121,95 @@ class Controlador_instalacion_pdf extends Controller{
         $pdfContent = $dompdf->output();
         return response($pdfContent, 200)->header('Content-Type', 'application/pdf');
     }
+
+    //para ver si pagaron en conjunto o anual
+    public function comprobante_pago_ver($id_gestion, $id_registro_cobro){
+        $id_ges         = desencriptar($id_gestion);
+        $id_reg_cobro   = desencriptar($id_registro_cobro);
+
+
+        $facturacion        = Facturacion::with(['mes', 'caja_detalle'])
+                                ->where('id_registro_cobro',$id_reg_cobro)
+                                ->where('id_gestion', $id_ges)
+                                ->orderBy('id', 'asc')
+                                ->get();
+        $registro_cobros    = Registro_cobros::with(['instalacion'=>function($i){
+            $i->with(['sub_categoria','zona','persona_natural'=>function($pn){
+                $pn->with(['expedido']);
+            },'persona_juridica'=>function($pj){
+                $pj->with(['representante_legal'=>function($rl){
+                    $rl->with(['expedido']);
+                }]);
+            },'personal_trabajo']);
+        },'facturacion'=>function($q){
+            $q->with(['gestion','mes']);
+        }])->find($id_reg_cobro);
+
+
+        $usuario_registro = User::find($registro_cobros->instalacion->id_usuario);
+
+        $data['usuario_registro']   = $usuario_registro;
+
+
+
+
+        $gestion            = Gestion::find($id_ges);
+        $mes                = Mes::orderBy('numero_mes', 'asc')->get();
+
+        $data['facturacion']        = $facturacion;
+        $data['registro_cobros']    = $registro_cobros;
+
+        $data['gestion']            = $gestion;
+        $data['mes']                = $mes;
+
+        $resultados = [];
+
+        foreach ($mes as $m) {
+            // Realizar la consulta según tus condiciones
+            $factura_consulta = Facturacion::with(['caja_detalle'])->where('id_gestion', $gestion->id)
+                ->where('id_mes', $m->id)
+                ->where('id_registro_cobro', $id_reg_cobro)
+                ->get();
+
+            // Agregar el resultado al array
+            $resultados[] = [
+                'mes' => $m,
+                'factura_consulta' => $factura_consulta,
+            ];
+        }
+        $data['resultados'] = $resultados;
+
+        //validamos si la persona se registro antes o si es de esaj gestion
+        $anio_registrado    = date('Y', strtotime($registro_cobros->fecha));
+        $mes_registrado     = $registro_cobros->numero_mes;
+
+        $conta = 0;
+        foreach ($resultados as $resultado) {
+            if($anio_registrado==$gestion->gestion){
+                if($resultado['mes']->numero_mes >= $mes_registrado){
+                    $conta = $conta + 1;
+                }
+            }else{
+                $conta = $conta + 1;
+            }
+        }
+        $monto_anual = $registro_cobros->instalacion->sub_categoria->precio_fijo * $conta;
+        $data['monto_total_anual'] = $monto_anual;
+
+
+        $options = new Options;
+        $options->set('isPhpEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+        //$data['persona'] = 'Rodry';
+        $html = View::make('administrador.reportes.comprobante_anual')->with($data)->render();
+        $dompdf->loadHtml($html);
+        //$dompdf->setPaper('letter', 'portrait');
+        $dompdf->setPaper('letter');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+        return response($pdfContent, 200)->header('Content-Type', 'application/pdf');
+    }
+
 }

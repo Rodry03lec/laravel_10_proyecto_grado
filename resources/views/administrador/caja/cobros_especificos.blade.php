@@ -105,6 +105,7 @@
                                                 <th scope="col" class="table-th">GESTIÓN</th>
                                                 <th scope="col" class="table-th">COBROS POR GESTIÓN</th>
                                                 <th scope="col" class="table-th">COBROS POR MESES</th>
+                                                <th scope="col" class="table-th">IMPRIMIR</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tabla_gestion_tab">
@@ -130,6 +131,13 @@
                                                             </span>
                                                         </button>
                                                     </td>
+                                                    <td>
+                                                        <div class="flex space-x-3 rtl:space-x-reverse">
+                                                            <a href="{{ route('pdf_pago_ver', ['id_gestion'=> encriptar($lis->id),'id_registro_cobro'=>encriptar($instalacion->registro_cobros->id)]) }}" target="_blank"  class="action-btn btn-danger" type="button">
+                                                            <iconify-icon icon="heroicons:document-text-20-solid"></iconify-icon>
+                                                            </a>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -146,7 +154,7 @@
 
     {{-- MODAL PARA CREAR LA NUEVA GESTION  modal_cobro_servicio --}}
     <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-    id="modal_cobro_servicio" tabindex="-1" aria-labelledby="disabled_backdrop" aria-hidden="true"
+    id="modal_cobro_servicio_mes" tabindex="-1" aria-labelledby="disabled_backdrop" aria-hidden="true"
     data-bs-backdrop="static" x-data="{ showModal: false }">
         <div class="modal-dialog modal-xl  relative w-auto pointer-events-none">
             <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding
@@ -224,28 +232,6 @@
 @endsection
 @section('script_caja')
     <script>
-        /* async function cobrar_deuda_gestion(id_gestion, id_registro_cobro) {
-            try {
-                let formData = new FormData();
-                formData.append('id_gestion', id_gestion);
-                formData.append('id_registro_cobro', id_registro_cobro);
-                formData.append('_token', token);
-                let response = await fetch("{{ route('lis_cobro_gestion') }}", {
-                    method: "POST",
-                    body: formData
-                });
-                if (response.ok) {
-                    let data = await response.text();
-                    $('#modal_cobro_servicio').modal('show');
-                    document.getElementById('html_cobro_servicio').innerHTML = data;
-                } else {
-                    console.error("Error en la solicitud AJAX:", response.status);
-                }
-            } catch (error) {
-                console.log('Error de datos : ' + error);
-            }
-        } */
-
         //para el cobro mensual
         async function realizar_cobro_mensual(id_gestion, id_registro_cobro) {
             try {
@@ -259,7 +245,7 @@
                 });
                 if (response.ok) {
                     let data = await response.text();
-                    $('#modal_cobro_servicio').modal('show');
+                    $('#modal_cobro_servicio_mes').modal('show');
                     document.getElementById('html_cobro_servicio_mensual').innerHTML = data;
                 } else {
                     console.error("Error en la solicitud AJAX:", response.status);
@@ -307,24 +293,51 @@
                         alerta_top('error', 'Objeto no existente');
                     } else {
                         // El objeto no está vacío
-                        try {
-                            let respuesta = await fetch("{{ route('save_cobro_anual') }}", {
-                                method: "POST",
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(datos)
-                            });
-                            let dato = await respuesta.json();
-                            if (dato.tipo === 'success') {
-                                alerta_top(dato.tipo, dato.mensaje);
-                                setTimeout(() => {
-                                    location.reload();
-                                }, 1400);
-                            }
+
+                        const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn btn-success',
+                                cancelButton: 'btn btn-danger'
+                            },
+                            buttonsStyling: false
+                        })
+
+                        swalWithBootstrapButtons.fire({
+                            title: 'NOTA!',
+                            text: "Esta seguro de cobrar de toda la gestión",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, cobrar',
+                            cancelButtonText: 'No, cancelar',
+                            reverseButtons: true
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                try {
+                                let respuesta = await fetch("{{ route('save_cobro_anual') }}", {
+                                    method: "POST",
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(datos)
+                                });
+                                let dato = await respuesta.json();
+                                if (dato.tipo === 'success') {
+                                    alerta_top(dato.tipo, dato.mensaje);
+                                    setTimeout(() => {
+                                        window.open("{{ route('pdf_pago_ver', ['id_gestion' => ':id1', 'id_registro_cobro'=>':id2']) }}".replace(':id1', dato.gestion_id_encriptado_anual).replace(':id2', dato.registro_cobro_encrip_anual), '_blank');
+                                    }, 1400);
+
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1500);
+                                }
                         } catch (error) {
                             console.log('Error de datos : ' + error);
                         }
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                alerta_top('error', 'Se cancelo');
+                            }
+                        })
                     }
                 } else {
                     // El elemento con el ID 'formulario_pagar_anualmente' no existe
@@ -457,9 +470,15 @@
                             body: JSON.stringify(datosCombinados)
                         });
                         let dato = await respuesta.json();
-                        console.log(dato);
                         if (dato.tipo === 'success') {
                             alerta_top(dato.tipo, dato.mensaje);
+                            document.getElementById('html_cobro_servicio_mensual').innerHTML = '';
+                            setTimeout(() => {
+                                window.open("{{ route('pdf_pago_ver', ['id_gestion' => ':id1', 'id_registro_cobro'=>':id2']) }}".replace(':id1', dato.gestion_id_encriptado).replace(':id2', dato.registro_cobro_encrip), '_blank');
+                            }, 1500);
+
+                            salir_cobro_mensual();
+                            realizar_cobro_mensual(dato.gestion_id1, dato.registro_cobro1);
                         }
                         if (dato.tipo === 'error') {
                             alerta_top(dato.tipo, dato.mensaje);

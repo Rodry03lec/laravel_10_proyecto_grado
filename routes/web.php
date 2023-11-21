@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Caja\Controlador_actual_caja;
 use App\Http\Controllers\Caja\Controlador_cobro;
 use App\Http\Controllers\Configuracion\Controlador_configuracion;
 use App\Http\Controllers\Configuracion\Controlador_gestion;
@@ -303,6 +304,16 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
      * FIN DE REALIZAR LOS COBROS
      */
 
+    /**
+     * PARA MOSTRAR CAJA DETALLE
+     */
+    Route::controller(Controlador_actual_caja::class)->group(function(){
+        Route::get('CajaActual', 'caja_actual_detalle')->name('ac_index');
+    });
+    /**
+     * FIN DE MOSTRAR CAJA DETALLE
+     */
+
 
 
     /**
@@ -312,6 +323,7 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::get('registro_documento/{id}','registro_documento')->name('pdf_registro');
         Route::get('Instalacion/{id}','comprobante_cobro_instalacion')->name('pdf_comprobante_instalacion');
         Route::get('Comprobante/{id}','comprobante_cobro_mensual')->name('pdf_comprobante_mensual');
+        Route::get('Comprobante_pago/{id_gestion}/{id_registro_cobro}','comprobante_pago_ver')->name('pdf_pago_ver');
         //encriptar ese
         //Route::get('Instalacion_comprobante/{id}','comprobante_cobro_instalacion')->name('pdf_comprobante_instalacion');
     });

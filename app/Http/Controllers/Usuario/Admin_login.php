@@ -111,7 +111,7 @@ class Admin_login extends Controller
 
     private function distortText($text) {
         $distortedText = '';
-        $maxRotation = 15; // Máxima rotación en grados
+        $maxRotation = 25; // Máxima rotación en grados
         $letterSpacing = -1; // Espaciado entre letras en píxeles
 
         for ($i = 0; $i < strlen($text); $i++) {
