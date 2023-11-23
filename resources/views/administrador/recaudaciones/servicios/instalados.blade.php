@@ -46,6 +46,14 @@
                                 <header class="card-header noborder">
                                     <h4 class="card-title">Listado de servicio activo</h4>
                                 </header>
+                                <div class="flex space-x-4 justify-end items-center rtl:space-x-reverse ">
+                                    <a href="{{ route('pdf_instalados') }}" target="_blank" class="btn inline-flex justify-center btn-danger dark:bg-slate-800 m-1" >
+                                        <span class="flex items-center">
+                                            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="ph:file-doc"></iconify-icon>
+                                            <span>Instados PDF</span>
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="card-body px-6 pb-6">
@@ -58,7 +66,7 @@
                                                 style="width: 100%">
                                                 <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                                     <tr>
-                                                        <th scope="col" class="table-th">ID</th>
+                                                        <th scope="col" class="table-th">Nº</th>
                                                         <th scope="col" class="table-th">TIPO</th>
                                                         <th scope="col" class="table-th">CI</th>
                                                         <th scope="col" class="table-th">NOMBRES Y APELLIDOS</th>
@@ -91,7 +99,7 @@
                                                 style="width: 100%">
                                                 <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                                     <tr>
-                                                        <th scope="col" class="table-th">ID</th>
+                                                        <th scope="col" class="table-th">Nº</th>
                                                         <th scope="col" class="table-th">TIPO</th>
                                                         <th scope="col" class="table-th">CI</th>
                                                         <th scope="col" class="table-th">NOMBRES Y APELLIDOS</th>
@@ -218,14 +226,12 @@
                             return `
                                 <div class="flex space-x-3 items-center ">
 
-                                    <button class="action-btn btn-primary" onclick="ver_servicio('${row.id}')" >
-                                        <iconify-icon icon="heroicons:eye"></iconify-icon>
-                                    </button>
+
                                     <button class="action-btn btn-danger" onclick="ver_pdf_instalacion('${row.instalacion.id}')" type="button">
                                     <iconify-icon icon="heroicons:document-duplicate-solid"></iconify-icon>
                                     </button>
                                     <button class="action-btn btn-danger" onclick="ver_pdf_monto_instalacion('${row.instalacion.id}')" >
-                                        <iconify-icon icon="heroicons:shield-check"></iconify-icon>
+                                        <iconify-icon icon="ph:file-doc-duotone"></iconify-icon>
                                     </button>
                                 </div>
                             `;

@@ -43,7 +43,7 @@
                             style="width: 100%">
                             <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                 <tr>
-                                    <th scope="col" class="table-th">ID</th>
+                                    <th scope="col" class="table-th">Nº</th>
                                     <th scope="col" class="table-th">TITULO</th>
                                     <th scope="col" class="table-th">DESCRIPCIÓN</th>
                                     <th scope="col" class="table-th">ACCIONES</th>

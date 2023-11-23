@@ -133,7 +133,7 @@ return new class extends Migration
         //para eliminar el achivo
         $listar_persona_juridica = Juridica::get();
         foreach ($listar_persona_juridica as $lis) {
-            if($lis->testimonio != ''){
+            if($lis->testimonio != '' && $lis->testimonio != null){
                 $ubicacion = public_path('testimonio/'.$lis->testimonio);
                 unlink($ubicacion);
             }

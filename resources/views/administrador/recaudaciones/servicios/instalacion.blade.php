@@ -43,7 +43,7 @@
                             style="width: 100%">
                             <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                 <tr>
-                                    <th scope="col" class="table-th">ID</th>
+                                    <th scope="col" class="table-th">Nº</th>
                                     <th scope="col" class="table-th">TIPO</th>
                                     <th scope="col" class="table-th">CI REPRESENTANTE</th>
                                     <th scope="col" class="table-th">FECHA DE INSTALACIÓN</th>
@@ -53,7 +53,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -661,12 +660,6 @@
                                 <div class="flex space-x-3 items-center ">
                                     <button class="action-btn btn-success" onclick="finalizar_instalacion('${row.id}')" >
                                         <iconify-icon icon="heroicons:shield-check"></iconify-icon>
-                                    </button>
-                                    <button class="action-btn btn-warning" onclick="editar_instalacion('${row.id}')" >
-                                        <iconify-icon icon="heroicons:pencil-square"></iconify-icon>
-                                    </button>
-                                    <button class="action-btn btn-primary" onclick="ver_instalacion('${row.id}')" >
-                                        <iconify-icon icon="heroicons:eye"></iconify-icon>
                                     </button>
                                 </div>
                             `;

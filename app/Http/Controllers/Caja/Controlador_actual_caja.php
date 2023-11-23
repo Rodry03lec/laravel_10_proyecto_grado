@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Caja;
 
 use App\Http\Controllers\Controller;
 use App\Models\Caja\Caja_detalle;
+use App\Models\Gestion;
 use Illuminate\Http\Request;
 
 class Controlador_actual_caja extends Controller{
@@ -27,6 +28,26 @@ class Controlador_actual_caja extends Controller{
         $total_servicio = $monto_servicio_entrada - $monto_servicio_salida;
         $data['total_caja_servicio'] = $total_servicio;
 
+        //ahora par ala gestion
+        $data['gestion'] = Gestion::where('estado','activo')->get();
+        //sacando la gestion actual
+        $data['gestion_actual'] = date('Y');
+
         return view('administrador.recaudaciones.caja_actual.caja_actual',$data);
+    }
+
+    //para encriptar el el id gestion
+    public function persona_deudas_pendientes(Request $request){
+        $id_gestion = $request->gestion_id;
+        if($id_gestion){
+            $data = array(
+                'tipo'=>'success',
+                'mensaje'=>'Abriendo el pdf anual con exito',
+                'id_gestion_enc' => encriptar($id_gestion)
+            );
+        }else{
+            $data = mensaje_mostrar('error','Ocurio un error');
+        }
+        return response()->json($data);
     }
 }

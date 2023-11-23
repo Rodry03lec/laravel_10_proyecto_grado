@@ -147,7 +147,7 @@
     @endphp
 
     <div style="text-align: center; padding-top:5%">
-        <h5 class="text-primary">GOBIERNO AUTONOMO MUNICIPAL DE CHULUMANI </h5>
+        <h5 class="text-primary">GOBIERNO AUTÓNOMO MUNICIPAL DE CHULUMANI </h5>
         <h5 class="text-primary">"VILLA DE LA LIBERTAD"</h5>
         <h5 class="text-primary">CAPITAL DE LA PROVINCIA - SUD YUNGAS GESTIÓN {{ date('Y') }} </h5>
         <h4 class="text-primary">REGISTRO DE INSTALACIÓN DE SERVICIOS DE AGUA</h4>
@@ -165,20 +165,20 @@
 
     <p>En la capital de Sud Yungas Chulumani, a los {{ date('d') }} días del mes de {{ obtenerNombreMes(date('m'))  }} de {{ date('Y') }}, comparecen:</p>
 
-    <p>Por una parte de Gobierno Autonomo Municipal de Chulumani (GAMCH), a cargo de la : {{ $instalacion->personal_trabajo->cargo->unidad->nombre }}, representada con el cargo de {{ $instalacion->personal_trabajo->cargo->nombre }} por el {{ $instalacion->personal_trabajo->persona_natural->nombres.' '.$instalacion->personal_trabajo->persona_natural->apellido_paterno.' '.$instalacion->personal_trabajo->persona_natural->apellido_materno }}, con C.I. N° @if ($instalacion->personal_trabajo->persona_natural->complemento != null && $instalacion->personal_trabajo->persona_natural->complemento != '')
+    <p>Por una parte de Gobierno Autónomo Municipal de Chulumani (GAMCH), a cargo de la : {{ $instalacion->personal_trabajo->cargo->unidad->nombre }}, representada con el cargo de {{ $instalacion->personal_trabajo->cargo->nombre }} : Sr(a) {{ $instalacion->personal_trabajo->persona_natural->nombres.' '.$instalacion->personal_trabajo->persona_natural->apellido_paterno.' '.$instalacion->personal_trabajo->persona_natural->apellido_materno }}, con C.I. N° @if ($instalacion->personal_trabajo->persona_natural->complemento != null && $instalacion->personal_trabajo->persona_natural->complemento != '')
         {{ $instalacion->personal_trabajo->persona_natural->ci.' - '.$instalacion->personal_trabajo->persona_natural->complemento.' '.$instalacion->personal_trabajo->persona_natural->expedido->sigla }}
     @else
         {{ $instalacion->personal_trabajo->persona_natural->ci.' '.$instalacion->personal_trabajo->persona_natural->expedido->sigla }}
-    @endif, en su calidad de responsable de la instalación de los servicios de agua en la vivienda ubicada en la zona {{ $instalacion->zona->nombre }}, dirección {{ $instalacion->direccion }}.</p>
+    @endif, en su calidad de responsable de la instalación del suministro del agua potable, en la vivienda ubicada en la zona {{ $instalacion->zona->nombre }}, dirección {{ $instalacion->direccion }}.</p>
 
-    <p>Por otra parte, @if ($instalacion->id_persona_juridica != null && $instalacion->id_persona_juridica != '')
-        {{ $instalacion->persona_juridica->representante_legal->nombres.' '.$instalacion->persona_juridica->representante_legal->apellido_paterno.' '.$instalacion->persona_juridica->representante_legal->apellido_materno }} ,con C.I. N° @if ($instalacion->persona_juridica->representante_legal->complemento != null && $instalacion->persona_juridica->representante_legal->complemento != '')
+    <p>Por otra parte, Sr(a) @if ($instalacion->id_persona_juridica != null && $instalacion->id_persona_juridica != '')
+        {{ $instalacion->persona_juridica->representante_legal->nombres.' '.$instalacion->persona_juridica->representante_legal->apellido_paterno.' '.$instalacion->persona_juridica->representante_legal->apellido_materno }} ,con identificación Nº  @if ($instalacion->persona_juridica->representante_legal->complemento != null && $instalacion->persona_juridica->representante_legal->complemento != '')
             {{ $instalacion->persona_juridica->representante_legal->ci.' - '.$instalacion->persona_juridica->representante_legal->complemento.' '.$instalacion->persona_juridica->representante_legal->expedido->sigla }}
         @else
             {{ $instalacion->persona_juridica->representante_legal->ci.' '.$instalacion->persona_juridica->representante_legal->expedido->sigla }}
         @endif, representante legal de la {{ $instalacion->persona_juridica->nombre_empresa }}
     @else
-        {{ $instalacion->persona_natural->nombres.' '.$instalacion->persona_natural->apellido_paterno.' '.$instalacion->persona_natural->apellido_materno  }} con C.I. N° @if ($instalacion->persona_natural->complemento != null && $instalacion->persona_natural->complemento != '')
+        {{ $instalacion->persona_natural->nombres.' '.$instalacion->persona_natural->apellido_paterno.' '.$instalacion->persona_natural->apellido_materno  }} con identificación Nº @if ($instalacion->persona_natural->complemento != null && $instalacion->persona_natural->complemento != '')
             {{ $instalacion->persona_natural->ci.' - '.$instalacion->persona_natural->complemento.' '.$instalacion->persona_natural->expedido->sigla }}
         @else
             {{ $instalacion->persona_natural->ci.' '.$instalacion->persona_natural->expedido->sigla }}
@@ -191,7 +191,7 @@
         <thead>
             <tr>
                 <th>FECHA INICIO DE INSTALACIÓN</th>
-                <th>FECHA DE COCLUSIÓN</th>
+                <th>FECHA DE CONCLUSIÓN</th>
                 <th>MONTO DE INSTALACIÓN</th>
                 <th>GLOSA</th>
             </tr>

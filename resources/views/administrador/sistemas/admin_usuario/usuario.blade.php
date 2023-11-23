@@ -26,7 +26,7 @@
                     <table id="table_usuario" class="min-w-full table-auto divide-y divide-slate-100 dark:divide-slate-700 data-table" style="width: 100%">
                         <thead class=" bg-slate-200 dark:bg-slate-700 ">
                             <tr>
-                                <th scope="col" class="table-th">ID</th>
+                                <th scope="col" class="table-th">Nº</th>
                                 <th scope="col" class="table-th">CI</th>
                                 <th scope="col" class="table-th">NOMBRES Y APELLIDOS</th>
                                 <th scope="col" class="table-th">CELULAR</th>

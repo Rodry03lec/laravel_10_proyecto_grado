@@ -87,9 +87,67 @@
     </div>
 </div>
 
-{{-- <div class="card py-4">
+<div class="card py-4">
     <div class="card-body px-6 pb-6">
+        <div class="grid xl:grid-cols-3 md:grid-cols-1 grid-cols-1 gap-5 py-4" >
+
+            <div class="input-area relative text-center">
+                <h4 class="card-title mb-0 text-primary-500"> Imprimir personas con deudas pendientes de una gestión especifica </h4>
+            </div>
+            <form method="post" autocomplete="off">
+                <div class="input-area relative">
+                    <select name="gestion" id="gestion" class="form-control w-full mt-2">
+                        <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione Gestión]</option>
+                        @foreach ($gestion as $lis)
+                           {{--  @if ($lis->gestion <= $gestion_actual) --}}
+                                <option value="{{ $lis->id }}" class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">{{ $lis->gestion }}</option>
+                            {{-- @endif --}}
+                        @endforeach
+                    </select>
+                    <div id="_gestion" ></div>
+                </div>
+            </form>
+            <div class="input-area text-center">
+                <button type="button" id="btn_gestion_especifica" class="btn inline-flex justify-center text-white bg-black-900">Imprimir</button>
+            </div>
+        </div>
 
     </div>
-</div> --}}
+</div>
+@endsection
+
+@section('script_recaudaciones')
+    <script>
+        let gestion_especifica_btn = document.getElementById('btn_gestion_especifica');
+        gestion_especifica_btn.addEventListener('click', async ()=>{
+            let gestion_id = document.getElementById('gestion');
+            if(gestion_id.value != 'selected'){
+                try {
+                    let respuesta = await fetch("{{ route('pdp_deudas') }}", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({gestion_id:gestion_id.value})
+                    });
+                    let dato = await respuesta.json();
+                    if (dato.tipo === 'success') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                        setTimeout(() => {
+                            window.open("{{ route('pdf_deudas', ['id' => ':id']) }}".replace(':id', dato.id_gestion_enc), '_blank');
+                        }, 1400);
+                        gestion_id.value = 'selected';
+                    }
+                    if (dato.tipo === 'error') {
+                        alerta_top(dato.tipo, dato.mensaje);
+                    }
+                } catch (error) {
+                    console.log('Error de datos : ' + error);
+                }
+            }else{
+                alerta_top('error', 'Porfavor seleccione una gestion');
+            }
+        });
+    </script>
 @endsection

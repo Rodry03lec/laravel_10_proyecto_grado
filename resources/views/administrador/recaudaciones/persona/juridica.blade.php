@@ -45,12 +45,11 @@
                             style="width: 100%">
                             <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                 <tr>
-                                    <th scope="col" class="table-th ">ID</th>
+                                    <th scope="col" class="table-th">Nº</th>
+                                    <th scope="col" class="table-th">NIT</th>
                                     <th scope="col" class="table-th">NOMBRE EMPRESA</th>
                                     <th scope="col" class="table-th">EMAIL</th>
-                                    <th scope="col" class="table-th">TELEFONO</th>
                                     <th scope="col" class="table-th">CELULAR</th>
-                                    <th scope="col" class="table-th">NIT</th>
                                     <th scope="col" class="table-th">NÚMERO DE TESTIMONIO</th>
                                     <th scope="col" class="table-th">ACCIONES</th>
                                 </tr>
@@ -566,7 +565,10 @@
                             return i++;
                         }
                     },
-
+                    {
+                        data: 'nit',
+                        className: 'table-td'
+                    },
                     {
                         data: 'nombre_empresa',
                         className: 'table-td'
@@ -576,17 +578,10 @@
                         className: 'table-td'
                     },
                     {
-                        data: 'telefono',
-                        className: 'table-td'
-                    },
-                    {
                         data: 'celular',
                         className: 'table-td'
                     },
-                    {
-                        data: 'nit',
-                        className: 'table-td'
-                    },
+
                     {
                         data: null,
                         className: 'table-td',

@@ -43,8 +43,8 @@
                             style="width: 100%">
                             <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                 <tr>
-                                    <th scope="col" class="table-th">ID</th>
-                                    <th scope="col" class="table-th">NOMBRE</th>
+                                    <th scope="col" class="table-th">Nº</th>
+                                    <th scope="col" class="table-th">NOMBRE DE LA UNIDAD</th>
                                     <th scope="col" class="table-th">DESCRIPCIÓN</th>
                                     <th scope="col" class="table-th">CARGOS</th>
                                     <th scope="col" class="table-th">ACCIONES</th>
@@ -222,7 +222,7 @@
                                             style="width: 100%">
                                             <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                                 <tr>
-                                                    <th class="table-th">ID</th>
+                                                    <th class="table-th">Nº</th>
                                                     <th scope="col" class="table-th">CARGO</th>
                                                     <th scope="col" class="table-th">DESCRIPCIÓN</th>
                                                     <th scope="col" class="table-th">ACCIONES</th>

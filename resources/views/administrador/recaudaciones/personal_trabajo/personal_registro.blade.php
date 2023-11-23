@@ -67,9 +67,9 @@
                                                 style="width: 100%">
                                                 <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                                     <tr>
-                                                        <th scope="col" class="table-th">ID</th>
+                                                        <th scope="col" class="table-th">Nº</th>
                                                         <th scope="col" class="table-th">CI</th>
-                                                        <th scope="col" class="table-th">NOMBRE</th>
+                                                        <th scope="col" class="table-th">NOMBRE Y APELLIDOS</th>
                                                         <th scope="col" class="table-th">FECHA DE CONTRATACIÓN</th>
                                                         <th scope="col" class="table-th">CARGO</th>
                                                         <th scope="col" class="table-th">ACCIONES</th>
@@ -98,10 +98,10 @@
                                                 style="width: 100%">
                                                 <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                                     <tr>
-                                                        <th scope="col" class="table-th">ID</th>
+                                                        <th scope="col" class="table-th">Nº</th>
                                                         <th scope="col" class="table-th">CI</th>
-                                                        <th scope="col" class="table-th">NOMBRE</th>
-                                                        <th scope="col" class="table-th">FECHA DE CONTRATACIÓN</th>
+                                                        <th scope="col" class="table-th">NOMBRE Y APELLIDOS</th>
+                                                        <th scope="col" class="table-th">FECHA DE INCORPORACIÓN</th>
                                                         <th scope="col" class="table-th">FECHA DE FINALIZACIÓN</th>
                                                         <th scope="col" class="table-th">CARGO</th>
                                                         <th scope="col" class="table-th">ACCIONES</th>
@@ -527,7 +527,7 @@
                         className: 'table-td',
                         render: function(data, type, row, meta) {
                             if (row.persona_natural.complemento !== null && row.persona_natural.complemento !== '') {
-                                return `<span class="badge bg-slate-900 text-slate-900 dark:text-slate-200 bg-opacity-30 capitalize pill">`+ row.persona_natural.ci+'-'+row.complemento+' '+row.persona_natural.expedido.sigla+`</span>`;
+                                return `<span class="badge bg-slate-900 text-slate-900 dark:text-slate-200 bg-opacity-30 capitalize pill">`+ row.persona_natural.ci+'-'+row.persona_natural.complemento+' '+row.persona_natural.expedido.sigla+`</span>`;
                             } else {
                                 return `<span class="badge bg-slate-900 text-slate-900 dark:text-slate-200 bg-opacity-30 capitalize pill">`+row.persona_natural.ci+' '+row.persona_natural.expedido.sigla+`</span>` ;
                             }

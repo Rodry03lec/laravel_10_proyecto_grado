@@ -212,4 +212,93 @@ class Controlador_instalacion_pdf extends Controller{
         return response($pdfContent, 200)->header('Content-Type', 'application/pdf');
     }
 
+
+    //para los deudores pendientes
+    public function deudas_ver_anual($id){
+        $id_gestion         = desencriptar($id);
+        $gestion            = Gestion::find($id_gestion);
+        $facturacion        = Facturacion::select('id_registro_cobro')->where('id_gestion', $id_gestion)->groupBy('id_registro_cobro')->get();
+        $mes                = Mes::orderBy('numero_mes', 'asc')->get();
+
+        $instalados = Instalacion::with(['persona_natural'=>function($pn){
+            $pn->with(['expedido']);
+        },'persona_juridica'=>function($pj){
+            $pj->with(['representante_legal'=>function($rl){
+                $rl->with(['expedido']);
+            }]);
+        },'sub_categoria','registro_cobros'=>function($rc){
+            $rc->with(['facturacion']);
+        }])->where('estado_instalacion', 'finalizado')->get();
+
+
+        $resultados_instalados = [];
+
+        foreach ($instalados as $instalacion) {
+            $resultados_meses = [];
+            foreach ($mes as $m) {
+                // Realizar la consulta según tus condiciones
+                $factura_consulta = Facturacion::with(['caja_detalle'])->where('id_gestion', $id_gestion)
+                    ->where('id_mes', $m->id)
+                    ->where('id_registro_cobro', $instalacion->registro_cobros->id)
+                    ->get();
+
+                // Agregar el resultado al array
+                $resultados_meses[] = [
+                    'mes' => $m,
+                    'factura_consulta' => $factura_consulta
+                ];
+            }
+            $resultados_instalados[]=[
+                'instalados'=> $instalacion,
+                'resultado_meses' => $resultados_meses
+            ];
+        }
+        $data['resultados_instalados'] = $resultados_instalados;
+        $data['gestion'] = $gestion;
+
+
+        $options = new Options;
+        $options->set('isPhpEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+        //$data['persona'] = 'Rodry';
+        $html = View::make('administrador.reportes.deudas_pendientes')->with($data)->render();
+        $dompdf->loadHtml($html);
+        //$dompdf->setPaper('letter', 'portrait');
+        $dompdf->setPaper('letter');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+        return response($pdfContent, 200)->header('Content-Type', 'application/pdf');
+    }
+
+
+    //para ver todos los instalados
+    public function ver_instalados(){
+        $instalados = Instalacion::with(['sub_categoria','persona_juridica'=>function($pj){
+            $pj->with(['representante_legal'=>function($rl){
+                $rl->with(['expedido']);
+            }]);
+        },'persona_natural'=>function($pn){
+            $pn->with(['expedido']);
+        }])
+        ->where('estado_instalacion', 'finalizado')->orderBy('fecha_conclucion','asc')->get();
+
+
+        $data['instalados'] = $instalados;
+
+        $options = new Options;
+        $options->set('isPhpEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+        $data['persona'] = 'Rodry';
+        $html = View::make('administrador.reportes.listar_instalados')->with($data)->render();
+        $dompdf->loadHtml($html);
+        //$dompdf->setPaper('letter', 'portrait');
+        $dompdf->setPaper('letter');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+        return response($pdfContent, 200)->header('Content-Type', 'application/pdf');
+    }
 }

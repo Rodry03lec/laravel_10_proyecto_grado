@@ -226,9 +226,9 @@
                 $numd = $numd."Y ".(unidad($numdero - 30));
         }else if ($numdero >= 20 && $numdero <= 29){
             if ($numdero == 20)
-                $numd = "Veinti ";
+                $numd = "Veinte ";
             else
-                $numd = " Veinti".(unidad($numdero - 20));
+                $numd = " Veinte".(unidad($numdero - 20));
         }else if ($numdero >= 10 && $numdero <= 19){
             switch ($numdero){
                 case 10: $numd = "Diez "; break;

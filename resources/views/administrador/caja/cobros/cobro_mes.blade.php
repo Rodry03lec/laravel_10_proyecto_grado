@@ -91,7 +91,7 @@
                                             </td>
                                             <td class="table-td">
                                                 <div class="flex space-x-3 rtl:space-x-reverse">
-                                                    <button class="action-btn btn-success" onclick="realizar_pago_mensual('{{ $resultado['mes']->id }}', '{{ $gestion->id }}', '{{ $id_registro_c }}')" type="button">
+                                                    <button class="action-btn btn-success" onclick="realizar_pago_mensual('{{ $resultado['mes']->id }}', '{{ $gestion->id }}', '{{ $id_registro_c }}', '{{ obtenerNombreMes($resultado['mes']->numero_mes) }}')" type="button">
                                                     <iconify-icon icon="heroicons-outline:currency-dollar"></iconify-icon>
                                                     </button>
                                                 </div>

@@ -309,6 +309,7 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
      */
     Route::controller(Controlador_actual_caja::class)->group(function(){
         Route::get('CajaActual', 'caja_actual_detalle')->name('ac_index');
+        Route::post('Persona_deudasPendientes','persona_deudas_pendientes')->name('pdp_deudas');
     });
     /**
      * FIN DE MOSTRAR CAJA DETALLE
@@ -326,6 +327,9 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::get('Comprobante_pago/{id_gestion}/{id_registro_cobro}','comprobante_pago_ver')->name('pdf_pago_ver');
         //encriptar ese
         //Route::get('Instalacion_comprobante/{id}','comprobante_cobro_instalacion')->name('pdf_comprobante_instalacion');
+
+        Route::get('DeudoresPendientes/{id}','deudas_ver_anual')->name('pdf_deudas');
+        Route::get('Instalados','ver_instalados')->name('pdf_instalados');
     });
     /**
      * FIN DE LOS REPOSTES PDF

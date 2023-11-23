@@ -116,7 +116,7 @@ class Admin_login extends Controller
 
         for ($i = 0; $i < strlen($text); $i++) {
             // Genera un color aleatorio en formato hexadecimal (#RRGGBB)
-            $randomColor = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+            $randomColor = '#FFFFFF';
 
             // Calcula una rotación aleatoria entre -maxRotation y maxRotation
             $rotation = rand(-$maxRotation, $maxRotation);

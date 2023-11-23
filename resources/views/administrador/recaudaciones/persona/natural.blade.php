@@ -45,11 +45,11 @@
                             style="width: 100%">
                             <thead class=" bg-slate-200 dark:bg-slate-700 ">
                                 <tr>
-                                    <th scope="col" class="table-th">ID</th>
-                                    <th scope="col" class="table-th">CI</th>
+                                    <th scope="col" class="table-th">Nº</th>
                                     <th scope="col" class="table-th">NOMBRES Y APELLIDOS</th>
-                                    <th scope="col" class="table-th">CELULAR</th>
-                                    <th scope="col" class="table-th">CELULAR DE REFERENCIA</th>
+                                    <th scope="col" class="table-th">CI</th>
+                                    <th scope="col" class="table-th">Nº CELULAR</th>
+                                    <th scope="col" class="table-th">DIRECCIÓN</th>
                                     <th scope="col" class="table-th">ACCIONES</th>
                                 </tr>
                             </thead>
@@ -477,6 +477,13 @@
                         data: null,
                         className: 'table-td',
                         render: function(data, type, row, meta) {
+                            return row.nombres + ' ' + row.apellido_paterno+' '+row.apellido_materno;
+                        }
+                    },
+                    {
+                        data: null,
+                        className: 'table-td',
+                        render: function(data, type, row, meta) {
                             if (row.complemento !== null && row.complemento !== '') {
                                 return `<span class="badge bg-slate-900 text-slate-900 dark:text-slate-200 bg-opacity-30 capitalize pill">`+ row.ci+'-'+row.complemento+' '+row.expedido.sigla+`</span>`;
                             } else {
@@ -485,18 +492,11 @@
                         }
                     },
                     {
-                        data: null,
-                        className: 'table-td',
-                        render: function(data, type, row, meta) {
-                            return row.nombres + ' ' + row.apellido_paterno+' '+row.apellido_materno;
-                        }
-                    },
-                    {
                         data: 'celular',
                         className: 'table-td'
                     },
                     {
-                        data: 'celular_referencia',
+                        data: 'direccion',
                         className: 'table-td'
                     },
                     /* {
