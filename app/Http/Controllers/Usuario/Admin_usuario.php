@@ -3,13 +3,44 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
-use App\Models\Gestion;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+
+
+/*para*/
+use App\Models\Caja\Caja_detalle;
+use App\Models\Caja\Caja_sumatoria;
+use App\Models\Caja\Facturacion;
+use App\Models\Caja\Registro_cobros;
+use App\Models\Configuracion\Expedido;
+use App\Models\Configuracion\Profesion;
+use App\Models\Configuracion\Tipo_empresa;
+use App\Models\Configuracion\Tipo_propiedad;
+use App\Models\Configuracion\Tipo_zona;
+use App\Models\Configuracion\Zonas;
+use App\Models\Persona\Juridica;
+use App\Models\Persona\Natural;
+use App\Models\Personal\Cargo;
+use App\Models\Personal\Personal_trabajo;
+use App\Models\Personal\Unidad;
+use App\Models\Servicio\Categoria_servicio;
+use App\Models\Servicio\Historial_instalacion;
+use App\Models\Servicio\Instalacion;
+use App\Models\Servicio\Sub_categoria;
+use App\Models\Gestion;
+use App\Models\Mes;
+use App\Models\User;
+
+use Spatie\Activitylog\Models\Activity;
+
+
+
+
+
+use Illuminate\Support\Facades\File;
 
 class Admin_usuario extends Controller
 {
@@ -214,7 +245,7 @@ class Admin_usuario extends Controller
 
             if($usuario->id){
                 $data = mensaje_mostrar('success', 'Se editó el usuario con éxito');
-                $usuario->assignRole($request->rol_);
+                $usuario->syncRoles($request->rol_);
             }else{
                 $data = mensaje_mostrar('error', 'Ocurrio un error al editar');
             }
@@ -369,5 +400,72 @@ class Admin_usuario extends Controller
     }
     /**
      * FIN DE LA PARTE DE LOS PERMISOS
+     */
+
+
+    /**
+      * PARA EL MODELO
+    */
+    public function modelo(){
+        $data['menu'] = 01;
+        // Directorio donde se encuentran los modelos
+        $directorioModelos = app_path('Models');
+        // Obtener todos los archivos en el directorio de modelos de manera recursiva
+        $modelFiles = File::allFiles($directorioModelos);
+        // Almacena los nombres de los modelos con sus rutas completas
+        $modelosConRutas = [];
+        foreach ($modelFiles as $archivo) {
+            // Obtén el nombre del modelo sin la extensión .php
+            $nombreModelo = pathinfo($archivo->getRealPath(), PATHINFO_FILENAME);
+
+            // Almacena el modelo con su ruta completa
+            $modelosConRutas[$nombreModelo] = $archivo->getRealPath();
+        }
+        // Elimina la parte de la ruta antes de App\
+        $modelosConRutas = array_map(function ($ruta) {
+            return substr($ruta, strpos($ruta, 'app\\'));
+        }, $modelosConRutas);
+        // Elimina la extensión ".php" de los nombres de los modelos
+        $modelosConRutas = array_map(function ($ruta) {
+            return str_replace('.php', '', $ruta);
+        }, $modelosConRutas);
+        $modelosConRutas = array_map('ucwords', $modelosConRutas);
+        $data['modelos'] = $modelosConRutas;
+        return view('administrador.sistemas.modelo', $data);
+    }
+
+
+
+    public function modelo_listar(Request $request){
+        try {
+            // Obtén el nombre del modelo desde la solicitud
+            $nombreModelo = $request->modelo;
+
+            // Obtén las actividades relacionadas con el modelo
+            $actividadesRegistroCarrera = Activity::where('subject_type', $nombreModelo)->orderBy('id', 'desc')->get();
+
+            // Valida que las actividades no estén vacías
+            if ($actividadesRegistroCarrera->isEmpty()) {
+                echo '<div class="alert alert-danger">
+                    <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                        <div class="flex-1">
+                            NO EXISTE REGISTROS
+                        </div>
+                    </div>
+                </div>';
+            }
+
+            // Pasa los datos a la vista
+            $data['listar_actividad'] = $actividadesRegistroCarrera;
+
+            // Retorna la vista con los datos
+            return view('administrador.sistemas.modelo_detalle', $data);
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción aquí
+            echo 'error';
+        }
+    }
+    /**
+     * FIN DE LA PARTE DEL MODELO
      */
 }

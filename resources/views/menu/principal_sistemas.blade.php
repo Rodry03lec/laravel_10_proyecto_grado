@@ -69,6 +69,15 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="">
+                            <a href="{{ route('mod_index') }}" class="navItem @if ($menu=='01') {{ 'active' }} @endif">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:document-search"></iconify-icon>
+                                    <span>Modelos</span>
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

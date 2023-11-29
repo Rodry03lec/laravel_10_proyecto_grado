@@ -11,9 +11,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
+
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
+
 class Natural extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = 'nl_persona_natural';
     protected $fillable=[
@@ -38,6 +43,34 @@ class Natural extends Model
     const CREATED_AT = 'creado_el';
     const UPDATED_AT = 'editado_el';
 
+    public function getActivitylogOptions(): LogOptions{
+        return LogOptions::defaults()
+            ->logOnly([
+                'ci',
+                'complemento',
+                'nombres',
+                'apellido_paterno',
+                'apellido_materno',
+                'email',
+                'genero',
+                'celular',
+                'celular_referencia',
+                'estado_civil',
+                'informacion_adicional',
+                'direccion',
+                'foto',
+                'expedido',
+                'zona',
+                'id_usuario',
+            ])
+            ->useLogName('nl_persona_natural')  //aqui podemos cambiar el nombre dependiendo al modelo
+            ->setDescriptionForEvent(function (string $eventName) {
+                $user = Auth::user();
+                return "Este modelo ha sido {$eventName} por el usuario {$user->nombres} {$user->apellido_paterno} {$user->apellido_materno} (ID: {$user->id})  (CI: {$user->ci})";
+            })
+            ->logOnlyDirty() // Este método especifica que solo se deben registrar en el log los campos que han cambiado desde la última vez que se guardó el modelo.
+            ->dontSubmitEmptyLogs(); //Este método indica al paquete que no debe registrar entradas de log cuando no hay cambios en el modelo.
+    }
 
     //para que registre las en mayusculas
     protected function nombres():Attribute{

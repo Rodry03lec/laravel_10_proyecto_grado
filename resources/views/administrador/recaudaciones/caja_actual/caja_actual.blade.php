@@ -99,7 +99,7 @@
                     <select name="gestion" id="gestion" class="form-control w-full mt-2">
                         <option value="selected" selected="selected" disabled="disabled"  class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">[Seleccione Gestión]</option>
                         @foreach ($gestion as $lis)
-                           {{--  @if ($lis->gestion <= $gestion_actual) --}}
+                            {{--  @if ($lis->gestion <= $gestion_actual) --}}
                                 <option value="{{ $lis->id }}" class="py-1 inline-block font-Inter font-normal text-sm text-slate-600">{{ $lis->gestion }}</option>
                             {{-- @endif --}}
                         @endforeach

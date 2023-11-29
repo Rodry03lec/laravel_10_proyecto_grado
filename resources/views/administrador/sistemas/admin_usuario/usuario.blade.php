@@ -24,7 +24,7 @@
             <div class="inline-block min-w-full align-middle">
                 <div class="overflow-hidden w-full overflow-x-auto ">
                     <table id="table_usuario" class="min-w-full table-auto divide-y divide-slate-100 dark:divide-slate-700 data-table" style="width: 100%">
-                        <thead class=" bg-slate-200 dark:bg-slate-700 ">
+                        <thead class=" bg-slate-200 dark:bg-slate-700">
                             <tr>
                                 <th scope="col" class="table-th">Nº</th>
                                 <th scope="col" class="table-th">CI</th>

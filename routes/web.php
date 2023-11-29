@@ -66,6 +66,10 @@ Route::prefix('/admin')->middleware(['autenticados'])->group(function(){
         Route::post('sys/permiso_eliminar','permiso_eliminar')->name('permiso_eliminar');
         Route::post('sys/permiso_editar','permiso_editar')->name('permiso_editar');
         Route::post('sys/permiso_editado','permiso_editado')->name('permiso_editado');
+
+        //ROLES
+        Route::get('sys/modelo','modelo')->name('mod_index');
+        Route::post('sys/modelo_listar','modelo_listar')->name('mod_listar');
     });
     /**
      * FIN DE ADMINISTRACION DE USUARIOS
