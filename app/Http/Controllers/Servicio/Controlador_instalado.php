@@ -9,6 +9,15 @@ use Illuminate\Http\Request;
 
 class Controlador_instalado extends Controller
 {
+
+
+    /**
+     * @version 1.0
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte de los servicios instalados
+     * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
+     */
+
     //
 
     public function instalados(){

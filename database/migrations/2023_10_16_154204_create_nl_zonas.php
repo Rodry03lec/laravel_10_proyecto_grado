@@ -20,7 +20,7 @@ return new class extends Migration
 
         Schema::create('nl_zonas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
+            $table->string('nombre');
             $table->text('descripcion');
             $table->date('fecha_creacion');
             $table->date('ultima_actualizacion');

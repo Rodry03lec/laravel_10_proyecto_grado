@@ -8,6 +8,14 @@ use App\Models\Gestion;
 use Illuminate\Http\Request;
 
 class Controlador_actual_caja extends Controller{
+
+    /**
+     * @version 1.0
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte mostrar el monto total de las cajas
+     * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
+     */
+
     public function caja_actual_detalle(){
         $data['menu'] = 18;
 

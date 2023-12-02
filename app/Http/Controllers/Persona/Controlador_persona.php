@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 class Controlador_persona extends Controller{
     /**
      * @version 1.0
-     * @author  Colocar nombre del autor <coreo@gmail.com>
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
      * @param Controlador Administracion de la parte del registro de personas Naturales y Juridicas
      * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
      */

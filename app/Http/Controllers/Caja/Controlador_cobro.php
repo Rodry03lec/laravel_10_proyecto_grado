@@ -18,7 +18,14 @@ use function PHPUnit\Framework\isEmpty;
 
 class Controlador_cobro extends Controller
 {
-    //
+    /**
+     * @version 1.0
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte de cobro del servicio
+     * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
+     */
+
+    //cobros por ci
     public function cobros_busqueda(){
         $data['menu'] = 17;
         return view('administrador.caja.cobros', $data);

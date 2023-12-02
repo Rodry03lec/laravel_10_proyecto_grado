@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
-
 /*para*/
 use App\Models\Caja\Caja_detalle;
 use App\Models\Caja\Caja_sumatoria;
@@ -46,7 +44,7 @@ class Admin_usuario extends Controller
 {
     /**
      * @version 1.0
-     * @author Noemi Liz Solares Chico<nlizsolares@gmail.com>
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
      * @param Controlador Administracion de los usuarios, roles y permisos
      * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
      */

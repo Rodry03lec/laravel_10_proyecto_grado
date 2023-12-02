@@ -16,8 +16,8 @@ class Controlador_configuracion extends Controller
 {
     /**
      * @version 1.0
-     * @author  Colocar nombre del autor <coreo@gmail.com>
-     * @param Controlador Administracion de la parte de la configuracion
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte de configuracion de categorias tipos, zonas
      * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
      */
 

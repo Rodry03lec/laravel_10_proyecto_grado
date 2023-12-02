@@ -13,8 +13,8 @@ class Admin_login extends Controller
 
     /**
      * @version 1.0
-     * @author Rodrigo Lecoña Quispe <rodrigolecona97@gmail.com>
-     * @param Controlador para el ingreso para usuarios registrados
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte de usuario resgistrados LOGIN
      * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
      */
     //para ingresar usuario y contraseña

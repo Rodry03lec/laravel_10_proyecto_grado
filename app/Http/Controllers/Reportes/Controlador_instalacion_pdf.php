@@ -16,6 +16,14 @@ use App\Models\Mes;
 use App\Models\Caja\Registro_cobros;
 
 class Controlador_instalacion_pdf extends Controller{
+
+    /**
+     * @version 1.0
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar diferentes reportes que necesita el sistema
+     * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
+     */
+
     //para los pdf
     public function registro_documento($id){
         $id_descript = desencriptar($id);

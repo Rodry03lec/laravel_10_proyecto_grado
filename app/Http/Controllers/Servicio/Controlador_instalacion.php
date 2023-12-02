@@ -22,6 +22,14 @@ use DateTime;
 
 class Controlador_instalacion extends Controller
 {
+
+    /**
+     * @version 1.0
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte de la instalacion de servicio de agua potable
+     * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
+     */
+
     /**
      * para la parte de la instalacion de servicios
      */

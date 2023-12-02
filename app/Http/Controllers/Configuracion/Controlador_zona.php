@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Validator;
 class Controlador_zona extends Controller{
     /**
      * @version 1.0
-     * @author  Colocar nombre del autor <coreo@gmail.com>
-     * @param Controlador Administracion de la parte de la gestión
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte de las zonas
      * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
      */
 
@@ -118,7 +118,7 @@ class Controlador_zona extends Controller{
     //para guardar la zona
     public function zonas_nuevo(Request $request){
         $validar = Validator::make($request->all(),[
-            'nombre'            => 'required|unique:nl_zonas,nombre',
+            'nombre'            => 'required',
             'descripcion'       => 'required',
             'fecha_creacion'    => 'required|date',
             'tipo_zona'         => 'required'

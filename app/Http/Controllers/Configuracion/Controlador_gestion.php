@@ -11,8 +11,8 @@ use App\Models\Servicio\Categoria_servicio;
 class Controlador_gestion extends Controller{
     /**
      * @version 1.0
-     * @author  Colocar nombre del autor <coreo@gmail.com>
-     * @param Controlador Administracion de la parte de la gestión
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte de gestiones
      * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
      */
 

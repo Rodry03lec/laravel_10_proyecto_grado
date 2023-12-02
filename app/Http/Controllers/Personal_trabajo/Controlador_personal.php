@@ -15,8 +15,8 @@ class Controlador_personal extends Controller
 {
     /**
      * @version 1.0
-     * @author  Colocar nombre del autor <coreo@gmail.com>
-     * @param Controlador Administracion de la parte de la configuracion
+     * @author  Noemi Liz Solarez Chico <noemilizsolarez@gmail.com>
+     * @param Controlador Administrar la parte de personal o funsionarios que estan trabajando en la alcaldia
      * ¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente
      */
 
