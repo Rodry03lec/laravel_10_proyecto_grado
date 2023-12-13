@@ -18,7 +18,7 @@ class Seeder_configuracion extends Seeder
 {
     public function run(): void
     {
-        $gestiones = array('2023','2024','2025');
+        $gestiones = array('2015','2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023','2024','2025');
 
         foreach($gestiones as $g){
             $gestion = new Gestion;

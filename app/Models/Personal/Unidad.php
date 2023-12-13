@@ -6,20 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Personal\Cargo;
 
-use Spatie\Activitylog\Traits\LogsActivity;
+/* use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth; */
 
 class Unidad extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory /* , LogsActivity */;
     protected $table = 'nl_unidad';
     protected $fillable=[
         'nombre',
         'descripcion',
     ];
 
-    public function getActivitylogOptions(): LogOptions{
+    /* public function getActivitylogOptions(): LogOptions{
         return LogOptions::defaults()
             ->logOnly([
                 'nombre',
@@ -32,7 +32,7 @@ class Unidad extends Model
             })
             ->logOnlyDirty() // Este método especifica que solo se deben registrar en el log los campos que han cambiado desde la última vez que se guardó el modelo.
             ->dontSubmitEmptyLogs(); //Este método indica al paquete que no debe registrar entradas de log cuando no hay cambios en el modelo.
-    }
+    } */
 
     //relacion con nl_unidad
     public function cargo(){
